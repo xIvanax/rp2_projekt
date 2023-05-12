@@ -20,3 +20,4 @@ Imamo odvojene baze za:
   - __posebne user-e__ tj. one koji mogu mijenjati cijene soba i sl. (id, id hotela nad kojim ima ovlasti)
   - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe te datum zauzeća i oslobođenja koji se gledaju samo ako je soba zauzeta što se može provjeriti preko atributa "slobodna" koji je 1 ako je slobodna, a 0 ako nije)
  -  __obične user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, ime, prezime).
+Treba ih popuniti nekim podacima, ja ću krenuti pa kom se da neka dovrši. __Pliz provjerite jel vam sve okej s bazama i tipovima podataka i atributima pa ak nije popravite.__
