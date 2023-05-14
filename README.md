@@ -15,7 +15,7 @@ Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcij
 ## Baza podataka 
 Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.  
 Imamo odvojene tablcie za:
-  - __hotele__ (ime, broj slobodnih soba, ukupan broj soba, udaljenost od centra i id)
+  - __hotele__ (ime, grad, ~~broj slobodnih soba, ukupan broj soba,~~ udaljenost od centra i id)
   - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, id gosta, komentar gosta, ocjena)
   - __posebne user-e__ tj. one koji mogu mijenjati cijene soba i sl. (id, id hotela nad kojim ima ovlasti)
   - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe te datum zauzeća i oslobođenja koji se gledaju samo ako je soba zauzeta što se može provjeriti preko atributa "slobodna" koji je 1 ako je slobodna, a 0 ako nije)
