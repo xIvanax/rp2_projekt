@@ -12,9 +12,9 @@ Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcij
 5. Rješenje bi trebalo biti postavljeno na rp2.studenti.math.hr (osim u iznimnim situacijama i u dogovoru s profesorom). Možete koristiti i vanjske JavaScript/HTML/CSS biblioteke, poput jQuery, Bootstrap i sličnih. Ne smijete koristiti gotova ili skoro gotova rješenja zadatka kojeg rješavate -- takva ili bilo koja druga vrsta plagiranja nije prihvatljiva!
 6. Projekt treba sadržavati aspekte __i serverskog (PHP) i klijentskog (JavaScript) programiranja__. Iznimke su moguće jedino u dogovoru s profesorom.
 
-## Baza podataka 
-Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.  
-Imamo odvojene tablcie za:
+## Baza podataka _~Ivana_
+Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.
+Imamo odvojene tablice za:
   - __hotele__ (ime, grad, ~~broj slobodnih soba, ukupan broj soba,~~ udaljenost od centra i id)
   - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, id gosta, komentar gosta, ocjena)
   - __posebne user-e__ tj. one koji mogu mijenjati cijene soba i sl. (id, id hotela nad kojim ima ovlasti)
@@ -22,4 +22,8 @@ Imamo odvojene tablcie za:
  -  __obične user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, ime, prezime).
 
 __Vjerojatno bi bilo najbolje popuniti ih iz php-a, a ne u phpmyadmin jer ak kasnije skuzimo da nes ne valja s tablicom lakse cemo popravit.__
+
 Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sql naredbe), [booking.com](https://www.booking.com/) (informacije za hotele, imaju i komentare korisnika s ocjenama, ideje za tipove soba, cijene itd. - ugl. korisno da ne moramo izmisljat nego mozemo samo copy pasteat hrpu tog)
+
+## Updates
+- popunila sam tablicu za hotele sam da vidim koji je najlakši način, treba još popuniti tablice za ocjene, posebne user-e, sobe i obične user-e _~Ivana_
