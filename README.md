@@ -15,10 +15,10 @@ Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcij
 ## Baze podataka 
 Napravila sam bazu podataka na phpadmin-u, sve pocinju s _projekt_.  
 Imamo odvojene baze za:
-  - __hotele__ (broj slobodnih soba, ukupan broj soba, udaljenost od centra i id)
+  - __hotele__ (ime, broj slobodnih soba, ukupan broj soba, udaljenost od centra i id)
   - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, id gosta, komentar gosta, ocjena)
   - __posebne user-e__ tj. one koji mogu mijenjati cijene soba i sl. (id, id hotela nad kojim ima ovlasti)
   - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe te datum zauzeća i oslobođenja koji se gledaju samo ako je soba zauzeta što se može provjeriti preko atributa "slobodna" koji je 1 ako je slobodna, a 0 ako nije)
  -  __obične user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, ime, prezime).
 
-__Pliz provjerite jel vam sve okej s bazama i tipovima podataka i atributima pa ak nije popravite i napišite tu kad vam je sve okej da ih mogu popunit podacima.__
+__Vjerojatno bi bilo najbolje popuniti ih iz php-a, a ne u phpmyadmin jer ak kasnije skuzimo da nes ne valja s tablicom lakse cemo popravit.__
