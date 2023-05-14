@@ -12,9 +12,9 @@ Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcij
 5. Rješenje bi trebalo biti postavljeno na rp2.studenti.math.hr (osim u iznimnim situacijama i u dogovoru s profesorom). Možete koristiti i vanjske JavaScript/HTML/CSS biblioteke, poput jQuery, Bootstrap i sličnih. Ne smijete koristiti gotova ili skoro gotova rješenja zadatka kojeg rješavate -- takva ili bilo koja druga vrsta plagiranja nije prihvatljiva!
 6. Projekt treba sadržavati aspekte __i serverskog (PHP) i klijentskog (JavaScript) programiranja__. Iznimke su moguće jedino u dogovoru s profesorom.
 
-## Baze podataka 
-Napravila sam bazu podataka na phpadmin-u, sve pocinju s _projekt_.  
-Imamo odvojene baze za:
+## Baza podataka 
+Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.  
+Imamo odvojene tablcie za:
   - __hotele__ (ime, broj slobodnih soba, ukupan broj soba, udaljenost od centra i id)
   - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, id gosta, komentar gosta, ocjena)
   - __posebne user-e__ tj. one koji mogu mijenjati cijene soba i sl. (id, id hotela nad kojim ima ovlasti)
