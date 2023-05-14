@@ -22,3 +22,4 @@ Imamo odvojene tablcie za:
  -  __obične user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, ime, prezime).
 
 __Vjerojatno bi bilo najbolje popuniti ih iz php-a, a ne u phpmyadmin jer ak kasnije skuzimo da nes ne valja s tablicom lakse cemo popravit.__
+Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sql naredbe), [booking.com](https://www.booking.com/) (informacije za hotele, imaju i komentare korisnika s ocjenama, ideje za tipove soba, cijene itd. - ugl. korisno da ne moramo izmisljat nego mozemo samo copy pasteat hrpu tog)
