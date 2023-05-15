@@ -27,4 +27,4 @@ __Vjerojatno bi bilo najbolje popuniti ih iz php-a, a ne u phpmyadmin jer ak kas
 Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sql naredbe), [booking.com](https://www.booking.com/) (informacije za hotele, imaju i komentare korisnika s ocjenama, ideje za tipove soba, cijene itd. - ugl. korisno da ne moramo izmisljat nego mozemo samo copy pasteat hrpu tog)
 
 ## Updates
-- popunila sam tablicu za hotele sam da vidim koji je najlakši način, treba još popuniti tablice za ocjene, posebne user-e, sobe i obične user-e _~Ivana_
+- popunila sam tablicu za hotele, sobe i ocjene i onda odustala jer ne kuzim excel _~Ivana_
