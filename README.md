@@ -28,3 +28,21 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 
 ## Updates
 - baza podataka je skroz gotova (osmisljeni podaci i napravljen sql u phpmyadmin) i moze se koristiti _~Ivana_
+
+## Korisno
+- pitala sam ChatGPT gdje bi i zašto u našoj aplikaciji za hotele trebalo koristiti JavaScript umjesto PHP-a i zašto pa mi je ovo rekao (neke od tih stvari ćemo tek raditi na predavanjima): ~Ivana
+"Yes, there can be several benefits to using JavaScript in your web application alongside PHP, HTML, and a database. Here are a few reasons why you might consider incorporating JavaScript into your application:
+
+- Enhancing User Experience: JavaScript allows you to create dynamic and interactive elements on your web pages. You can use JavaScript to implement features like form validation, dropdown menus, auto-suggestions, sliders, and other interactive components. These enhancements can improve the overall user experience and make your application more user-friendly.
+
+- Asynchronous Operations: JavaScript supports asynchronous programming, which means you can make AJAX (Asynchronous JavaScript and XML) requests to the server without reloading the entire page. This can be useful for implementing features such as real-time updates, dynamic content loading, and seamless interactions with the server, providing a smoother user experience.
+
+- Client-Side Form Validation: While server-side validation with PHP is crucial, JavaScript can provide immediate feedback to users by performing client-side form validation before submitting the data to the server. This can reduce the number of round trips to the server and provide a quicker response to users.
+
+- Dynamic Content Manipulation: JavaScript can manipulate the DOM (Document Object Model) dynamically, allowing you to change the content and appearance of your web pages based on user actions or other events. For example, you can show or hide elements, update information without reloading the page, or create dynamic menus based on user preferences.
+
+- Integration with APIs and Libraries: JavaScript has a wide range of libraries and APIs available that can greatly simplify development tasks. You can leverage JavaScript libraries like jQuery, React, or Vue.js to streamline common tasks, handle DOM manipulation, and build complex user interfaces more efficiently.
+
+- Asynchronous Task Processing: JavaScript can offload certain tasks from the server to the client-side, reducing the server load and improving scalability. For example, you can perform client-side calculations, data processing, or rendering that don't require server interaction.
+
+Remember that PHP primarily handles server-side tasks, such as database interactions and server logic, while JavaScript focuses on client-side interactions and user interface enhancements. By combining the strengths of both languages, you can build a more powerful and interactive web application."
