@@ -1,0 +1,12 @@
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('1', '1');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('2', '2');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('3', '3');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('6', '4');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('7', '5');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('11', '6');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('12', '7');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('13', '8');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('16', '9');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('17', '10');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('21', '11');
+INSERT INTO projekt_posebni_useri (id_hotela, id_posebnog) VALUES ('22', '12');
