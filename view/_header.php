@@ -1,23 +1,24 @@
-<?php
-// template od dz2
- ?>
-
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Quack</title>
-  </head>
-  <body>
-    <ul>
-      <li> <a = href = "index.php?rt=quacks/index"> Moji quackovi </a></li>
-      <li> <a = href = "index.php?rt=quacks/PratimQuacks"> Quackovi koje pratim </a></li>
-      <li> <a = href = "index.php?rt=users/Followers"> Moji pratitelji </a></li>
-      <li> <a = href = "index.php?rt=quacks/SpomenutiQuacks"> Quackovi koji me spominju </a></li>
-      <li> <a = href = "index.php?rt=quacks/search"> Traži # </a></li>
-    </ul>
-    <h1>
-    <?php
-    echo $title;
-    ?>
-    </h1>
+<html>
+<head>
+	<meta charset="utf8">
+	<title>Quack</title>
+	<link rel="stylesheet" href="<?php echo __SITE_URL;?>/css/style.css">
+</head>
+<body>
+	<h1 class="header">IDC Booking</h1>
+	<br>
+	<br>
+	<br>
+	<nav>
+		<ul id="navigationBarList">
+			<li><a href="<?php echo __SITE_URL; ?>/index.php?rt=/hotelsGeneral">Available hotels</a></li>
+			<li id="logout"><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels">Logout</a></li>
+			<li><?php
+				echo "@" . htmlentities($username, ENT_QUOTES);
+				echo "\n";
+				?></li>
+		</ul>
+	</nav>
+
+	<h3 class="header"><?php echo $title; ?></h3>

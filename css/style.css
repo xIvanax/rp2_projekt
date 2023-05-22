@@ -1,0 +1,85 @@
+/* Global Styles */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f8fa;
+  color: #1c2938;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styles */
+
+.header {
+  background-color: #1da1f2;
+  padding: 10px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 24px;
+  margin: 0;
+  margin-left: 10px;
+}
+
+/* Navigation Styles */
+
+nav {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e6ecf0;
+  padding: 10px;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+nav a {
+  color: #1da1f2;
+  text-decoration: none;
+}
+
+#logout a {
+  color: salmon;
+}
+/* Content Styles */
+
+table {
+  width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.listing {
+  border-bottom: 1px solid #e6ecf0;
+  padding: 10px 0;
+}
+
+.hotel {
+  font-weight: bold;
+}
+
+.content {
+  colspan: 2;
+  margin-top: 5px;
+}
+
+a {
+  color: #657786;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #1da1f2;
+}
