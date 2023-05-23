@@ -20,7 +20,7 @@
 		<input type="text" name="distance">
 		<br>
 		On a scale from 1 to 10, what range of ratings of the hotel are you ok with?
-		<input type="text" name="rating">
+		
 		<input type="text" name="lowRating">
 		-
 		<input type="text" name="upRating">
