@@ -28,6 +28,9 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 
 ## Updates
 - baza podataka je skroz gotova (osmisljeni podaci i napravljen sql u phpmyadmin) i moze se koristiti _~Ivana_
+- omoguceno uloggiravanje i registracija i prikaz pocetne stranice _~Ivana_
+- implementirano i filtriranje hotela prema zahtjevima korisnika, ali nije provjerena funkcionalnost _~Ivana_
+- obrisala sam ono sta je kiki stavio jer nije radilo (23.5.) _~Ivana_
 
 ## Korisno
 - pitala sam ChatGPT gdje bi i zašto u našoj aplikaciji za hotele trebalo koristiti JavaScript umjesto PHP-a i zašto pa mi je ovo rekao (neke od tih stvari ćemo tek raditi na predavanjima): ~Ivana
