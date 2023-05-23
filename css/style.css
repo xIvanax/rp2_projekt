@@ -2,16 +2,14 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f8fa;
-  color: #1c2938;
-  margin: 0;
-  padding: 0;
+  background-color: #f7f7f7;
+  color: #333;
 }
 
 /* Header Styles */
 
 .header {
-  background-color: #1da1f2;
+  background-color: #1d05b5;
   padding: 10px;
   color: #ffffff;
   display: flex;
@@ -20,8 +18,8 @@ body {
 
 .header h1 {
   font-size: 24px;
-  margin: 0;
-  margin-left: 10px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 /* Navigation Styles */
@@ -82,4 +80,39 @@ a {
 
 a:hover {
   color: #1da1f2;
+}
+
+/*Form styles*/
+
+form {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #0069d9;
 }
