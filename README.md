@@ -15,12 +15,12 @@ Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcij
 ## Baza podataka _~Ivana_
 Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.
 Imamo odvojene tablice za:
-  - __hotele__ (ime, grad, ~~broj slobodnih soba, ukupan broj soba,~~ udaljenost od centra i id)
-  - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, ~~id gosta~~, username gosta, komentar gosta, ocjena)
+  - __hotele__ (ime, grad, udaljenost od centra i id)
+  - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, username gosta, komentar gosta, ocjena)
   - __posebne user-e__ tj. one koji mogu mijenjati cijene soba i sl. (id, id hotela nad kojim ima ovlasti)
-  - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe te ~~datum zauzeća i oslobođenja koji se gledaju samo ako je soba zauzeta što se može provjeriti preko atributa "slobodna" koji je 1 ako je slobodna, a 0 ako nije~~)
-  - __sobe_datumi__ (id_sobe, datum zauzeca, datum oslobodenja; nema primary key jer jedna soba moze biti zauzeta u vise perioda) - nema primary key iz slicnog razloga kao obični useri (pogledaj dolje)
- -  __obične user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, username, ~~ime, prezime~~) -> mislim da ovdje ipak ne trebaju datumi i da ih je dovoljno pohraniti u sobe_datumi, al nisam sigurna (ovdje nisam stavila da je id user-a primary key ako zelimo omoguciti da jedan user moze rezervirati vise razlicith datuma - ovo ce otezati dodejljivanje novog id-a za novog user-a tj. trebat ce se koristiti Set kao struktura podataka pri odredivanju novog nepostojeceg id-a; također, datum moze biti i null jer user ne mora nista imati rezervirano
+  - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe)
+  - __sobe_datumi__ (id_sobe, datum zauzeca, datum oslobodenja; nema primary key jer jedna soba moze biti zauzeta u vise perioda)
+ -  __user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, username, email, je li se registrirao do kraja, hashirani password, registracijski kod, id_hotela koji je -1 ako je obični user, odnosno id hotela za koje ima privilegije ako je privilegiran - sada je možda i beskorisna tablica projekt_posebni_useri) -> mislim da ovdje ipak ne trebaju datumi i da ih je dovoljno pohraniti u sobe_datumi, al nisam sigurna (ovdje nisam stavila da je id user-a primary key ako zelimo omoguciti da jedan user moze rezervirati vise razlicith datuma - ovo ce otezati dodejljivanje novog id-a za novog user-a tj. trebat ce se koristiti Set kao struktura podataka pri odredivanju novog nepostojeceg id-a; također, datum moze biti i null jer user ne mora nista imati rezervirano
 
 __Vjerojatno bi bilo najbolje popuniti ih iz php-a, a ne u phpmyadmin jer ak kasnije skuzimo da nes ne valja s tablicom lakse cemo popravit.__
 
@@ -31,8 +31,10 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - omoguceno uloggiravanje i registracija i prikaz pocetne stranice _~Ivana_
 - implementirano i filtriranje hotela prema zahtjevima korisnika, ali nije provjerena funkcionalnost _~Ivana_
 - obrisala sam ono sta je kiki stavio jer nije radilo (23.5.) _~Ivana_
+- malo se igrala s css-om, dolje cu zalijepiti sta mi je dao chat gpt jer nisam do kraja sve prekopirala u nas css
 
 ## Korisno
+### JavaScript
 - pitala sam ChatGPT gdje bi i zašto u našoj aplikaciji za hotele trebalo koristiti JavaScript umjesto PHP-a i zašto pa mi je ovo rekao (neke od tih stvari ćemo tek raditi na predavanjima): ~Ivana
 "Yes, there can be several benefits to using JavaScript in your web application alongside PHP, HTML, and a database. Here are a few reasons why you might consider incorporating JavaScript into your application:
 
@@ -49,3 +51,87 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - Asynchronous Task Processing: JavaScript can offload certain tasks from the server to the client-side, reducing the server load and improving scalability. For example, you can perform client-side calculations, data processing, or rendering that don't require server interaction.
 
 Remember that PHP primarily handles server-side tasks, such as database interactions and server logic, while JavaScript focuses on client-side interactions and user interface enhancements. By combining the strengths of both languages, you can build a more powerful and interactive web application."
+
+###CSS
+/* Body styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+/* Container styles */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Heading styles */
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Form styles */
+.form {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.form label {
+  font-weight: bold;
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background-color: #0069d9;
+}
+
+/* Results styles */
+.results {
+  margin-top: 20px;
+}
+
+.results h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.results p {
+  margin-bottom: 10px;
+}
+
+/* Footer styles */
+.footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+}
