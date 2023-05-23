@@ -52,7 +52,7 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 
 Remember that PHP primarily handles server-side tasks, such as database interactions and server logic, while JavaScript focuses on client-side interactions and user interface enhancements. By combining the strengths of both languages, you can build a more powerful and interactive web application."
 
-###CSS
+### CSS
 /* Body styles */
 body {
   font-family: Arial, sans-serif;
