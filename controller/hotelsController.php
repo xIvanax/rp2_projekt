@@ -24,7 +24,7 @@ class HotelsController extends BaseController
 
       $this->registry->template->show('login_index');
   	}
-    else if(isset($_POST['registerButton'])) //pokušava se registrirati
+    else if(isset($_POST['registerButton']))
     {
       if(!isset($_POST["email"]))
       {
@@ -36,13 +36,13 @@ class HotelsController extends BaseController
       {
         $user = $qs->getIdAndPasswordFromUsername($_POST["username"]);
         $username = $_POST["username"];
-        if($user !== null)//pronašla usera u bazi
+        if($user !== null)
         {
           $this->registry->template->msg = 'A user with that username already exists.';
 
           $this->registry->template->show('login_index');
         }
-        else//ako je user null sigurno ga moram registrirat
+        else
         {
           if(!filter_var( $_POST['email'], FILTER_VALIDATE_EMAIL))
           {
@@ -52,7 +52,6 @@ class HotelsController extends BaseController
           }
           else
           {
-            //moram generirati registration_sequence
             $stringSpace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $pieces = [];
             $length = rand(1, 20);
@@ -62,7 +61,7 @@ class HotelsController extends BaseController
             $randomString = implode('', $pieces);
 
             $qs->insertUnregisteredUser($_POST['email'], $_POST['password'], $randomString, $_POST['username']);
-            //sad šaljem mail
+
             $to       = $_POST['email'];
         		$subject  = 'Registration mail for IDC Booking';
         		$message  = "To finish your registration process click on the following link: ";
@@ -103,9 +102,8 @@ class HotelsController extends BaseController
         }
         else if(password_verify($_POST['password'], $hash))
         {
-          // Stavi ga u $_SESSION tako da uvijek prikazujemo njegove podatke
           $_SESSION[ 'username' ] = $username;
-          $_SESSION[ 'id' ] = $user['id'];
+          $_SESSION[ 'id' ] = $user['id_usera'];
 
           $this->registry->template->title = 'Available Hotels';
           $this->registry->template->username = $_SESSION['username'];
@@ -125,7 +123,6 @@ class HotelsController extends BaseController
 		}
 		else
 		{
-			// Nema druge opcije -- nešto ne valja. Preusmjeri na login stranicu.
       $this->registry->template->title = 'Incorrect password or username!';
 			header( 'Location: ' . __SITE_URL . '/index.php?rt=hotels/login' );
 			exit;
@@ -136,38 +133,18 @@ class HotelsController extends BaseController
 	{
     $qs = new HotelService();
 
-		if( !isset( $_GET['niz'] ) || !preg_match( '/^[a-zA-Z0-9]{1,20}$/', $_GET['niz'] ) ){
+		if(!isset($_GET['niz']) || !preg_match('/^[a-zA-Z0-9]{1,20}$/', $_GET['niz'])){
       if(!isset($_GET['niz']))
         exit("ne vidim niz");
       else
-        exit( 'Nešto ne valja s nizom.' );
+        exit('Nešto ne valja s nizom.');
     }
-		$db = DB::getConnection();
 
-		try
-		{
-			$st = $db->prepare( 'SELECT * FROM projekt_useri WHERE registration_sequence=:registration_sequence' );
-			$st->execute( array( 'registration_sequence' => $_GET['niz'] ) );
-		}
-		catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
-
-		$row = $st->fetch();
-
-		if( $st->rowCount() !== 1 )
-			exit( 'Taj registracijski niz ima ' . $st->rowCount() . 'korisnika, a treba biti točno 1 takav.' );
-		else
-		{
-			try
-			{
-				$st = $db->prepare( 'UPDATE projekt_useri SET has_registered=1 WHERE registration_sequence=:registration_sequence' );
-				$st->execute( array( 'registration_sequence' => $_GET['niz'] ) );
-			}
-			catch( PDOException $e ) { exit( 'Greška u bazi: ' . $e->getMessage() ); }
-		}
+    $qs->register($_GET['niz']);
 
     $this->registry->template->show('login_registrationcomplete');
 	}
-  /*************************************************/
+
 	public function availableHotels()
 	{
 		$qs = new HotelService();
@@ -178,4 +155,57 @@ class HotelsController extends BaseController
 
     $this->registry->template->show('hotels_index');
   }
+
+  public function narrowedSearch()
+  {
+    $this->registry->template->title = 'Search for hotels with your preferences';
+    $this->registry->template->username = $_SESSION['username'];
+
+    $this->registry->template->hotelList = $qs->getAvailableHotels();
+
+		$this->registry->template->show('hotels_index');
+  }
+
+  public function narrowedSearchResults()
+  {
+    $qs = new HotelService();
+
+		if(!isset($_POST['city']))
+		{
+			header('Location: index.php?rt=hotels/narrowedSearch');
+			exit();
+		}
+    $city = $_POST['city'];
+    $lowPrice;
+    if(!isset($_POST['lowPrice']))
+      $lowPrice = 0;
+    else
+      $lowPrice = $_POST['lowPrice'];
+    $lowPrice;
+    if(!isset($_POST['upPrice']))
+      $upPrice = PHP_INT_MAX;
+    else
+      $upPrice = $_POST['upPrice'];
+    $distance;
+    if(!isset($_POST['distance']))
+      $distance = INF;
+    else
+      $distance = $_POST['distance'];
+    $lowRating;
+    if(!isset($_POST['lowRating']))
+      $lowRating = 0;
+    else
+      $lowRating = $_POST['lowRating'];
+    $lowRating;
+    if(!isset($_POST['upRating']))
+      $upRating = 10;
+    else
+      $upRating = $_POST['upRating'];
+    $this->registry->template->title = 'A list of hotels with the selected preferences';
+    $this->registry->template->username = $_SESSION['username'];
+    $this->registry->template->hotelList = $qs->getNarrowedHotels($city, $lowPrice, $upPrice, $distance, $lowRating, $upRating);
+
+		$this->registry->template->show('hotels_narrowed');
+  }
+}
 ?>
