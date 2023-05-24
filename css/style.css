@@ -1,12 +1,30 @@
 /* Global Styles */
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: Helvetica;
   background-color: #f7f7f7;
   color: #333;
 }
 
+/* Updated container styles */
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  overflow: hidden;
+}
+
 /* Header Styles */
+
+.mainHeader {
+  background-color: #1d05b5;
+  font-weight: 1000;
+  cursor: pointer;
+  padding: 10px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
 
 .header {
   background-color: #1d05b5;
@@ -22,37 +40,46 @@ body {
   margin-bottom: 20px;
 }
 
-/* Navigation Styles */
-
-nav {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e6ecf0;
-  padding: 10px;
+/* Navigation styles */
+.navbar {
+  font-size: 20px;
+  background-color: #1d05b5;
+  color: #fff;
+  padding: 10px 20px;
 }
 
-nav ul {
-  list-style-type: none;
+.navbar ul {
+  list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
 }
 
-nav li {
-  display: inline-block;
+.navbar li {
   margin-right: 10px;
 }
 
-nav a {
-  color: #1da1f2;
+.navbar .a {
+  color: #fff;
   text-decoration: none;
+  padding: 5px;
+  cursor: pointer;
 }
 
-#logout a {
+.navbar a:hover {
+  background-color: #fff;
+  color: #333;
+  border-radius: 4px;
+}
+
+.navbar #logout a {
   color: salmon;
+  cursor: pointer;
 }
 /* Content Styles */
 
 table {
-  width: 800px;
+  width: 100%;
   margin: 20px auto;
   padding: 20px;
   background-color: #ffffff;
@@ -84,28 +111,28 @@ a:hover {
 
 /*Form styles*/
 
-form {
+.form {
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 20px;
 }
 
-form label {
+.form label {
   font-weight: bold;
 }
 
-form input[type="text"],
-form input[type="email"],
-form select {
-  width: 100%;
+.form input[type="text"],
+.form input[type="email"],
+.form select {
+  width: 94%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-form button {
-  background-color: #007bff;
+.form button {
+  background-color: #1d05b5;
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -113,6 +140,70 @@ form button {
   cursor: pointer;
 }
 
-form button:hover {
+.form button:hover {
   background-color: #0069d9;
+}
+.form #range {
+  width: 45%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+/* Form container */
+.login-form {
+  width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Form inputs */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Form submit button */
+.login-form input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+.login-form button[type="submit"] {
+  background-color: #1d05b5;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Form labels */
+.login-form label {
+  font-weight: bold;
+  font-size: px;
+}
+
+/* Error message */
+.login-form .error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
 }

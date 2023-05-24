@@ -6,6 +6,6 @@
 	<link rel="stylesheet" href="<?php echo __SITE_URL;?>/css/style.css">
 </head>
 <body>
-	<h1>Log into IDC Booking!</h1>
+	<h1 class="header">Log into IDC Booking!</h1>
 
 	<h2><?php echo $msg; ?></h2>
