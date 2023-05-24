@@ -3,7 +3,7 @@
 // Klasa koja predstavlja predložak za view.
 // Prikaz view-a će se napraviti tako da se objektu tipa Template pozove funkcija članica show.
 // Njoj se kao parametar proslijedi ime view-a kojeg želimo prikazati.
-class Template 
+class Template
 {
 	// Zajednički registry koji se dijeli sa routerom i controllerom.
 	private $registry;
@@ -11,7 +11,7 @@ class Template
 	// Asocijativno polje u koje spremamo varijable koje će biti direktno dostupne u view-u.
 	private $vars = array();
 
-	function __construct( $registry ) 
+	function __construct( $registry )
 	{
 		$this->registry = $registry;
 	}
@@ -25,10 +25,11 @@ class Template
 
 
 	// Funkcija koja efektivno prikazuje view imena $name
-	function show( $name ) 
+	function show( $name )
 	{
 		$path = __SITE_PATH . '/view' . '/' . $name . '.php';
-
+		echo "name = ";
+		echo $name;
 		if( file_exists($path) === false )
 		{
 			throw new Exception( 'Template not found in ' . $path );
@@ -45,7 +46,7 @@ class Template
 
 		// Ovdje ne koristimo require_once, zato da bi controller i više puta mogao prikazati jedan te isti view.
 		// (Na primjer, za svakog usera pozove jedan (uvijek isti) view koji prikaže podatke o tom useru.)
-		require ($path); 
+		require ($path);
 	}
 }
 

@@ -52,7 +52,7 @@ class HotelsController extends BaseController
 
       $this->registry->template->show('login_index');
   	}
-    else if(isset($_POST['registerButton']))
+    else if(isset($_POST['registerButton']))//provjeravam jesu li ispunjeni uvjeti za registraciju
     {
       if(!isset($_POST["email"]))
       {
@@ -79,7 +79,7 @@ class HotelsController extends BaseController
             $this->registry->template->show('login_index');
           }
           else
-          {
+          {//sad je sve u redu pa šaljem mail user-u
             $stringSpace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $pieces = [];
             $length = rand(1, 20);
@@ -107,19 +107,18 @@ class HotelsController extends BaseController
           }
         }
       }
-    }
-		else if( isset( $_POST["username"] ) && isset($_POST['loginButton']))
+    } else if( isset( $_POST["username"] ) && isset($_POST['loginButton']))//provjeravam jesu li ispunjeni uvjeti za login
 		{
 			$username = $_POST["username"];
       $user = $qs->getIdAndPasswordFromUsername($username);
 
-      if($user === null)
+      if($user === null)//slucaj ako ne valja ili nije unesen username
       {
         $this->registry->template->msg = 'There is no user with that username. Have you registered yet?';
 
         $this->registry->template->show('login_index');
       }
-      else
+      else//slucaj ako korisnik jos nije zavrsio registraciju
       {
         $hash = $user['password_hash'];
         if($user['has_registered'] !== "1")
@@ -136,16 +135,17 @@ class HotelsController extends BaseController
 
           $this->registry->template->title = 'Available Hotels';
           $this->registry->template->username = $_SESSION['username'];
+          $this->registry->template->id_hotela = $_SESSION['id_hotela'];
 
           $qs2 = new HotelService();
       		$this->registry->template->hotelList = $qs2->getAvailableHotels();
           if($_POST["id_hotela"] === "-1"){
       		  $this->registry->template->show('hotels_index');
           }
-          else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"]){
-            $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
-            require_once __DIR__ . '/../view/premium_hotels_index.php';
-            //$this->registry->template->show('premium_hotels_index');
+          else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"]){//upute za glupog kikija tu gledaj inace
+            $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+            $this->registry->template->title = "Rooms you are offering";
+            $this->registry->template->show('premium_hotels_index');
           }
         }
         else
