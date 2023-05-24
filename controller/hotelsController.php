@@ -7,7 +7,32 @@ class HotelsController extends BaseController
     $this->registry->template->msg = '';
     $this->registry->template->show('login_index');
   }
-
+  public function premiumindex()
+  {
+    $qs = new HotelService();
+    $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+    require_once __DIR__ . '/../view/premium_hotels_index.php';
+  }
+  public function addeditroom(){
+    $qs = new HotelService();
+    $temp_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+    $is = 0;
+    foreach ($temp_list as $temp) {
+      if ($temp[0] === $_POST["id_sobe"]){
+        $is = 1;
+        $qs->addeditroom_service($_POST["id_sobe"], $_POST["tip"], $_POST["cijena"]);
+        $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+        require_once __DIR__ . '/../view/premium_hotels_index.php';
+      }
+    }
+    if($is === 0){
+      $max = $qs->getHighestRoomId();
+      $max++;
+      $qs->addeditroom_service($max, $_POST["tip"], $_POST["cijena"]);
+      $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+      require_once __DIR__ . '/../view/premium_hotels_index.php';
+    }
+  }
   public function loginResults()
   {
     $qs = new HotelService();
@@ -60,7 +85,7 @@ class HotelsController extends BaseController
                 $pieces[] = $stringSpace[random_int(0, $max)];
             $randomString = implode('', $pieces);
 
-            $qs->insertUnregisteredUser($_POST['email'], $_POST['password'], $randomString, $_POST['username']);
+            $qs->insertUnregisteredUser($_POST['email'], $_POST['password'], $randomString, $_POST['username'], $_POST["id_hotela"]);
 
             $to       = $_POST['email'];
         		$subject  = 'Registration mail for IDC Booking';
@@ -104,14 +129,19 @@ class HotelsController extends BaseController
         {
           $_SESSION[ 'username' ] = $username;
           $_SESSION[ 'id' ] = $user['id_usera'];
+          $_SESSION["id_hotela"] = $_POST["id_hotela"];
 
           $this->registry->template->title = 'Available Hotels';
           $this->registry->template->username = $_SESSION['username'];
 
           $qs2 = new HotelService();
       		$this->registry->template->hotelList = $qs2->getAvailableHotels();
-
-      		$this->registry->template->show('hotels_index');
+          if($_POST["id_hotela"] == -1)
+      		  $this->registry->template->show('hotels_index');
+          else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"])
+            $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+            require_once __DIR__ . '/../view/premium_hotels_index.php';
+            //$this->registry->template->show('premium_hotels_index');
         }
         else
         {

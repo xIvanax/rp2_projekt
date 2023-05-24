@@ -13,11 +13,7 @@
 	<nav>
 		<ul id="navigationBarList">
 			<li><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels/availableHotels">Available hotels</a></li>
-			<?php
-			if ($_SESSION["id_hotela"] !== -1){
-				echo '<li><a href="' . __SITE_URL . '/index.php?rt=hotels/premiumindex">Your offers </a></li>';
-			}
-			 ?>
+			<li><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels/premiumindex">Your offers</a></li>
 			<li id="logout"><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels">Logout</a></li>
 			<li><?php
 				echo "@" . htmlentities($_SESSION["username"], ENT_QUOTES);
@@ -26,4 +22,4 @@
 		</ul>
 	</nav>
 
-	<h3 class="header"><?php echo $title; ?></h3>
+	<h3 class="header"><?php echo "Rooms you are offering"; ?></h3>
