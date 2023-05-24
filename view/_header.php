@@ -1,3 +1,12 @@
+<?php /*function debug()
+    {
+        echo '<pre>';
+
+        echo '$_POST = '; print_r( $_POST );
+        echo '$_SESSION = '; print_r( $_SESSION );
+
+        echo '</pre>';
+    } */?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +21,8 @@
 		<ul>
 			<li><a class="a" href="<?php echo __SITE_URL; ?>/index.php?rt=hotels/availableHotels"><i class="fas fa-house"></i> Available hotels</a></li>
 				<?php
-				if ($_SESSION["id_hotela"] !== -1){
+				//debug();
+				if ($_SESSION["id_hotela"] !== "-1"){
 					echo '<li><a href="' . __SITE_URL . '/index.php?rt=hotels/premiumindex">Your offers </a></li>';
 				}
 				 ?>

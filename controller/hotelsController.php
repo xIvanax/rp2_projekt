@@ -7,12 +7,14 @@ class HotelsController extends BaseController
     $this->registry->template->msg = '';
     $this->registry->template->show('login_index');
   }
+
   public function premiumindex()
   {
     $qs = new HotelService();
     $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
     require_once __DIR__ . '/../view/premium_hotels_index.php';
   }
+
   public function addeditroom(){
     $qs = new HotelService();
     $temp_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
@@ -33,6 +35,7 @@ class HotelsController extends BaseController
       require_once __DIR__ . '/../view/premium_hotels_index.php';
     }
   }
+
   public function loginResults()
   {
     $qs = new HotelService();
@@ -136,12 +139,14 @@ class HotelsController extends BaseController
 
           $qs2 = new HotelService();
       		$this->registry->template->hotelList = $qs2->getAvailableHotels();
-          if($_POST["id_hotela"] == -1)
+          if($_POST["id_hotela"] === "-1"){
       		  $this->registry->template->show('hotels_index');
-          else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"])
+          }
+          else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"]){
             $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
             require_once __DIR__ . '/../view/premium_hotels_index.php';
             //$this->registry->template->show('premium_hotels_index');
+          }
         }
         else
         {
