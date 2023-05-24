@@ -16,7 +16,12 @@
 			<br>
 			<input type="text" name="email" value="">
 			<br>
+			If you are a seller, type in the hotel code provided by your employer.
+			<input type="text" name="id_hotela" value="-1">
+			<br>
 			<button type="submit" name="registerButton">Register</button>
+			<br>
+
 		</form>
 
 <?php require_once __SITE_PATH . '/view/_footer.php'; ?>

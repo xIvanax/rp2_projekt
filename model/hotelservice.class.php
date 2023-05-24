@@ -6,6 +6,37 @@ require_once __DIR__ . '/hotel.class.php';
 
 class HotelService
 {
+	function addeditroom_service($id, $tip, $cijena){
+		$db = DB::getConnection();
+		$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
+		$st->execute(array( 'id' => $id ));
+		echo $id;
+		echo $tip;
+		echo $cijena;
+		$st2 = $db->prepare( 'INSERT INTO projekt_sobe(id_sobe, id_hotela, tip, cijena) VALUES ' .
+			'(:id_sobe, :id_hotela, :tip, :cijena)' );
+		$st2->execute(array( 'id_sobe' => $id,
+												 'id_hotela' => $_SESSION["id_hotela"],
+											 	 'tip' => $tip,
+											 	 'cijena' => $cijena));
+	}
+
+	function getHotelIdFromUsername($username)
+{
+	try
+	{
+		$db = DB::getConnection();
+		$st = $db->prepare( 'SELECT id_hotela FROM projekt_users WHERE username=:username' );
+		$st->execute(array( 'username' => $username ));
+	}
+	catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+	$row = $st->fetch();
+	if( $row === false )
+		return null;
+	else
+		return $row["id_hotela"];
+}
 	function getIdAndPasswordFromUsername($username)
 	{
 		try
@@ -22,14 +53,43 @@ class HotelService
 		else
 			return $row;
 	}
+	function getHighestRoomId(){
+		$db = DB::getConnection();
+		$st = $db->prepare( 'SELECT id_sobe FROM projekt_sobe');
+		$st->execute();
 
-	function insertUnregisteredUser($email, $password, $registration_sequence, $username)
+		$max = 0;
+		while($row = $st->fetch()){
+			if($row["id_sobe"] > $max){
+				$max = $row["id_sobe"];
+			}
+		}
+		return $max;
+	}
+	function getRoomsFromIdHotela($id_hotela)
 	{
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'INSERT INTO projekt_users(email, has_registered, id_usera, password_hash, registration_sequence, username, datum_dolaska, datum_odlaska) VALUES ' .
-				                '(:email, 0, :id_usera, :password_hash, :registration_sequence, :username, NULL, NULL)' );
+			$st = $db->prepare( 'SELECT id_sobe, tip, cijena FROM projekt_sobe WHERE id_hotela=:id_hotela');
+			$st->execute(array( 'id_hotela' => $id_hotela ));
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		$sobe_list = array();
+		while($row = $st->fetch()){
+			$sobe_list[] = array($row["id_sobe"], $row["tip"], $row["cijena"]);
+		}
+		return $sobe_list;
+	}
+
+	function insertUnregisteredUser($email, $password, $registration_sequence, $username, $id_hotela)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'INSERT INTO projekt_users(email, has_registered, id_usera,
+				 				password_hash, registration_sequence, username, datum_dolaska, datum_odlaska, id_hotela) VALUES ' .
+				                '(:email, 0, :id_usera, :password_hash, :registration_sequence, :username, NULL, NULL, :id_hotela)' );
 			$st2 = $db->prepare( 'SELECT id_usera FROM projekt_users' );
 			$st2->execute();
 
@@ -50,7 +110,8 @@ class HotelService
 			$st->execute( array( 'email' => $email, 'id_usera' => $i,
 				                 'password_hash' => password_hash( $password, PASSWORD_DEFAULT ),
 				                 'registration_sequence' => $registration_sequence,
-				                 'username'  => $username ) );
+				                 'username'  => $username,
+											   'id_hotela' => $id_hotela) );
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
