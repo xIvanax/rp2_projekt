@@ -1,4 +1,7 @@
+
+Sort by: City, Name, Distance from the city centre, Price
 <?php
+
 			foreach($hotelList as $hotel)
 			{
 				echo '<table class="listing">' .

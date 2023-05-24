@@ -8,6 +8,20 @@ class HotelsController extends BaseController
     $this->registry->template->show('login_index');
   }
 
+  public function removeroom()
+  {
+    $qs = new HotelService();
+    $popis_soba = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+    foreach ($popis_soba as $soba) {
+      if(isset($_POST[$soba[0]])){
+        $qs->removeroom_service($soba[0]);
+        break;
+      }
+    }
+    $this->premiumindex();
+  }
+
+
   public function premiumindex()
   {
     $qs = new HotelService();

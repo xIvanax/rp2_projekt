@@ -21,7 +21,7 @@
     echo "<td>";
 
     echo '<form class="" action="index.php?rt=hotels/removeroom" method="post">';
-    echo '<input type="button" name="gumb" value="placeholder">';
+    echo '<input type="submit" name="' . $soba[0] . '" value="X">';
     echo '</form>';
 
     echo "</td>";
