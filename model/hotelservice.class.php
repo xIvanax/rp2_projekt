@@ -201,7 +201,7 @@ class HotelService
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( "SELECT id_hotela, ime, udaljenost_od_centra FROM projekt_hoteli WHERE grad LIKE '" . $grad . "' AND udaljenost_od_centra BETWEEN 0 AND " . $distance);
+			$st = $db->prepare( "SELECT id_hotela, ime, udaljenost_od_centra FROM projekt_hoteli WHERE grad = '" . $city . "' AND udaljenost_od_centra < " . (double)$distance);
 			$st->execute();
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
@@ -210,6 +210,9 @@ class HotelService
 		$filteredHotels = array();
 		while( $row = $st->fetch() )
 		{
+			echo "hotel = ";
+			echo $row['ime'];
+			echo "<br>";
 			//moram izračunati prosječni rating svakog od tih hotela
 			try
 			{
@@ -226,8 +229,11 @@ class HotelService
 				$num += 1;
 			}
 			$rating = $ocjene / $num;
-			if($lowRating < $rating && $rating > $upRating)
-				$arr[] = array(new Hotel( $row['grad'], $row['id_hotela'], $row['ime'], $row['udaljenost_od_centra'] ), round($rating, 2));
+			echo "rating = ";
+			echo $rating;
+			echo "<br>";
+			if($lowRating < $rating && $rating < $upRating)
+				$arr[] = array(new Hotel( $city, $row['id_hotela'], $row['ime'], $row['udaljenost_od_centra'] ), round($rating, 2));
 		}
 		//sad u arr imam niz koji na prvom mjestu ima hotel, a na drugom ocjenu i to filtrirano po gradu, udaljenosti i ratingu
 		//preostaje filtrirati po cijenama - moram za svaki hotel provjeriti ima li sobu koja je u navedenom price rangeu
@@ -246,9 +252,14 @@ class HotelService
 				if($row['cijena'] < $upPrice && $row['cijena'] > $lowPrice)
 				{
 					$filteredHotels[] = $hotelAndRating;
+					break;
 				}
 			}
 		}
+		foreach($filteredHotels as $hotelAndRating)
+		{ echo "alive = ";
+		echo $hotelAndRating[0]->ime;
+		echo "<br>";}
 		return $filteredHotels;
 	}
 }
