@@ -20,6 +20,11 @@ class HotelService
 											 	 'tip' => $tip,
 											 	 'cijena' => $cijena));
 	}
+	function removeroom_service($id){
+		$db = DB::getConnection();
+		$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
+		$st->execute(array( 'id' => $id ));
+	}
 
 	function getHotelIdFromUsername($username)
 {
