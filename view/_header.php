@@ -4,26 +4,22 @@
 	<meta charset="utf8">
 	<title>IDC Booking</title>
 	<link rel="stylesheet" href="<?php echo __SITE_URL;?>/css/style.css">
+	<script src="https://kit.fontawesome.com/512d1b1458.js" crossorigin="anonymous"></script>
 </head>
 <body>
-	<h1 class="header">IDC Booking</h1>
-	<br>
-	<br>
-	<br>
-	<nav>
-		<ul id="navigationBarList">
-			<li><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels/availableHotels">Available hotels</a></li>
-			<?php
-			if ($_SESSION["id_hotela"] !== -1){
-				echo '<li><a href="' . __SITE_URL . '/index.php?rt=hotels/premiumindex">Your offers </a></li>';
-			}
-			 ?>
+	<div class="navbar">
+		<h1 class="mainHeader">IDC Booking</h1>
+		<ul>
+			<li><a class="a" href="<?php echo __SITE_URL; ?>/index.php?rt=hotels/availableHotels"><i class="fas fa-house"></i> Available hotels</a></li>
+				<?php
+				if ($_SESSION["id_hotela"] !== -1){
+					echo '<li><a href="' . __SITE_URL . '/index.php?rt=hotels/premiumindex">Your offers </a></li>';
+				}
+				 ?>
 			<li id="logout"><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels">Logout</a></li>
-			<li><?php
-				echo "@" . htmlentities($_SESSION["username"], ENT_QUOTES);
-				echo "\n";
-				?></li>
+			<li><i class="fas fa-user"> </i><?php
+					echo " " . htmlentities($_SESSION["username"], ENT_QUOTES);?></li>
 		</ul>
-	</nav>
-
-	<h3 class="header"><?php echo $title; ?></h3>
+	</div>
+	<div class="container">
+		<h3 class="header"><?php echo $title; ?></h3>
