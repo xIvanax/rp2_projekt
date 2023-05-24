@@ -198,6 +198,8 @@ class HotelsController extends BaseController
 
   public function narrowedSearch()
   {
+    $qs = new HotelService();
+
     $this->registry->template->title = 'Search for hotels with your preferences';
     $this->registry->template->username = $_SESSION['username'];
 
@@ -210,37 +212,57 @@ class HotelsController extends BaseController
   {
     $qs = new HotelService();
 
-		if(!isset($_POST['city']))
+		if(empty($_POST['city']))
 		{
 			header('Location: index.php?rt=hotels/narrowedSearch');
 			exit();
 		}
     $city = $_POST['city'];
+
+    echo "city = ";
+    echo $city;
+    echo "<br>";
     $lowPrice;
-    if(!isset($_POST['lowPrice']))
+    if(strlen($_POST['lowPrice']) === 0)
       $lowPrice = 0;
     else
       $lowPrice = $_POST['lowPrice'];
-    $lowPrice;
-    if(!isset($_POST['upPrice']))
+    echo "lowprice = ";
+    echo $lowPrice;
+    echo "<br>";
+    $upPrice;
+    if(strlen($_POST['upPrice']) === 0)
       $upPrice = PHP_INT_MAX;
     else
       $upPrice = $_POST['upPrice'];
+      echo "upprice = ";
+      echo $upPrice;
+      echo "<br>";
     $distance;
-    if(!isset($_POST['distance']))
-      $distance = INF;
-    else
-      $distance = $_POST['distance'];
+    if(strlen($_POST['distance']) === 0)
+      $distance = PHP_FLOAT_MAX;
+    else{
+      $distance = (double)$_POST['distance'];
+    }
+    echo "distance = ";
+    echo $distance;
+    echo "<br>";
     $lowRating;
-    if(!isset($_POST['lowRating']))
+    if(strlen($_POST['lowRating']) === 0)
       $lowRating = 0;
     else
       $lowRating = $_POST['lowRating'];
+      echo "lowrating = ";
+      echo $lowRating;
+      echo "<br>";
     $lowRating;
-    if(!isset($_POST['upRating']))
+    if(strlen($_POST['upRating']) === 0)
       $upRating = 10;
     else
       $upRating = $_POST['upRating'];
+      echo "uprating = ";
+      echo $upRating;
+      echo "<br>";
     $this->registry->template->title = 'A list of hotels with the selected preferences';
     $this->registry->template->username = $_SESSION['username'];
     $this->registry->template->hotelList = $qs->getNarrowedHotels($city, $lowPrice, $upPrice, $distance, $lowRating, $upRating);

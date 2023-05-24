@@ -2,13 +2,13 @@
 <?php require_once __SITE_PATH . '/view/output.php'; ?>
 	<br>
 	<h3 class="header">Narrow your search:</h3>
-	<form class="form" action="<?php echo __SITE_URL; ?>/index.php?rt=hotels/narrowedSearch" method="post">
+	<form class="form" action="<?php echo __SITE_URL; ?>/index.php?rt=hotels/narrowedSearchResults" method="post">
 		<label for="">Select the city you want to stay in:</label>
 		<select name="city">
 			<option value="Zagreb">Zagreb</option>
-			<option value="Zagreb">Split</option>
-			<option value="Zagreb">Rijeka</option>
-			<option value="Zagreb">Osijek</option>
+			<option value="Split">Split</option>
+			<option value="Rijeka">Rijeka</option>
+			<option value="Osijek">Osijek</option>
 		</select>
 
 		<br>
