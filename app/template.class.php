@@ -28,8 +28,7 @@ class Template
 	function show( $name )
 	{
 		$path = __SITE_PATH . '/view' . '/' . $name . '.php';
-		echo "name = ";
-		echo $name;
+
 		if( file_exists($path) === false )
 		{
 			throw new Exception( 'Template not found in ' . $path );

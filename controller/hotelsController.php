@@ -11,8 +11,9 @@ class HotelsController extends BaseController
   public function premiumindex()
   {
     $qs = new HotelService();
-    $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
-    require_once __DIR__ . '/../view/premium_hotels_index.php';
+    $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+    $this->registry->template->title = 'Rooms you are offering';
+    $this->registry->template->show('premium_hotels_index');
   }
 
   public function addeditroom(){
@@ -23,16 +24,20 @@ class HotelsController extends BaseController
       if ($temp[0] === $_POST["id_sobe"]){
         $is = 1;
         $qs->addeditroom_service($_POST["id_sobe"], $_POST["tip"], $_POST["cijena"]);
-        $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
-        require_once __DIR__ . '/../view/premium_hotels_index.php';
+        $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+        $this->registry->template->title = 'Rooms you are offering';
+        $this->registry->template->show('premium_hotels_index');
       }
     }
+    $this->registry->template->is = $is;
     if($is === 0){
       $max = $qs->getHighestRoomId();
       $max++;
+      $this->registry->template->max = $max;
       $qs->addeditroom_service($max, $_POST["tip"], $_POST["cijena"]);
-      $sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
-      require_once __DIR__ . '/../view/premium_hotels_index.php';
+      $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+      $this->registry->template->title = 'Rooms you are offering';
+      $this->registry->template->show('premium_hotels_index');
     }
   }
 
@@ -144,7 +149,7 @@ class HotelsController extends BaseController
           }
           else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"]){//upute za glupog kikija tu gledaj inace
             $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
-            $this->registry->template->title = "Rooms you are offering";
+            $this->registry->template->title = 'Rooms you are offering';
             $this->registry->template->show('premium_hotels_index');
           }
         }
