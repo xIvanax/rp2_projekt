@@ -31,7 +31,8 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - omoguceno uloggiravanje i registracija i prikaz pocetne stranice _~Ivana_
 - implementirano i filtriranje hotela prema zahtjevima korisnika, ali nije provjerena funkcionalnost _~Ivana_
 - obrisala sam ono sta je kiki stavio jer nije radilo (23.5.) _~Ivana_
-- malo se igrala s css-om, dolje cu zalijepiti sta mi je dao chat gpt jer nisam do kraja sve prekopirala u nas css
+- malo se igrala s css-om, dolje cu zalijepiti sta mi je dao chat gpt jer nisam do kraja sve prekopirala u nas css _~Ivana_
+- napravljen interface za premium usere gdje vide sobe koje nude i mogu ih editirati ili dodavati nove _~Kikac_
 
 ## Korisno
 ### JavaScript
