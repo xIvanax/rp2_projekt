@@ -210,7 +210,7 @@ class HotelsController extends BaseController
     $this->registry->template->show('hotels_index');
   }
 
-  public function narrowedSearch()
+  public function narrowedSearch()//prikazuje početnu stranicu s opcijama za sužavanje izbora hotela
   {
     $qs = new HotelService();
 
@@ -222,7 +222,7 @@ class HotelsController extends BaseController
 		$this->registry->template->show('hotels_index');
   }
 
-  public function narrowedSearchResults()
+  public function narrowedSearchResults()//prikazuje suženi izbor hotela
   {
     $qs = new HotelService();
 
@@ -231,8 +231,8 @@ class HotelsController extends BaseController
 			header('Location: index.php?rt=hotels/narrowedSearch');
 			exit();
 		}
-    $city = $_POST['city'];
-
+    $city = $_POST['city']; //po defaultu je odabran Zagreb
+    //sve ostale opcije su inicijalno postavljene na min/max vrijednosti
     echo "city = ";
     echo $city;
     echo "<br>";

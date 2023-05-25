@@ -7,41 +7,54 @@ require_once __DIR__ . '/hotel.class.php';
 class HotelService
 {
 	function addeditroom_service($id, $tip, $cijena){
-		$db = DB::getConnection();
-		$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
-		$st->execute(array( 'id' => $id ));
-		echo $id;
-		echo $tip;
-		echo $cijena;
-		$st2 = $db->prepare( 'INSERT INTO projekt_sobe(id_sobe, id_hotela, tip, cijena) VALUES ' .
-			'(:id_sobe, :id_hotela, :tip, :cijena)' );
-		$st2->execute(array( 'id_sobe' => $id,
-												 'id_hotela' => $_SESSION["id_hotela"],
-											 	 'tip' => $tip,
-											 	 'cijena' => $cijena));
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
+			$st->execute(array( 'id' => $id ));
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		try
+		{
+			$db = DB::getConnection();
+			$st2 = $db->prepare( 'INSERT INTO projekt_sobe(id_sobe, id_hotela, tip, cijena) VALUES ' .
+				'(:id_sobe, :id_hotela, :tip, :cijena)' );
+			$st2->execute(array( 'id_sobe' => $id,
+													 'id_hotela' => $_SESSION["id_hotela"],
+												 	 'tip' => $tip,
+												 	 'cijena' => $cijena));
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
+
 	function removeroom_service($id){
-		$db = DB::getConnection();
-		$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
-		$st->execute(array( 'id' => $id ));
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
+			$st->execute(array( 'id' => $id ));
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
 
 	function getHotelIdFromUsername($username)
-{
-	try
 	{
-		$db = DB::getConnection();
-		$st = $db->prepare( 'SELECT id_hotela FROM projekt_users WHERE username=:username' );
-		$st->execute(array( 'username' => $username ));
-	}
-	catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT id_hotela FROM projekt_users WHERE username=:username' );
+			$st->execute(array( 'username' => $username ));
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
-	$row = $st->fetch();
-	if( $row === false )
-		return null;
-	else
-		return $row["id_hotela"];
-}
+		$row = $st->fetch();
+		if( $row === false )
+			return null;
+		else
+			return $row["id_hotela"];
+	}
+
 	function getIdAndPasswordFromUsername($username)
 	{
 		try
@@ -58,19 +71,28 @@ class HotelService
 		else
 			return $row;
 	}
+	//za dodjelu novog id-a
 	function getHighestRoomId(){
 		$db = DB::getConnection();
 		$st = $db->prepare( 'SELECT id_sobe FROM projekt_sobe');
 		$st->execute();
 
-		$max = 0;
+		$i = 1;
+		$arr = array();
 		while($row = $st->fetch()){
-			if($row["id_sobe"] > $max){
-				$max = $row["id_sobe"];
-			}
+			$arr[] = $row['id_sobe'];
 		}
-		return $max;
+		while(1)
+		{
+			if(!in_array($i, $arr))
+			{
+				return $i;
+			}
+			$i += 1;
+		}
+		return $i;
 	}
+
 	function getRoomsFromIdHotela($id_hotela)
 	{
 		try
@@ -146,7 +168,7 @@ class HotelService
 			catch(PDOException $e) { exit('Greška u bazi: ' . $e->getMessage()); }
 		}
 	}
-
+//prikazuje sve hotele koji su dostupni u aplikaciji
 	function getAvailableHotels()
 	{
 		try
@@ -161,12 +183,6 @@ class HotelService
 		while( $row = $st->fetch() )
 		{
 			//moram izračunati prosječni rating tog hotela
-		/*	echo "sad trazim prosjecnu ocjenu za hotel ";
-			echo $row['ime'];
-			echo "<br>";
-			echo "id = ";
-			echo $row['id_hotela'];
-			echo "<br>";*/
 			try
 			{
 				$db = DB::getConnection();
@@ -181,12 +197,6 @@ class HotelService
 				$ocjene += $row1['ocjena'];
 				$num += 1;
 			}
-			/*echo "num = ";
-			echo $num;
-			echo "<br>";
-			echo "ocjene = ";
-			echo $ocjene;
-			echo "<br>";*/
 			$rating = $ocjene / $num;
 
 			$arr[] = array(new Hotel( $row['grad'], $row['id_hotela'], $row['ime'], $row['udaljenost_od_centra'] ), round($rating, 2));
@@ -194,7 +204,7 @@ class HotelService
 
 		return $arr;
 	}
-
+//prikazuje hotele u skladu s filterima koje je odabrao korisnik
 	function getNarrowedHotels($city, $lowPrice, $upPrice, $distance, $lowRating, $upRating)
 	{
 		//prvo dohvatim taj grad i odmah filtriram i udaljenost
@@ -210,10 +220,7 @@ class HotelService
 		$filteredHotels = array();
 		while( $row = $st->fetch() )
 		{
-			echo "hotel = ";
-			echo $row['ime'];
-			echo "<br>";
-			//moram izračunati prosječni rating svakog od tih hotela
+			//moram izračunati prosječni rating svakog od tih hotela (bolje imati zasebnu funkciju koja računa prosječni rating)
 			try
 			{
 				$db = DB::getConnection();
@@ -229,9 +236,7 @@ class HotelService
 				$num += 1;
 			}
 			$rating = $ocjene / $num;
-			echo "rating = ";
-			echo $rating;
-			echo "<br>";
+
 			if($lowRating < $rating && $rating < $upRating)
 				$arr[] = array(new Hotel( $city, $row['id_hotela'], $row['ime'], $row['udaljenost_od_centra'] ), round($rating, 2));
 		}
@@ -256,10 +261,7 @@ class HotelService
 				}
 			}
 		}
-		foreach($filteredHotels as $hotelAndRating)
-		{ echo "alive = ";
-		echo $hotelAndRating[0]->ime;
-		echo "<br>";}
+
 		return $filteredHotels;
 	}
 }
