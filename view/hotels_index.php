@@ -14,9 +14,9 @@
 		<br>
 		<label for="">Type in your lower and upper limit for the price.</label>
 		<br>
-		<input id="range" type="text" name="lowPrice" placeholder="price in €">
+		<input id="range" type="text" name="lowPrice" placeholder="lower limit in €">
 		-
-		<input id="range" type="text" name="upPrice" placeholder="price in €">
+		<input id="range" type="text" name="upPrice" placeholder="upper limit in €">
 
 		<br>
 		<label for="">How close to the center do you want to be?</label>
