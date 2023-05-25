@@ -17,7 +17,6 @@ Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.
 Imamo odvojene tablice za:
   - __hotele__ (ime, grad, udaljenost od centra i id)
   - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, username gosta, komentar gosta, ocjena)
-  ~~- __posebne user-e__ tj. one koji mogu mijenjati cijene soba i sl. (id, id hotela nad kojim ima ovlasti)~~ -> obrisano _~Kiki_
   - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe)
   - __sobe_datumi__ (id_sobe, datum zauzeca, datum oslobodenja; nema primary key jer jedna soba moze biti zauzeta u vise perioda)
  -  __user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, username, email, je li se registrirao do kraja, hashirani password, registracijski kod, id_hotela koji je -1 ako je obični user, odnosno id hotela za koje ima privilegije ako je privilegiran - sada je možda i beskorisna tablica projekt_posebni_useri) -> mislim da ovdje ipak ne trebaju datumi i da ih je dovoljno pohraniti u sobe_datumi, al nisam sigurna (ovdje nisam stavila da je id user-a primary key ako zelimo omoguciti da jedan user moze rezervirati vise razlicith datuma - ovo ce otezati dodejljivanje novog id-a za novog user-a tj. trebat ce se koristiti Set kao struktura podataka pri odredivanju novog nepostojeceg id-a; također, datum moze biti i null jer user ne mora nista imati rezervirano
@@ -29,10 +28,10 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 ## Updates
 - baza podataka je skroz gotova (osmisljeni podaci i napravljen sql u phpmyadmin) i moze se koristiti _~Ivana_
 - omoguceno uloggiravanje i registracija i prikaz pocetne stranice _~Ivana_
-- implementirano i filtriranje hotela prema zahtjevima korisnika, ali nije provjerena funkcionalnost _~Ivana_
-- obrisala sam ono sta je kiki stavio jer nije radilo (23.5.) _~Ivana_
+- omoguceno filtriranje hotela prema zahtjevima korisnika _~Ivana_
 - napravila css, bilo bi bolje koristiti JavaScript u nekim dijelovima (npr. kod filtriranja, kod bookiranja da iskoci kalendar di ce odabrat, kod ocjenjivanja da moze stisnuti jednu od 10 zvjeydica da bi ostavio ocjenu itd.) _~Ivana_
 - napravljen interface za premium usere gdje vide sobe koje nude i mogu ih editirati ili dodavati nove _~Kikac_
+- prepravila funkciju getHighestRoomId t.d. ne vraca veci id od najveceg koji postoji nego vraca prvi dostupni id - trebali bi ju i prikladno preimenovati _~Ivana_
 
 ## Korisno
 ### JavaScript
