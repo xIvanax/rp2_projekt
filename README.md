@@ -32,6 +32,7 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - napravila css, bilo bi bolje koristiti JavaScript u nekim dijelovima (npr. kod filtriranja, kod bookiranja da iskoci kalendar di ce odabrat, kod ocjenjivanja da moze stisnuti jednu od 10 zvjeydica da bi ostavio ocjenu itd.) _~Ivana_
 - napravljen interface za premium usere gdje vide sobe koje nude i mogu ih editirati ili dodavati nove _~Kikac_
 - prepravila funkciju getHighestRoomId t.d. ne vraca veci id od najveceg koji postoji nego vraca prvi dostupni id - trebali bi ju i prikladno preimenovati _~Ivana_
+- omogućen je odabir hotela, te nakon sto se odabere hotel moze se izabrati datum boravka te odabrati koje sobe i koliko tih soba zeli rezervirati
 
 ## Korisno
 ### JavaScript
