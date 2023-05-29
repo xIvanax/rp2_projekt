@@ -98,7 +98,7 @@ class HotelsController extends BaseController
             $this->registry->template->show('login_index');
           }
           else
-          {//sad je sve u redu pa  aljem mail user-u
+          {//sad je sve u redu pa  saljem mail user-u
             $stringSpace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $pieces = [];
             $length = rand(1, 20);
@@ -284,7 +284,7 @@ class HotelsController extends BaseController
   }
 
   //prikazuje sve slobodne sobe za hotel zadanog id-a
-  public function getAvailability(){
+  public function getAvailability(){ //prikazuje koje vrste soba su u ponudi hotela
     $hs=new HotelService();
     $this->registry->template->title='Available rooms';
     $this->registry->template->roomsList=$hs->getRoomTypeFromHotelId($_POST['button']);
@@ -294,7 +294,7 @@ class HotelsController extends BaseController
     $this->registry->template->show('hotels_availability');
   }
 
-  public function availableRooms(){
+  public function availableRooms(){ //koliko je soba svake vrste dostupno u promatranom periodu
     $hs=new HotelService();
     $this->registry->template->title='Available rooms';
 
@@ -306,20 +306,120 @@ class HotelsController extends BaseController
 
   }
 
-  public function bookRoom(){
+  public function bookRoom(){ //rezervacija soba
     $hs=new HotelService();
     $this->registry->template->title='Book rooms';
 
+    //za svaki tip soba rezerviramo odgovarajuci broj soba
     $rooms=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
     foreach($rooms as $room){
       $popis=explode(' ', $room[0]);
       $name=implode('_',$popis);
-      if(isset($_POST[$name]))
-        $hs->reserveRoom($room[0], $_POST[$name], $_SESSION['dolazak'], $_SESSION['odlazak']);
-      else echo "NIJE OK!";
-        
+      $hs->reserveRoom($room[0], $_POST[$name], $_SESSION['dolazak'], $_SESSION['odlazak'], $_SESSION['username']);
     }
     $this->registry->template->show('successfulRegistration');
   }
+
+  public function userReservations(){ //prikazuju se rezervacije korisnika, i one prosle (s komentarima i one bez njih) te buduce 
+    $hs=new HotelService();
+    $this->registry->template->title='Reservations';
+    $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
+    $this->registry->template->show('userReservations');
+  }
+
+  public function deleteReservation(){ //brise neku buducu rezervaciju
+    $hs=new HotelService();
+    $this->registry->template->title='Reservations';
+
+    $id_usera=$hs->getIdByUsername($_SESSION['username']);
+    $popis=explode('|', $_POST['deleteReservation']);
+    $hs->deleteReservation($popis[0], $id_usera, $popis[1], $popis[2]);
+    
+    $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
+    $this->registry->template->show('userReservations');
+  }
+
+  public function addCommentAndRating(){ //vodi na stranicu gdje korisnik moze ostaviti komentar i ocjenu
+    $this->registry->template->title='Add comment and rating';
+    $this->registry->template->msg='';
+    $popis=explode('|', $_POST['enterComment']);
+    $this->registry->template->idHotela=$popis[0];
+    $this->registry->template->imeHotela=$popis[1];
+    $this->registry->template->dolazak=$popis[2];
+    $this->registry->template->odlazak=$popis[3];
+
+    $this->registry->template->show('rateAndComment');
+  }
+
+  public function addCommentAndRatingResult(){ //nakon sto korisnik unese komentar i ocjenu
+    $hs=new HotelService();
+
+    $popis=explode('|', $_POST['share']);
+      $this->registry->template->imeHotela=$popis[0];
+      $this->registry->template->idHotela=$popis[1];
+      $this->registry->template->dolazak=$popis[2];
+      $this->registry->template->odlazak=$popis[3];
+  
+      $id_usera=$hs->getIdByUsername($_SESSION['username']);
+
+    if($_POST['rating']==="" || $_POST['comment']===""){ //moraju biti uneseni i ocjena i komentar
+      $this->registry->template->title='Add comment and rating';
+      $this->registry->template->msg = 'Please enter both rating and comment.';
+      $this->registry->template->show('rateAndComment');
+    }else{
+      $hs->addComment($popis[1], $id_usera, $_SESSION['username'], $popis[2], $popis[3], $_POST['rating'], $_POST['comment']);
+
+      $this->registry->template->title='Reservations';
+      $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
+      $this->registry->template->show('userReservations');
+    }
+
+  }
+
+  public function editCommentAndRating(){ //vodi na stranicu gdje korisnik moze urediti komentar i ocjenu
+    $hs=new HotelService();
+    $this->registry->template->title='Edit comment and rating';
+
+    $ocjena=$hs->getComment($_POST['editComment']);
+    $imeHotela=$hs->getHotelNameById($ocjena['id_hotela']);
+    $this->registry->template->ocjena=$ocjena['ocjena'];
+    $this->registry->template->komentar=$ocjena['komentar'];
+    $this->registry->template->idHotela=$ocjena['id_hotela'];
+    $this->registry->template->imeHotela=$imeHotela;
+    $this->registry->template->dolazak=$ocjena['dolazak'];
+    $this->registry->template->odlazak=$ocjena['odlazak'];
+    $this->registry->template->idOcjene=$ocjena['id_ocjene'];
+
+    $this->registry->template->show('editComment');
+  }
+
+  public function editCommentAndRatingResults(){ //vodi na stranicu gdje korisnik moze urediti komentar i ocjenu
+    $hs=new HotelService();
+    $this->registry->template->title='Edit comment and rating';
+
+    if($_POST['rating']==="" || $_POST['comment']===""){ //moraju biti uneseni i ocjena i komentar
+      $this->registry->template->msg = 'Please enter both rating and comment.';
+      $this->registry->template->show('editComment');
+    }else{
+      $hs->editComment($_POST['share'], $_POST['comment'], $_POST['rating']);
+      $this->registry->template->title='Reservations';
+      $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
+      $this->registry->template->show('userReservations');
+    }
+
+  }
+
+  public function deleteComment(){ //vodi na stranicu gdje korisnik moze urediti komentar i ocjenu
+    $hs=new HotelService();
+    $this->registry->template->title='Reservations';
+
+    $id_usera=$hs->getIdByUsername($_SESSION['username']);
+    $hs->deleteComment($_POST['deleteComment'], $id_usera);
+    
+    $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
+    $this->registry->template->show('userReservations');
+
+  }
+
 }
 ?>
