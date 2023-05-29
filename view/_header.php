@@ -24,6 +24,8 @@
 				//debug();
 				if ($_SESSION["id_hotela"] !== "-1"){
 					echo '<li><a href="' . __SITE_URL . '/index.php?rt=hotels/premiumindex">Your offers </a></li>';
+				}else{
+					echo '<li><a href="' . __SITE_URL . '/index.php?rt=hotels/userReservations">Your reservations </a></li>';
 				}
 				 ?>
 			<li id="logout"><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels">Logout</a></li>
