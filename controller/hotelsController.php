@@ -98,7 +98,7 @@ class HotelsController extends BaseController
             $this->registry->template->show('login_index');
           }
           else
-          {//sad je sve u redu pa  saljem mail user-u
+          {//sad je sve u redu pa  aljem mail user-u
             $stringSpace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $pieces = [];
             $length = rand(1, 20);
@@ -192,6 +192,7 @@ class HotelsController extends BaseController
         exit("ne vidim niz");
       else
         exit('Ne to ne valja s nizom.');
+        exit('Ne to ne valja s nizom.');
     }
 
     $qs->register($_GET['niz']);
@@ -221,6 +222,7 @@ class HotelsController extends BaseController
 		$this->registry->template->show('hotels_index');
   }
 
+  public function narrowedSearchResults()//prikazuje su eni izbor hotela
   public function narrowedSearchResults()//prikazuje su eni izbor hotela
   {
     $qs = new HotelService();
@@ -281,6 +283,45 @@ class HotelsController extends BaseController
     $this->registry->template->hotelList = $qs->getNarrowedHotels($city, $lowPrice, $upPrice, $distance, $lowRating, $upRating);
 
 		$this->registry->template->show('hotels_narrowed');
+  }
+
+  //prikazuje sve slobodne sobe za hotel zadanog id-a
+  public function getAvailability(){
+    $hs=new HotelService();
+    $this->registry->template->title='Available rooms';
+    $this->registry->template->roomsList=$hs->getRoomTypeFromHotelId($_POST['button']);
+    $_SESSION['hotelId']=$_POST['button'];
+    $this->registry->template->hotelId=$_POST['button'];
+    $this->registry->template->reviewList=$hs->getReviewsForHotelById($_POST['button']);
+    $this->registry->template->show('hotels_availability');
+  }
+
+  public function availableRooms(){
+    $hs=new HotelService();
+    $this->registry->template->title='Available rooms';
+
+    $_SESSION['dolazak']=$_POST['date_yr'].'-'.$_POST['date_mo'] . '-'. $_POST['date_dy'];
+    $_SESSION['odlazak']=$_POST['date_yr_end'].'-'.$_POST['date_mo_end'] . '-'. $_POST['date_dy_end'];
+    $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+    $this->registry->template->reviewList=$hs->getReviewsForHotelById($_SESSION['hotelId']);
+    $this->registry->template->show('hotels_availability');
+
+  }
+
+  public function bookRoom(){
+    $hs=new HotelService();
+    $this->registry->template->title='Book rooms';
+
+    $rooms=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+    foreach($rooms as $room){
+      $popis=explode(' ', $room[0]);
+      $name=implode('_',$popis);
+      if(isset($_POST[$name]))
+        $hs->reserveRoom($room[0], $_POST[$name], $_SESSION['dolazak'], $_SESSION['odlazak']);
+      else echo "NIJE OK!";
+        
+    }
+    $this->registry->template->show('successfulRegistration');
   }
 
   //prikazuje sve slobodne sobe za hotel zadanog id-a

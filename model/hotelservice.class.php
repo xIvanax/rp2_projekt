@@ -101,8 +101,11 @@ class HotelService
 			$st = $db->prepare( 'SELECT id_sobe, tip, cijena FROM projekt_sobe WHERE id_hotela=:id_hotela');
 			$st->execute(array( 'id_hotela' => $id_hotela ));
 		}catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		}catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 		$sobe_list = array();
 		while($row = $st->fetch()){
+			$soba=array($row["id_sobe"], $row["tip"], $row["cijena"]);
+			$sobe_list[] = $soba;
 			$soba=array($row["id_sobe"], $row["tip"], $row["cijena"]);
 			$sobe_list[] = $soba;
 		}
@@ -696,5 +699,4 @@ class HotelService
 
 		
 }
-
 ?>
