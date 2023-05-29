@@ -100,11 +100,11 @@ class HotelService
 			$db = DB::getConnection();
 			$st = $db->prepare( 'SELECT id_sobe, tip, cijena FROM projekt_sobe WHERE id_hotela=:id_hotela');
 			$st->execute(array( 'id_hotela' => $id_hotela ));
-		}
-		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		}catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 		$sobe_list = array();
 		while($row = $st->fetch()){
-			$sobe_list[] = array($row["id_sobe"], $row["tip"], $row["cijena"]);
+			$soba=array($row["id_sobe"], $row["tip"], $row["cijena"]);
+			$sobe_list[] = $soba;
 		}
 		return $sobe_list;
 	}
@@ -264,5 +264,150 @@ class HotelService
 
 		return $filteredHotels;
 	}
+
+	function getRoomTypeFromHotelId($id_hotela){
+		try{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT id_sobe, tip, cijena FROM projekt_sobe WHERE id_hotela=:id_hotela ORDER BY cijena ');
+			$st->execute(array( 'id_hotela' => $id_hotela ));
+		}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
+
+		$sobe_list=array();
+		while($row=$st->fetch()){
+			if(sizeof($sobe_list)===0)
+				$sobe_list[]=array($row["tip"], $row["cijena"], 1);
+			else{
+				$provjera=-1;
+				$brojac=-1;
+				foreach($sobe_list as $soba){
+					$brojac++;
+					if($row["tip"]===$soba[0]){
+						$provjera=$brojac;
+					}
+				}
+				
+				if($provjera===-1)
+					$sobe_list[]=array($row["tip"], $row["cijena"], 1);
+				else{
+					$broj=$sobe_list[$provjera][2]+1;
+					$sobe_list[$provjera][2]=$broj;
+				}
+			}
+		}
+		return $sobe_list;
+	}
+
+	//vraca sve komentare na smjestaj za hotel odreden s $id_hotela
+	function getReviewsForHotelById($id_hotela){
+		try{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT username, komentar, ocjena FROM projekt_ocjene WHERE id_hotela=:id_hotela');
+			$st->execute(array( 'id_hotela' => $id_hotela ));
+		}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
+
+		$arr=array();
+		while($row=$st->fetch()){
+			$arr[]=array($row['username'], $row['ocjena'], $row['komentar']);
+		}
+		return $arr;
+	}
+
+	//za hotel, odreden s $id_hotela, odreduje koliko ima dostupnih soba svakog tipa periodu izmedu datuma $dolazak i $odlazak
+	function getAvailableRooms($id_hotela, $dolazak, $odlazak){
+		//dohvacam sve sobe koje su u ponudi hotela
+		try{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT id_sobe, tip, cijena FROM projekt_sobe WHERE id_hotela=:id_hotela ORDER BY cijena ');
+			$st->execute(array( 'id_hotela' => $id_hotela ));
+		}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
+
+		$arr=array();
+		//za svaku sobu provjeravam je li slobodna u danom periodu
+		while($row=$st->fetch()){
+			try{
+				$db=DB::getConnection();
+				$st1=$db->prepare( 'SELECT id_sobe, datum_oslobodenja, datum_zauzeca FROM projekt_sobe_datumi WHERE id_sobe=:id_sobe');
+				$st1->execute([ 'id_sobe' => $row['id_sobe'] ]);
+			}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
+
+			$provjera=true;
+			while($row1=$st1->fetch()){
+				if($row1['datum_oslobodenja']>$dolazak || $row1['datum_zauzeca']<$odlazak)
+					$provjera=false;
+			}
+
+			//ako je polje prazno i soba je slobodna, stavljamo ju u polje
+			if(sizeof($arr)===0 && $provjera)
+				$arr[]=array($row["tip"], $row["cijena"], 1);
+			else if($provjera){
+				//provjeravamo nalazi li se u polju vec soba tog tipa
+				//ako se nalazi onda samo povecavamo broj dostupnih soba
+				//inace ju stavljamo u polje
+				$p=-1;
+				$brojac=-1;
+				foreach($arr as $soba){
+					$brojac++;
+					if($row["tip"]===$soba[0]){
+						$p=$brojac;
+					}
+				}
+					
+				if($p===-1)
+					$arr[]=array($row["tip"], $row["cijena"], 1);
+				else{
+					$broj=$arr[$p][2]+1;
+					$arr[$p][2]=$broj;
+				}
+			}
+		}
+
+		return $arr;
+	}
+
+	//funkcija koja rezervira sobe odredenog tipa
+	//$tip - tip sobe
+	//$broj - kolicina soba odredenog tipa koje zelimo rezervirati
+	//$dolazak, $odlazak - datumi dolaska tj. odlaska
+	function reserveRoom($tip, $broj, $dolazak, $odlazak){
+		$rezervirane=0;
+		//dohvacam sve id-ove soba promatranog tipa
+		try{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT id_sobe FROM projekt_sobe WHERE tip=:tip');
+			$st->execute(array( 'tip' => $tip ));
+		}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
+
+		//za svaku sobu provjeravam je li slobodna u danom periodu
+		while($row=$st->fetch()){
+			try{
+				$db=DB::getConnection();
+				$st1=$db->prepare( 'SELECT id_sobe, datum_oslobodenja, datum_zauzeca FROM projekt_sobe_datumi WHERE id_sobe=:id_sobe');
+				$st1->execute([ 'id_sobe' => $row['id_sobe'] ]);
+			}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
+
+			$provjera=true;
+			while($row1=$st1->fetch()){
+				if($row1['datum_oslobodenja']>$dolazak || $row1['datum_zauzeca']<$odlazak)
+					$provjera=false;
+			}
+
+			//ako je soba slobodna onda ju rezerviramo za dani period
+			if($provjera){
+				try{
+					$db=DB::getConnection();
+					$st1=$db->prepare('INSERT INTO projekt_sobe_datumi (id_sobe, datum_oslobodenja, datum_zauzeca) VALUES (:id_sobe, :datum_oslobodenja, :datum_zauzeca)');
+					$st1->execute(array('id_sobe'=>$row['id_sobe'], 'datum_oslobodenja' => $odlazak, 'datum_zauzeca' => $dolazak));
+				}catch(PDOException $e) {exit( 'PDO error ' . $e->getMessage() );}
+				
+				$rezervirane++;
+			}
+
+			if($rezervirane===$broj) break;
+			
+		}
+
+	}
+		
 }
+
 ?>
