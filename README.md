@@ -43,6 +43,7 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 -nisam još nigdje nadodala koja je sveukupna cijena rezervacije _~Dorotea_
 -za sada se kod prikaza rezervacija, svaka soba prikazuje kao zasebna rezervacija iako sam omogućila da se u jednoj rezervaciji odabere vise različitih soba, to možemo popraviti ako ćemo imati vremena, ili ostaviti ovako, čini mi se da ne bi trebalo biti problema _~Dorotea_
 -također sam napravila da kada se korisnik ulogira te prikaže svoje rezervacije, automatski se sve rezervacije koje se prilikom zadnjeg ulogiravanja bile nekada u budućnosti (te samim time korisnik na njih još nije mogao ostaviti komentar), ako se prilikom trenutnog ulogiravanja prešao datum check-ina u sobu, omogući komentiranje smještaja _~Dorotea_
+-za sada je onemogućeno ostavljanje samo komentara ili samo ocjene za hotel, to možemo promijeniti naknadno, ako ćemo htjet i imat vremena _~Dorotea_
 
 ## Korisno
 ### JavaScript
