@@ -297,9 +297,8 @@ class HotelsController extends BaseController
   public function availableRooms(){ //koliko je soba svake vrste dostupno u promatranom periodu
     $hs=new HotelService();
     $this->registry->template->title='Available rooms';
-
-    $_SESSION['dolazak']=$_POST['date_yr'].'-'.$_POST['date_mo'] . '-'. $_POST['date_dy'];
-    $_SESSION['odlazak']=$_POST['date_yr_end'].'-'.$_POST['date_mo_end'] . '-'. $_POST['date_dy_end'];
+    $_SESSION['dolazak']=$_POST['start'];
+    $_SESSION['odlazak']=$_POST['end'];
     $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
     $this->registry->template->reviewList=$hs->getReviewsForHotelById($_SESSION['hotelId']);
     $this->registry->template->show('hotels_availability');
@@ -320,7 +319,7 @@ class HotelsController extends BaseController
     $this->registry->template->show('successfulRegistration');
   }
 
-  public function userReservations(){ //prikazuju se rezervacije korisnika, i one prosle (s komentarima i one bez njih) te buduce 
+  public function userReservations(){ //prikazuju se rezervacije korisnika, i one prosle (s komentarima i one bez njih) te buduce
     $hs=new HotelService();
     $this->registry->template->title='Reservations';
     $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
@@ -334,7 +333,7 @@ class HotelsController extends BaseController
     $id_usera=$hs->getIdByUsername($_SESSION['username']);
     $popis=explode('|', $_POST['deleteReservation']);
     $hs->deleteReservation($popis[0], $id_usera, $popis[1], $popis[2]);
-    
+
     $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
     $this->registry->template->show('userReservations');
   }
@@ -359,7 +358,7 @@ class HotelsController extends BaseController
       $this->registry->template->idHotela=$popis[1];
       $this->registry->template->dolazak=$popis[2];
       $this->registry->template->odlazak=$popis[3];
-  
+
       $id_usera=$hs->getIdByUsername($_SESSION['username']);
 
     if($_POST['rating']==="" || $_POST['comment']===""){ //moraju biti uneseni i ocjena i komentar
@@ -415,7 +414,7 @@ class HotelsController extends BaseController
 
     $id_usera=$hs->getIdByUsername($_SESSION['username']);
     $hs->deleteComment($_POST['deleteComment'], $id_usera);
-    
+
     $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
     $this->registry->template->show('userReservations');
 
