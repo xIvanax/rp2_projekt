@@ -76,6 +76,7 @@ body {
   color: salmon;
   cursor: pointer;
 }
+
 /* Content Styles */
 
 table {
@@ -143,6 +144,7 @@ a:hover {
 .form button:hover {
   background-color: #0069d9;
 }
+
 .form #range {
   width: 45%;
   padding: 10px;
@@ -150,6 +152,7 @@ a:hover {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 /* Form container */
 .login-form {
   width: 500px;
@@ -206,4 +209,99 @@ a:hover {
   .container {
     padding: 10px;
   }
+}
+
+/* Date styles */
+.date-pickers {
+  margin-top: 30px;
+  position: relative;
+  width: 100%;
+}
+.wrapper{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.box1 {
+    float:left;
+}
+.box2 {
+    margin-left: 50px;
+    float:left;
+}
+.datePicker {
+  /* Other styles for your pop-up calendars */
+  position: absolute;
+  display: none;
+}
+
+
+#datePicker1,
+#datePicker2 {
+  position: absolute;
+  float: left;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+#apply{
+  float: left;
+  margin-left: 50px;
+}
+#datePicker1 .close,
+#datePicker2 .close {
+  text-align: right;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+#calendarContainer1,
+#calendarContainer2 {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.calendar-header1,
+.calendar-header2 {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.calendar-header1 .prev-month1,
+.calendar-header1 .next-month1,
+.calendar-header2 .prev-month2,
+.calendar-header2 .next-month2 {
+  cursor: pointer;
+}
+
+#calTable1,
+#calTable2 {
+  width: 100%;
+  border-collapse: collapse;
+  display: inline-block;
+}
+
+#calTable1 th,
+#calTable2 th {
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #f2f2f2;
+}
+
+#calTable1 td,
+#calTable2 td {
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#calTable1 td.date:hover,
+#calTable2 td.date:hover {
+  background-color: #f2f2f2;
+}
+
+.date.today {
+  background-color: #e6f7ff;
 }
