@@ -36,15 +36,15 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - napravljen interface za premium usere gdje vide sobe koje nude i mogu ih editirati ili dodavati nove _~Kikac_
 - prepravila funkciju getHighestRoomId t.d. ne vraca veci id od najveceg koji postoji nego vraca prvi dostupni id - trebali bi ju i prikladno preimenovati _~Ivana_
 - omogućen je odabir željenog hotela u kojemu korisnik želi rezervirati sobu/e, omogućen je odabir termina rezervacije, te se u skladu s dostupnošću soba u tom terminu u tom hotelu omogućava odabir koliko soba svake vrste korisnik želi odabrati _~Dorotea_
-- omogućen je prikaz svih rezervacija koje je korisnik napravio (one prošle i buduće) kao i svi komentari na te rezervacije, te je omogućeno sljedeće:
-      -ako je rezervacija nekada u budućnosti, korisnik ju može obrisati
-      -ako je rezervacija u proslosti onda ju može komentirati
-      -za rezervacije za koje već postoji komentar omogućeno je uređivanje i brisanje tog komentara _~Dorotea_
--nisam još nigdje nadodala koja je sveukupna cijena rezervacije _~Dorotea_
--za sada se kod prikaza rezervacija, svaka soba prikazuje kao zasebna rezervacija iako sam omogućila da se u jednoj rezervaciji odabere vise različitih soba, to možemo popraviti ako ćemo imati vremena, ili ostaviti ovako, čini mi se da ne bi trebalo biti problema _~Dorotea_
--također sam napravila da kada se korisnik ulogira te prikaže svoje rezervacije, automatski se sve rezervacije koje se prilikom zadnjeg ulogiravanja bile nekada u budućnosti (te samim time korisnik na njih još nije mogao ostaviti komentar), ako se prilikom trenutnog ulogiravanja prešao datum check-ina u sobu, omogući komentiranje smještaja _~Dorotea_
--za sada je onemogućeno ostavljanje samo komentara ili samo ocjene za hotel, to možemo promijeniti naknadno, ako ćemo htjet i imat vremena _~Dorotea_
-
+* omogućen je prikaz svih rezervacija koje je korisnik napravio (one prošle i buduće) kao i svi komentari na te rezervacije, te je omogućeno sljedeće:
+  * ako je rezervacija nekada u budućnosti, korisnik ju može obrisati
+  * ako je rezervacija u proslosti onda ju može komentirati
+  * za rezervacije za koje već postoji komentar omogućeno je uređivanje i brisanje tog komentara _~Dorotea_
+- nisam još nigdje nadodala koja je sveukupna cijena rezervacije _~Dorotea_
+- za sada se kod prikaza rezervacija, svaka soba prikazuje kao zasebna rezervacija iako sam omogućila da se u jednoj rezervaciji odabere vise različitih soba, to možemo popraviti ako ćemo imati vremena, ili ostaviti ovako, čini mi se da ne bi trebalo biti problema _~Dorotea_
+- također sam napravila da kada se korisnik ulogira te prikaže svoje rezervacije, automatski se sve rezervacije koje se prilikom zadnjeg ulogiravanja bile nekada u budućnosti (te samim time korisnik na njih još nije mogao ostaviti komentar), ako se prilikom trenutnog ulogiravanja prešao datum check-ina u sobu, omogući komentiranje smještaja _~Dorotea_
+- za sada je onemogućeno ostavljanje samo komentara ili samo ocjene za hotel, to možemo promijeniti naknadno, ako ćemo htjet i imat vremena _~Dorotea_
+- Omogućila sam korištenje pop up kalendara kod rezervacije soba i prilagodila sam kontroler tom kalendaru (prije je vukao informacije iz select-ova i to). Dodala sam i dosta css-a da bi donekle to sve radilo, i dalje ima mogućih poboljšanja (npr. pri smanjivanju prozora), ali nisam ih uspjela napraviti pa ako netko drugi misli da može - please go ahead. _~Ivana_
 ## Korisno
 ### JavaScript
 - pitala sam ChatGPT gdje bi i zašto u našoj aplikaciji za hotele trebalo koristiti JavaScript umjesto PHP-a i zašto pa mi je ovo rekao (neke od tih stvari ćemo tek raditi na predavanjima): ~Ivana
