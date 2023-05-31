@@ -46,7 +46,7 @@ class HotelsController extends BaseController
     $this->registry->template->is = $is;
     if($is === 0){
       $max = $qs->getHighestRoomId();
-      $max++;
+      $max;
       $this->registry->template->max = $max;
       $qs->addeditroom_service($max, $_POST["tip"], $_POST["cijena"]);
       $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);

@@ -24,7 +24,7 @@
 			</div>
 
 			</div>
-			<button name="apply" type="submit" id="apply">Apply</button>
+			<button name="apply" type="submit" id="apply">Show available hotels</button>
 		</div>
 	</div>
 				<?php //require_once __SITE_PATH . '/view/selectEndDate.php'; ?>

@@ -88,7 +88,7 @@ class HotelService
 			{
 				return $i;
 			}
-			$i += 1;
+			$i++;
 		}
 		return $i;
 	}
@@ -101,11 +101,8 @@ class HotelService
 			$st = $db->prepare( 'SELECT id_sobe, tip, cijena FROM projekt_sobe WHERE id_hotela=:id_hotela');
 			$st->execute(array( 'id_hotela' => $id_hotela ));
 		}catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
-		}catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 		$sobe_list = array();
 		while($row = $st->fetch()){
-			$soba=array($row["id_sobe"], $row["tip"], $row["cijena"]);
-			$sobe_list[] = $soba;
 			$soba=array($row["id_sobe"], $row["tip"], $row["cijena"]);
 			$sobe_list[] = $soba;
 		}
@@ -288,7 +285,7 @@ class HotelService
 						$provjera=$brojac;
 					}
 				}
-				
+
 				if($provjera===-1)
 					$sobe_list[]=array($row["tip"], $row["cijena"], 1);
 				else{
@@ -354,7 +351,7 @@ class HotelService
 						$p=$brojac;
 					}
 				}
-					
+
 				if($p===-1)
 					$arr[]=array($row["tip"], $row["cijena"], 1);
 				else{
@@ -404,6 +401,13 @@ class HotelService
 				if($row2['datum_oslobodenja']>$dolazak || $row2['datum_zauzeca']<$odlazak)
 					$provjera=false;
 			}
+			if($dolazak > $odlazak){
+				$provjera = false;
+			}
+			$now = date("Y-m-d");
+			if($dolazak < $now || $odlazak < $now){
+				$provjera = false;
+			}
 
 			//ako je soba slobodna onda ju rezerviramo za dani period
 			if($provjera && $rezervirane<$broj){
@@ -412,11 +416,10 @@ class HotelService
 					$st3=$db->prepare('INSERT INTO projekt_sobe_datumi (id_sobe, id_osobe, datum_oslobodenja, datum_zauzeca) VALUES (:id_sobe, :id_osobe, :datum_oslobodenja, :datum_zauzeca)');
 					$st3->execute(array('id_sobe'=>$row['id_sobe'], 'id_osobe'=>$id_osobe, 'datum_oslobodenja' => $odlazak, 'datum_zauzeca' => $dolazak));
 				}catch(PDOException $e) {exit( 'PDO error ' . $e->getMessage() );}
-				
+
 				$rezervirane++;
 			}
 		}
-
 	}
 
 	//funckija koja vraca sve rezervacije koje je korisnik napravio
@@ -475,7 +478,7 @@ class HotelService
 				$st2=$db->prepare( 'SELECT id_hotela FROM projekt_sobe WHERE id_sobe=:id_sobe');
 				$st2->execute(['id_sobe' => $row1['id_sobe']]);
 			}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
-			
+
 			$row2=$st2->fetch();
 
 			//dohvacam ime hotela
@@ -504,7 +507,7 @@ class HotelService
 				}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
 
 
-			}else if($row1['datum_zauzeca']<date("Y-m-d") && $row1['datum_oslobodenja']>date("Y-m-d")){ 
+			}else if($row1['datum_zauzeca']<date("Y-m-d") && $row1['datum_oslobodenja']>date("Y-m-d")){
 				//korisnik je dosao u hotel te vise ne moze ponistiti rezervaciju pa za zadnji element stavljamo 1
 				$arr[]=array($row2['id_hotela'], NULL, NULL, $row1['datum_zauzeca'], $row1['datum_oslobodenja'], $row3['ime'], 1, NULL);
 
@@ -539,7 +542,7 @@ class HotelService
 		return $arr;
 	}
 
-	//funkcija koja brise rezervaciju 
+	//funkcija koja brise rezervaciju
 	function deleteReservation($id_hotela, $id_usera, $dolazak, $odlazak){
 		//trazim sve sobe koje je promatrani korisnik rezervirao u promatranom razdoblju
 		try{
@@ -648,7 +651,7 @@ class HotelService
 	}
 
 	function editComment($id_ocjene, $komentar, $ocjena){
-		
+
 		//dohvacam sve podatke za dani id_ocjene
 		try{
 			$db=DB::getConnection();
@@ -697,6 +700,6 @@ class HotelService
 		}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
 	}
 
-		
+
 }
 ?>
