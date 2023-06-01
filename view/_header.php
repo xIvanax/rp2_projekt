@@ -16,6 +16,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 	<script src="https://kit.fontawesome.com/512d1b1458.js" crossorigin="anonymous"></script>
 	<script src="bookingScript.js"></script>
+	<script src="sortScript.js"></script>
 </head>
 <body>
 	<div class="navbar">
