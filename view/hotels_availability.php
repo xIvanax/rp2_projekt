@@ -1,12 +1,13 @@
 <?php require_once __SITE_PATH . '/view/_header.php'; ?>
-
+	<h2><?php echo $msg; ?></h2>
+	<br>
 	<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/availableRooms'?>">
 		<div class="date-pickers">
 			<div class="wrapper">
 				<div class="box1">
 
 			<label name="date" class="calLab">Check-in date</label>
-			<input name="start" type="text" id="dateInput1" placeholder="Check-in date" readonly>
+			<input name="start" type="text" id="dateInput1" placeholder="<?php echo $placeholder1 ?>" readonly>
 			<div id="datePicker1" class="datePicker">
 				<span class="close">X</span>
 				<div id="calendarContainer1"></div>
@@ -17,14 +18,14 @@
 
 
 			<label name="date" class="calLab">Check-out date</label>
-			<input name="end" type="text" id="dateInput2" placeholder="Check-out date" readonly>
+			<input name="end" type="text" id="dateInput2" placeholder="<?php echo $placeholder2 ?>" readonly>
 			<div id="datePicker2" class="datePicker">
 				<span class="close">X</span>
 				<div id="calendarContainer2"></div>
 			</div>
 
 			</div>
-			<button name="apply" type="submit" id="apply">Show available hotels</button>
+			<button name="apply" type="submit" id="apply">Show available rooms</button>
 		</div>
 	</div>
 				<?php //require_once __SITE_PATH . '/view/selectEndDate.php'; ?>

@@ -203,6 +203,11 @@ class HotelsController extends BaseController
 		$qs = new HotelService();
 
 		$this->registry->template->title = 'Available hotels';
+    
+    //ako korisnik unese datume prilikom rezervacije i ne napravi rezervaciju, vec se vrati na listu hotela potrebno je 
+    //prethodno unesene datume ignorirati
+    unset($_SESSION['dolazak']);
+    unset($_SESSION['odlazak']);
 
 		$this->registry->template->hotelList = $qs->getAvailableHotels();
 
@@ -284,11 +289,19 @@ class HotelsController extends BaseController
   }
 
   //prikazuje sve slobodne sobe za hotel zadanog id-a
+  //omogucuje odabir datuma rezervacije, te potom odabir soba koje zeli rezervirati
   public function getAvailability(){ //prikazuje koje vrste soba su u ponudi hotela
     $hs=new HotelService();
     $this->registry->template->title='Available rooms';
-    $this->registry->template->roomsList=$hs->getRoomTypeFromHotelId($_POST['button']);
+    $this->registry->template->msg=' ';
+
+    $now=date("Y-m-d");
+    $this->registry->template->placeholder1=$now;
+    $this->registry->template->placeholder2=$now;
+
     $_SESSION['hotelId']=$_POST['button'];
+    
+    $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
     $this->registry->template->hotelId=$_POST['button'];
     $this->registry->template->reviewList=$hs->getReviewsForHotelById($_POST['button']);
     $this->registry->template->show('hotels_availability');
@@ -297,31 +310,238 @@ class HotelsController extends BaseController
   public function availableRooms(){ //koliko je soba svake vrste dostupno u promatranom periodu
     $hs=new HotelService();
     $this->registry->template->title='Available rooms';
-    $_SESSION['dolazak']=$_POST['start'];
-    $_SESSION['odlazak']=$_POST['end'];
-    $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+    $this->registry->template->msg=' ';
+    $now=date("Y-m-d");
+
+    if(isset($_SESSION['dolazak']) &&  isset($_SESSION['odlazak'])){ // ako je vec prije postavljao datume onda i njih moramo uzeti u obzir
+
+      if($_POST['start']!=="" && $_POST['end']!==""){ //ako je korisnik ponovno unio oba datuma
+        $provjera=$hs->checkDates($_POST['start'], $_POST['end']);
+        if($provjera===-1){
+          $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+          unset($_SESSION['dolazak']);
+          unset($_SESSION['odlazak']);
+
+        }else if($provjera===0){
+          $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder=$now;
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+          unset($_SESSION['dolazak']);
+          unset($_SESSION['odlazak']);
+
+        }else if($provjera===1){
+          $_SESSION['dolazak']=$_POST['start'];
+          $_SESSION['odlazak']=$_POST['end'];
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+          $this->registry->template->placeholder1=$_SESSION['dolazak'];
+          $this->registry->template->placeholder2=$_SESSION['odlazak'];
+        }
+
+      }else if($_POST['start']!=="" && $_POST['end']===""){
+        //korisnik nije promijenio datum odlaska, vec samo datum dolaska
+
+        $provjera=$hs->checkDates($_POST['start'], $_POST['end']);
+        if($provjera===-1){
+          $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+          unset($_SESSION['dolazak']);
+          unset($_SESSION['odlazak']);
+
+        }else if($provjera===0){
+          $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder=$now;
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+          unset($_SESSION['dolazak']);
+          unset($_SESSION['odlazak']);
+
+        }else if($provjera===1){
+          $_SESSION['dolazak']=$_POST['start'];
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+          $this->registry->template->placeholder1=$_SESSION['dolazak'];
+          $this->registry->template->placeholder2=$_SESSION['odlazak'];
+        }
+
+      }else if($_POST['start']==="" && $_POST['end']!==""){
+        //korisnik nije promijenio datum dolaska, vec samo datum odlaska
+
+        $provjera=$hs->checkDates($_SESSION['start'], $_POST['end']);
+        if($provjera===-1){
+          $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+          unset($_SESSION['dolazak']);
+          unset($_SESSION['odlazak']);
+
+        }else if($provjera===0){
+          $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder=$now;
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+          unset($_SESSION['dolazak']);
+          unset($_SESSION['odlazak']);
+
+        }else if($provjera===1){
+          $_SESSION['odlazak']=$_POST['end'];
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+          $this->registry->template->placeholder1=$_SESSION['dolazak'];
+          $this->registry->template->placeholder2=$_SESSION['odlazak'];
+        }
+
+      }else{ //ako je samo pritisnuo gumb apply
+        $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+        $this->registry->template->placeholder1=$_SESSION['dolazak'];
+        $this->registry->template->placeholder2=$_SESSION['odlazak'];
+      }
+    }else{ //korisnik po prvi puta unosi neki od datuma
+
+      if($_POST['start']!=="" && $_POST['end']!==""){ //unosi oba datuma
+          $provjera=$hs->checkDates($_POST['start'], $_POST['end']);
+          if($provjera===-1){
+            $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
+            $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+            $this->registry->template->placeholder1=$now;
+            $this->registry->template->placeholder2=$now;
+            unset($_SESSION['dolazak']);
+            unset($_SESSION['odlazak']);
+
+          }else if($provjera===0){
+            $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
+            $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+            $this->registry->template->placeholder=$now;
+            $this->registry->template->placeholder1=$now;
+            $this->registry->template->placeholder2=$now;
+            unset($_SESSION['dolazak']);
+            unset($_SESSION['odlazak']);
+
+          }else if($provjera===1){
+            $_SESSION['dolazak']=$_POST['start'];
+            $_SESSION['odlazak']=$_POST['end'];
+            $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+            $this->registry->template->placeholder1=$_SESSION['dolazak'];
+            $this->registry->template->placeholder2=$_SESSION['odlazak'];
+          }
+
+      }else if($_POST['start']!=="" && $_POST['end']===""){
+        //korisnik nije promijenio datum odlaska, vec samo datum dolaska
+
+        $provjera=$hs->checkDates($_POST['start'], $now);
+        echo $provjera;
+        if($provjera===-1){
+          $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+          unset($_SESSION['dolazak']);
+          unset($_SESSION['odlazak']);
+
+        }else if($provjera===0){
+          $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder=$now;
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+          unset($_SESSION['dolazak']);
+          unset($_SESSION['odlazak']);
+
+        }else if($provjera===1){
+          $_SESSION['dolazak']=$_POST['start'];
+          $_SESSION['odlazak']=$now;
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+          $this->registry->template->placeholder1=$_SESSION['dolazak'];
+          $this->registry->template->placeholder2=$_SESSION['odlazak'];
+        }
+
+      }else if($_POST['start']==="" && $_POST['end']!==""){
+        //korisnik nije promijenio datum odlaska, vec samo datum dolaska
+
+        $provjera=$hs->checkDates($now, $_POST['end']);
+        if($provjera===-1){
+          $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+
+        }else if($provjera===0){
+          $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
+          $this->registry->template->placeholder=$now;
+          $this->registry->template->placeholder1=$now;
+          $this->registry->template->placeholder2=$now;
+
+        }else if($provjera===1){
+          $_SESSION['dolazak']=$now;
+          $_SESSION['odlazak']=$_POST['end'];
+          $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+          $this->registry->template->placeholder1=$_SESSION['dolazak'];
+          $this->registry->template->placeholder2=$_SESSION['odlazak'];
+        }
+
+      }else{ //ako je samo pritisnuo gumb apply
+        $_SESSION['dolazak']=$now;
+        $_SESSION['odlazak']=$now;
+        $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+        $this->registry->template->placeholder1=$_SESSION['dolazak'];
+        $this->registry->template->placeholder2=$_SESSION['odlazak'];
+      }
+    }
     $this->registry->template->reviewList=$hs->getReviewsForHotelById($_SESSION['hotelId']);
     $this->registry->template->show('hotels_availability');
-
   }
 
   public function bookRoom(){ //rezervacija soba
     $hs=new HotelService();
-    $this->registry->template->title='Book rooms';
+    $this->registry->template->title='Available rooms';
+    
+    if(isset($_SESSION['dolazak']) && isset($_SESSION['odlazak'])){
+      //ako je korisnik unio datume rezervacije
+      //za svaki tip soba rezerviramo odgovarajuci broj soba
+      $rooms=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
+      foreach($rooms as $room){
+        $popis=explode(' ', $room[0]);
+        $name=implode('_',$popis);
+        $hs->reserveRoom($room[0], $_POST[$name], $_SESSION['dolazak'], $_SESSION['odlazak'], $_SESSION['username']);
+      }
+    }else{ //nije unio datume, onda je pocetak i kraj rezervacije na trenutni datum
+      $rooms=$hs->getAvailableRooms($_SESSION['hotelId'], date("Y-m-d"),date("Y-m-d"));
+      foreach($rooms as $room){
+        $popis=explode(' ', $room[0]);
+        $name=implode('_',$popis);
+        $hs->reserveRoom($room[0], $_POST[$name], date("Y-m-d"), date("Y-m-d"), $_SESSION['username']);
+      }
 
-    //za svaki tip soba rezerviramo odgovarajuci broj soba
-    $rooms=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
-    foreach($rooms as $room){
-      $popis=explode(' ', $room[0]);
-      $name=implode('_',$popis);
-      $hs->reserveRoom($room[0], $_POST[$name], $_SESSION['dolazak'], $_SESSION['odlazak'], $_SESSION['username']);
     }
-    $this->registry->template->show('successfulRegistration');
+
+    unset($_SESSION['dolazak']);
+    unset($_SESSION['odlazak']);
+    
+    $this->registry->template->placeholder1=date("Y-m-d");
+    $this->registry->template->placeholder2=date("Y-m-d");
+    $this->registry->template->msg='Successful reservation!';
+    $this->registry->template->reviewList=$hs->getReviewsForHotelById($_SESSION['hotelId']);
+    $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], date("Y-m-d"), date("Y-m-d"));
+    $this->registry->template->show('hotels_availability');
   }
 
   public function userReservations(){ //prikazuju se rezervacije korisnika, i one prosle (s komentarima i one bez njih) te buduce
     $hs=new HotelService();
     $this->registry->template->title='Reservations';
+
+    //ako korisnik unese datume prilikom rezervacije i ne napravi rezervaciju, vec ode na listu svojih rezervacija potrebno je 
+    //prethodno unesene datume ignorirati
+    unset($_SESSION['dolazak']);
+    unset($_SESSION['odlazak']);
+
     $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
     $this->registry->template->show('userReservations');
   }

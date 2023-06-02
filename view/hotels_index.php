@@ -1,5 +1,6 @@
 <?php require_once __SITE_PATH . '/view/_header.php'; ?>
 <?php require_once __SITE_PATH . '/view/filteredOutput.php'; ?>
+	<br>
 	<div id="narrow">
 	<h3 class="header">Narrow your search:</h3>
 	<form class="form" action="<?php echo __SITE_URL; ?>/index.php?rt=hotels/narrowedSearchResults" method="post">

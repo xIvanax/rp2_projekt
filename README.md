@@ -45,12 +45,6 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - također sam napravila da kada se korisnik ulogira te prikaže svoje rezervacije, automatski se sve rezervacije koje se prilikom zadnjeg ulogiravanja bile nekada u budućnosti (te samim time korisnik na njih još nije mogao ostaviti komentar), ako se prilikom trenutnog ulogiravanja prešao datum check-ina u sobu, omogući komentiranje smještaja _~Dorotea_
 - za sada je onemogućeno ostavljanje samo komentara ili samo ocjene za hotel, to možemo promijeniti naknadno, ako ćemo htjet i imat vremena _~Dorotea_
 - Omogućila sam korištenje pop up kalendara kod rezervacije soba i prilagodila sam kontroler tom kalendaru (prije je vukao informacije iz select-ova i to). Dodala sam i dosta css-a da bi donekle to sve radilo, i dalje ima mogućih poboljšanja (npr. pri smanjivanju prozora), ali nisam ih uspjela napraviti pa ako netko drugi misli da može - please go ahead. _~Ivana_
-- Omogucen je sort po ratingu i udaljenosti na naslovnoj stranici koristeci javascript, ostali sortovi ce ici analogno samo nisam vise stigla. Da bismo hotele na početnoj stranici mogli sortirati po cijenama trebalo bi u ispisu hotela dodati i prosječnu/najvisu cijenu (koja god od te dvije) pa da ju mogu linkati u javascript, jer drukcije ne mogu (ne mogu bas unutar javascripta kopati po bazi da nadem cijenu soba u hotelu). _~Ivana_
-## To do list
-- iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
-- prepraviti primjenu filtera po gradu, ratingu, udaljenosti, cijeni itd. na naslovnoj stranici t.d. rezultat filtriranja ne bude prikazan na skroz novoj stranici nego da se pomocu javascripta prikaze na istoj stranici
-## Napomene
-- moj kod vjv ima hrpu cudnih razmaka jer sam ga radila u notepadu jer mi sve ostalo zblokira laptop :(
 ## Korisno
 ### JavaScript
 - pitala sam ChatGPT gdje bi i zašto u našoj aplikaciji za hotele trebalo koristiti JavaScript umjesto PHP-a i zašto pa mi je ovo rekao (neke od tih stvari ćemo tek raditi na predavanjima): ~Ivana
