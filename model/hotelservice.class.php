@@ -312,6 +312,19 @@ class HotelService
 		return $arr;
 	}
 
+	//funkcija koja provjerava valjanost unesenih 
+	//vraća 1 ako su oba izabrana datuma od trenutnog datuma pa nadalje
+	function checkDates($dolazak, $odlazak){
+		$now=date("Y-m-d");
+		if($dolazak<$now || $odlazak<$now){
+			return -1;
+		}else if($odlazak<$dolazak){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+
 	//za hotel, odreden s $id_hotela, odreduje koliko ima dostupnih soba svakog tipa periodu izmedu datuma $dolazak i $odlazak
 	function getAvailableRooms($id_hotela, $dolazak, $odlazak){
 		//dohvacam sve sobe koje su u ponudi hotela
@@ -699,7 +712,6 @@ class HotelService
 			$st1->execute(array('id_osobe'=>$id_osobe, 'id_hotela'=>$row['id_hotela'], 'dolazak' => $row['dolazak'], 'odlazak' => $row['odlazak']));
 		}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
 	}
-
 
 }
 ?>
