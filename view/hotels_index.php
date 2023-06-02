@@ -1,6 +1,6 @@
 <?php require_once __SITE_PATH . '/view/_header.php'; ?>
-<?php require_once __SITE_PATH . '/view/output.php'; ?>
-	<br>
+<?php require_once __SITE_PATH . '/view/filteredOutput.php'; ?>
+	<div id="narrow">
 	<h3 class="header">Narrow your search:</h3>
 	<form class="form" action="<?php echo __SITE_URL; ?>/index.php?rt=hotels/narrowedSearchResults" method="post">
 		<label for="">Select the city you want to stay in:</label>
@@ -32,5 +32,5 @@
 		<br>
 		<button type="submit" name="">Filter</button>
 	</form>
-
+	</div>
 <?php require_once __SITE_PATH . '/view/_footer.php'; ?>

@@ -3,6 +3,7 @@
   <br>
   <?php
   echo "<table>";
+
   foreach ($sobe_list as $soba) {
     echo "<tr>";
 

@@ -20,6 +20,9 @@ Imamo odvojene tablice za:
   - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe)
   - __sobe_datumi__ (id_sobe, datum zauzeca, datum oslobodenja; nema primary key jer jedna soba moze biti zauzeta u vise perioda)
  -  __user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, username, email, je li se registrirao do kraja, hashirani password, registracijski kod, id_hotela koji je -1 ako je obični user, odnosno id hotela za koje ima privilegije ako je privilegiran - sada je možda i beskorisna tablica projekt_posebni_useri) -> mislim da ovdje ipak ne trebaju datumi i da ih je dovoljno pohraniti u sobe_datumi, al nisam sigurna (ovdje nisam stavila da je id user-a primary key ako zelimo omoguciti da jedan user moze rezervirati vise razlicith datuma - ovo ce otezati dodejljivanje novog id-a za novog user-a tj. trebat ce se koristiti Set kao struktura podataka pri odredivanju novog nepostojeceg id-a; također, datum moze biti i null jer user ne mora nista imati rezervirano
+ -  napravila sam novu tablicu projekt_rezervacije(id_osobe, id_hotela, dolazak, odlazak)
+ -  u projekt_sobe_datumi dodala sam id_usera
+ -  napravila neke promijene u tablici projekt_ocjene _~Dorotea_
 
 __Vjerojatno bi bilo najbolje popuniti ih iz php-a, a ne u phpmyadmin jer ak kasnije skuzimo da nes ne valja s tablicom lakse cemo popravit.__
 
@@ -32,8 +35,22 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - napravila css, bilo bi bolje koristiti JavaScript u nekim dijelovima (npr. kod filtriranja, kod bookiranja da iskoci kalendar di ce odabrat, kod ocjenjivanja da moze stisnuti jednu od 10 zvjeydica da bi ostavio ocjenu itd.) _~Ivana_
 - napravljen interface za premium usere gdje vide sobe koje nude i mogu ih editirati ili dodavati nove _~Kikac_
 - prepravila funkciju getHighestRoomId t.d. ne vraca veci id od najveceg koji postoji nego vraca prvi dostupni id - trebali bi ju i prikladno preimenovati _~Ivana_
-- omogućen je odabir hotela, te nakon sto se odabere hotel moze se izabrati datum boravka te odabrati koje sobe i koliko tih soba zeli rezervirati
-
+- omogućen je odabir željenog hotela u kojemu korisnik želi rezervirati sobu/e, omogućen je odabir termina rezervacije, te se u skladu s dostupnošću soba u tom terminu u tom hotelu omogućava odabir koliko soba svake vrste korisnik želi odabrati _~Dorotea_
+* omogućen je prikaz svih rezervacija koje je korisnik napravio (one prošle i buduće) kao i svi komentari na te rezervacije, te je omogućeno sljedeće:
+  * ako je rezervacija nekada u budućnosti, korisnik ju može obrisati
+  * ako je rezervacija u proslosti onda ju može komentirati
+  * za rezervacije za koje već postoji komentar omogućeno je uređivanje i brisanje tog komentara _~Dorotea_
+- nisam još nigdje nadodala koja je sveukupna cijena rezervacije _~Dorotea_
+- za sada se kod prikaza rezervacija, svaka soba prikazuje kao zasebna rezervacija iako sam omogućila da se u jednoj rezervaciji odabere vise različitih soba, to možemo popraviti ako ćemo imati vremena, ili ostaviti ovako, čini mi se da ne bi trebalo biti problema _~Dorotea_
+- također sam napravila da kada se korisnik ulogira te prikaže svoje rezervacije, automatski se sve rezervacije koje se prilikom zadnjeg ulogiravanja bile nekada u budućnosti (te samim time korisnik na njih još nije mogao ostaviti komentar), ako se prilikom trenutnog ulogiravanja prešao datum check-ina u sobu, omogući komentiranje smještaja _~Dorotea_
+- za sada je onemogućeno ostavljanje samo komentara ili samo ocjene za hotel, to možemo promijeniti naknadno, ako ćemo htjet i imat vremena _~Dorotea_
+- Omogućila sam korištenje pop up kalendara kod rezervacije soba i prilagodila sam kontroler tom kalendaru (prije je vukao informacije iz select-ova i to). Dodala sam i dosta css-a da bi donekle to sve radilo, i dalje ima mogućih poboljšanja (npr. pri smanjivanju prozora), ali nisam ih uspjela napraviti pa ako netko drugi misli da može - please go ahead. _~Ivana_
+- Omogucen je sort po ratingu i udaljenosti na naslovnoj stranici koristeci javascript, ostali sortovi ce ici analogno samo nisam vise stigla. Da bismo hotele na početnoj stranici mogli sortirati po cijenama trebalo bi u ispisu hotela dodati i prosječnu/najvisu cijenu (koja god od te dvije) pa da ju mogu linkati u javascript, jer drukcije ne mogu (ne mogu bas unutar javascripta kopati po bazi da nadem cijenu soba u hotelu). _~Ivana_
+## To do list
+- iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
+- prepraviti primjenu filtera po gradu, ratingu, udaljenosti, cijeni itd. na naslovnoj stranici t.d. rezultat filtriranja ne bude prikazan na skroz novoj stranici nego da se pomocu javascripta prikaze na istoj stranici
+## Napomene
+- moj kod vjv ima hrpu cudnih razmaka jer sam ga radila u notepadu jer mi sve ostalo zblokira laptop :(
 ## Korisno
 ### JavaScript
 - pitala sam ChatGPT gdje bi i zašto u našoj aplikaciji za hotele trebalo koristiti JavaScript umjesto PHP-a i zašto pa mi je ovo rekao (neke od tih stvari ćemo tek raditi na predavanjima): ~Ivana

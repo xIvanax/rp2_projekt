@@ -8,12 +8,28 @@ body {
 
 /* Updated container styles */
 .container {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
   overflow: hidden;
 }
 
+#list {
+  /*background-color: green;*/
+  width: 65%;
+  float: right
+}
+#narrow {
+  /*background-color: red;*/
+  width: 30%;
+  float:left
+}
+#filters {
+  /*background-color: yellow;*/
+
+  width: 30%;
+  float:left
+}
 /* Header Styles */
 
 .mainHeader {
@@ -76,6 +92,28 @@ body {
   color: salmon;
   cursor: pointer;
 }
+
+/* Styling for filter buttons */
+#dl1, #dl2, #dl3, #dl4, #dl5, #dl6 {
+  font-weight: normal;
+  display: inline-block;
+  padding: 8px 4px;
+  margin: 4px;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#filters .decorated-label:hover {
+  background-color: #ddd;
+}
+
+#filters .decorated-label.active {
+  background-color: #007bff;
+  color: #fff;
+}
 /* Content Styles */
 
 table {
@@ -90,6 +128,10 @@ table {
   border-bottom: 1px solid #e6ecf0;
   padding: 10px 0;
 }
+.listingSort {
+  border-bottom: 1px solid #e6ecf0;
+  padding: 10px 0;
+}
 
 .hotel {
   font-weight: bold;
@@ -101,7 +143,7 @@ table {
 }
 
 a {
-  color: #657786;
+  color: white;
   text-decoration: none;
 }
 
@@ -143,13 +185,15 @@ a:hover {
 .form button:hover {
   background-color: #0069d9;
 }
+
 .form #range {
-  width: 45%;
+  width: 30%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 /* Form container */
 .login-form {
   width: 500px;
@@ -165,7 +209,7 @@ a:hover {
   width: 90%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solifa-lightd #ccc;
   border-radius: 4px;
 }
 
@@ -206,4 +250,99 @@ a:hover {
   .container {
     padding: 10px;
   }
+}
+
+/* Date styles */
+.date-pickers {
+  margin-top: 30px;
+  position: relative;
+  width: 100%;
+}
+.wrapper{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.box1 {
+    float:left;
+}
+.box2 {
+    margin-left: 50px;
+    float:left;
+}
+.datePicker {
+  /* Other styles for your pop-up calendars */
+  position: absolute;
+  display: none;
+}
+
+
+#datePicker1,
+#datePicker2 {
+  position: absolute;
+  float: left;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+#apply{
+  float: left;
+  margin-left: 50px;
+}
+#datePicker1 .close,
+#datePicker2 .close {
+  text-align: right;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+#calendarContainer1,
+#calendarContainer2 {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.calendar-header1,
+.calendar-header2 {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.calendar-header1 .prev-month1,
+.calendar-header1 .next-month1,
+.calendar-header2 .prev-month2,
+.calendar-header2 .next-month2 {
+  cursor: pointer;
+}
+
+#calTable1,
+#calTable2 {
+  width: 100%;
+  border-collapse: collapse;
+  display: inline-block;
+}
+
+#calTable1 th,
+#calTable2 th {
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #f2f2f2;
+}
+
+#calTable1 td,
+#calTable2 td {
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#calTable1 td.date:hover,
+#calTable2 td.date:hover {
+  background-color: #f2f2f2;
+}
+
+.date.today {
+  background-color: #e6f7ff;
 }
