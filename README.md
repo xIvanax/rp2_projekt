@@ -49,6 +49,8 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 ## To do list
 - iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
 - prepraviti primjenu filtera po gradu, ratingu, udaljenosti, cijeni itd. na naslovnoj stranici t.d. rezultat filtriranja ne bude prikazan na skroz novoj stranici nego da se pomocu javascripta prikaze na istoj stranici
+## Napomene
+- moj kod vjv ima hrpu cudnih razmaka jer sam ga radila u notepadu jer mi sve ostalo zblokira laptop :(
 ## Korisno
 ### JavaScript
 - pitala sam ChatGPT gdje bi i zašto u našoj aplikaciji za hotele trebalo koristiti JavaScript umjesto PHP-a i zašto pa mi je ovo rekao (neke od tih stvari ćemo tek raditi na predavanjima): ~Ivana
