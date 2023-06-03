@@ -15,14 +15,14 @@ Sort by: City, Name, Distance from the city centre, Price
           <label class="decorated-label" id="dl5">5highest to lowest</label>
           <label class="decorated-label" id="dl6">6lowest to highest</label>
         <br>
-				<button type="button" name="">Sortiraj</button>
+				<button type="button" id="sort">Sortiraj</button>
     </div>
 </div>
 <div id="list">
 <form method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/getAvailability'?>">
 <?php
 	foreach($hotelList as $hotel){
-		echo '<table class="listing">' .
+		echo '<table class="listingSort">' .
 			'<tr>' .
 			'<td class="hotel"> City: ' . $hotel[0]->grad . '</td>' .
 			'</tr>' .
@@ -41,8 +41,7 @@ Sort by: City, Name, Distance from the city centre, Price
             'See availability</button>' .
 			'</td>' .
             '</tr>' .
-			'</table>' .
-			'<br>';
+			'</table>';
 	}
 ?>
 </form>
