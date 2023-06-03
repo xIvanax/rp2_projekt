@@ -1,7 +1,6 @@
 Sort by: City, Name, Distance from the city centre, Price
 <div id="filters">
 <h3 class="header">Sort your search:</h3>
-
 <div class="form">
       				<label for="">Price:</label>
           <label class="decorated-label" id="dl1">1highest to lowest</label>
