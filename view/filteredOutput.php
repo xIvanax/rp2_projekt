@@ -35,9 +35,11 @@ Sort by: City, Name, Distance from the city centre, Price
 			'<tr>' .
 			'<td class="hotel"> Average rating: ' . $hotel[1] . '</td>' .
 			'</tr>'.
+      '<td class="hotel"> Lowest price: ' . $hotel[2] . ' €</td>' .
+			'</tr>'.
 			'<tr>' .
 			'<td class="hotel">' .
-			'<button type="submit" name="button" value="' . $hotel[0]->id_hotela . '">' . 
+			'<button type="submit" name="button" value="' . $hotel[0]->id_hotela . '">' .
             'See availability</button>' .
 			'</td>' .
             '</tr>' .

@@ -192,14 +192,24 @@ class HotelService
 			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 			$ocjene = 0;
 			$num = 0;
+			$id = $row['id_hotela'];
 			while($row1 = $st1->fetch())
 			{
 				$ocjene += $row1['ocjena'];
 				$num += 1;
 			}
 			$rating = $ocjene / $num;
-
-			$arr[] = array(new Hotel( $row['grad'], $row['id_hotela'], $row['ime'], $row['udaljenost_od_centra'] ), round($rating, 2));
+			$popis_soba = $this->getRoomsFromIdHotela($id);
+			$cijena = 0;
+			if(isset($popis_soba[0])){
+				$cijena = $popis_soba[0][2];
+			}
+			foreach ($popis_soba as $soba){
+				if ($cijena > $soba[2]){
+					$cijena = $soba[2];
+				}
+			}
+			$arr[] = array(new Hotel( $row['grad'], $row['id_hotela'], $row['ime'], $row['udaljenost_od_centra']), round($rating, 2), $cijena);
 		}
 
 		return $arr;
@@ -312,7 +322,7 @@ class HotelService
 		return $arr;
 	}
 
-	//funkcija koja provjerava valjanost unesenih 
+	//funkcija koja provjerava valjanost unesenih
 	//vraća 1 ako su oba izabrana datuma od trenutnog datuma pa nadalje
 	function checkDates($dolazak, $odlazak){
 		$now=date("Y-m-d");
