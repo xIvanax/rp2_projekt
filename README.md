@@ -45,29 +45,10 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - također sam napravila da kada se korisnik ulogira te prikaže svoje rezervacije, automatski se sve rezervacije koje se prilikom zadnjeg ulogiravanja bile nekada u budućnosti (te samim time korisnik na njih još nije mogao ostaviti komentar), ako se prilikom trenutnog ulogiravanja prešao datum check-ina u sobu, omogući komentiranje smještaja _~Dorotea_
 - za sada je onemogućeno ostavljanje samo komentara ili samo ocjene za hotel, to možemo promijeniti naknadno, ako ćemo htjet i imat vremena _~Dorotea_
 - Omogućila sam korištenje pop up kalendara kod rezervacije soba i prilagodila sam kontroler tom kalendaru (prije je vukao informacije iz select-ova i to). Dodala sam i dosta css-a da bi donekle to sve radilo, i dalje ima mogućih poboljšanja (npr. pri smanjivanju prozora), ali nisam ih uspjela napraviti pa ako netko drugi misli da može - please go ahead. _~Ivana_
-- Omogucen je sort po ratingu i udaljenosti na naslovnoj stranici koristeci javascript, ostali sortovi ce ici analogno samo nisam vise stigla. Da bismo hotele na početnoj stranici mogli sortirati po cijenama trebalo bi u ispisu hotela dodati i prosječnu/najvisu cijenu (koja god od te dvije) pa da ju mogu linkati u javascript, jer drukcije ne mogu (ne mogu bas unutar javascripta kopati po bazi da nadem cijenu soba u hotelu). _~Ivana_
+- Omogucen je sort po ratingu, udaljenosti i cijeni na naslovnoj stranici koristeci javascript. _~Ivana_
+- Dodan ispis najnize cijene sobe za svaki hotel an naslovnoj stranici u svrhu sorta po cijeni. _~Kiki_
+- Popravila sam jos neke greske od doroteinog pusha i popravila greske koje je uzrokovo kikijev zadnji push. Pliz provjeravajte jel sve funkcionira i nakon sto nes izmijenite i pushate. _~Ivana_
+- 
 ## To do list
 - iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
 - prepraviti primjenu filtera po gradu, ratingu, udaljenosti, cijeni itd. na naslovnoj stranici t.d. rezultat filtriranja ne bude prikazan na skroz novoj stranici nego da se pomocu javascripta prikaze na istoj stranici
-## Napomene
-- moj kod vjv ima hrpu cudnih razmaka jer sam ga radila u notepadu jer mi sve ostalo zblokira laptop :(
-
-
-## Korisno
-### JavaScript
-- pitala sam ChatGPT gdje bi i zašto u našoj aplikaciji za hotele trebalo koristiti JavaScript umjesto PHP-a i zašto pa mi je ovo rekao (neke od tih stvari ćemo tek raditi na predavanjima): ~Ivana
-"Yes, there can be several benefits to using JavaScript in your web application alongside PHP, HTML, and a database. Here are a few reasons why you might consider incorporating JavaScript into your application:
-
-- Enhancing User Experience: JavaScript allows you to create dynamic and interactive elements on your web pages. You can use JavaScript to implement features like form validation, dropdown menus, auto-suggestions, sliders, and other interactive components. These enhancements can improve the overall user experience and make your application more user-friendly.
-
-- Asynchronous Operations: JavaScript supports asynchronous programming, which means you can make AJAX (Asynchronous JavaScript and XML) requests to the server without reloading the entire page. This can be useful for implementing features such as real-time updates, dynamic content loading, and seamless interactions with the server, providing a smoother user experience.
-
-- Client-Side Form Validation: While server-side validation with PHP is crucial, JavaScript can provide immediate feedback to users by performing client-side form validation before submitting the data to the server. This can reduce the number of round trips to the server and provide a quicker response to users.
-
-- Dynamic Content Manipulation: JavaScript can manipulate the DOM (Document Object Model) dynamically, allowing you to change the content and appearance of your web pages based on user actions or other events. For example, you can show or hide elements, update information without reloading the page, or create dynamic menus based on user preferences.
-
-- Integration with APIs and Libraries: JavaScript has a wide range of libraries and APIs available that can greatly simplify development tasks. You can leverage JavaScript libraries like jQuery, React, or Vue.js to streamline common tasks, handle DOM manipulation, and build complex user interfaces more efficiently.
-
-- Asynchronous Task Processing: JavaScript can offload certain tasks from the server to the client-side, reducing the server load and improving scalability. For example, you can perform client-side calculations, data processing, or rendering that don't require server interaction.
-
-Remember that PHP primarily handles server-side tasks, such as database interactions and server logic, while JavaScript focuses on client-side interactions and user interface enhancements. By combining the strengths of both languages, you can build a more powerful and interactive web application."
