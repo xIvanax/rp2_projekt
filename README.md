@@ -50,5 +50,6 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - Popravila sam jos neke greske od doroteinog pusha i popravila greske koje je uzrokovo kikijev zadnji push. Pliz provjeravajte jel sve funkcionira i nakon sto nes izmijenite i pushate. _~Ivana_
 - omogucen sort u sucelju za premium usere i uskladen css tog sučelja s ostatkom stranice _~Ivana_
 ## To do list
+- dodati slike hotela i soba tam di treba pomoću javacripta
 - iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
 - prepraviti primjenu filtera po gradu, ratingu, udaljenosti, cijeni itd. na naslovnoj stranici t.d. rezultat filtriranja ne bude prikazan na skroz novoj stranici nego da se pomocu javascripta prikaze na istoj stranici
