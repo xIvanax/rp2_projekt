@@ -14,17 +14,17 @@ body {
   overflow: hidden;
 }
 
-#list {
+#list, #premiumList {
   /*background-color: green;*/
   width: 65%;
   float: right
 }
-#narrow {
+#narrow, #premNarrow {
   /*background-color: red;*/
   width: 30%;
   float:left
 }
-#filters {
+#filters, #premSort {
   /*background-color: yellow;*/
 
   width: 30%;
@@ -106,11 +106,11 @@ body {
   transition: background-color 0.3s ease;
 }
 
-#filters .decorated-label:hover {
+#filters .decorated-label:hover, #premSort .pdecorated-label:hover {
   background-color: #ddd;
 }
 
-#filters .decorated-label.active {
+#filters .decorated-label.active, #premSort .pdecorated-label.active {
   background-color: #007bff;
   color: #fff;
 }
@@ -128,12 +128,12 @@ table {
   border-bottom: 1px solid #e6ecf0;
   padding: 10px 0;
 }
-.listingSort {
+.listingSort, #premiumSort {
   border-bottom: 1px solid #e6ecf0;
   padding: 10px 0;
 }
 
-.hotel {
+.hotel, .room {
   font-weight: bold;
 }
 

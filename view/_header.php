@@ -31,7 +31,7 @@
 					echo '<li><a href="' . __SITE_URL . '/index.php?rt=hotels/userReservations"><i class="fas fa-book"></i>Your reservations </a></li>';
 				}
 				 ?>
-			<li id="logout"><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels">Logout</a></li>
+			<li id="logout"><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels"><i class="fas fa-lock"></i>Logout</a></li>
 			<li><i class="fas fa-user"> </i><?php
 					echo " " . htmlentities($_SESSION["username"], ENT_QUOTES);?></li>
 		</ul>
