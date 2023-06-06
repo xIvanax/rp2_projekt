@@ -48,7 +48,7 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - Omogucen je sort po ratingu, udaljenosti i cijeni na naslovnoj stranici koristeci javascript. _~Ivana_
 - Dodan ispis najnize cijene sobe za svaki hotel an naslovnoj stranici u svrhu sorta po cijeni. _~Kiki_
 - Popravila sam jos neke greske od doroteinog pusha i popravila greske koje je uzrokovo kikijev zadnji push. Pliz provjeravajte jel sve funkcionira i nakon sto nes izmijenite i pushate. _~Ivana_
-- 
+- omogucen sort u sucelju za premium usere i uskladen css tog sučelja s ostatkom stranice _~Ivana_
 ## To do list
 - iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
 - prepraviti primjenu filtera po gradu, ratingu, udaljenosti, cijeni itd. na naslovnoj stranici t.d. rezultat filtriranja ne bude prikazan na skroz novoj stranici nego da se pomocu javascripta prikaze na istoj stranici
