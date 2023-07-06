@@ -214,7 +214,7 @@ class HotelsController extends BaseController
     $this->registry->template->show('hotels_index');
   }
 
-  public function narrowedSearch()//prikazuje pocetnu stranicu s opcijama za su avanje izbora hotela
+  public function narrowedSearch()//prikazuje pocetnu stranicu s opcijama za suzavanje izbora hotela
   {
     $qs = new HotelService();
 
@@ -226,7 +226,7 @@ class HotelsController extends BaseController
 		$this->registry->template->show('hotels_index');
   }
 
-  public function narrowedSearchResults()//prikazuje su eni izbor hotela
+  public function narrowedSearchResults()//prikazuje suzeni izbor hotela
   {
     $qs = new HotelService();
 

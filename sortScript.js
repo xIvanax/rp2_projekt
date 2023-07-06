@@ -24,10 +24,10 @@ $(document).ready(function() {
   }
 
 $('#sort').on('click', function(){
+  console.log("zeli sort");
 	var choice = $('.decorated-label');
 	for (var i = 0; i < choice.length; i++){
 		if(choice.eq(i).css('background-color') === "rgb(176, 172, 172)"){
-			console.log("hi, id = " + choice.eq(i).attr("id"));
       if(choice.eq(i).attr("id") === "dl1"){//silazni sort po cijeni
 				sortPrice(1);
 			}else if(choice.eq(i).attr("id") === "dl2"){
@@ -90,6 +90,7 @@ function sortRating(k) {
       var n = arrHotels.length;
       oldList.remove();
       for(var i = 0; i < n; i++){
+        console.log("I want to add a table");
         $('#list').append(
           '<table class="listingSort">' +
             '<tr>' +
