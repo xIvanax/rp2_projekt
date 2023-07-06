@@ -15,18 +15,11 @@ body {
 }
 
 #list, #premiumList {
-  /*background-color: green;*/
   width: 65%;
   float: right
 }
-#narrow, #premNarrow {
-  /*background-color: red;*/
-  width: 30%;
-  float:left
-}
-#filters, #premSort {
-  /*background-color: yellow;*/
 
+#filters, #premSort {
   width: 30%;
   float:left
 }
@@ -153,19 +146,27 @@ a:hover {
 
 /*Form styles*/
 
-.form {
+.form, #narrow, #premNarrow {
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 20px;
 }
 
-.form label {
+.form label, 
+#narrow label, 
+#premNarrow label {
   font-weight: bold;
 }
 
 .form input[type="text"],
 .form input[type="email"],
-.form select {
+.form select,
+#narrow input[type="text"],
+#narrow input[type="email"],
+#narrow select,
+#premNarrow input[type="text"],
+#premNarrow input[type="email"],
+#premNarrow select {
   width: 94%;
   padding: 10px;
   margin-bottom: 10px;
@@ -173,7 +174,9 @@ a:hover {
   border-radius: 4px;
 }
 
-.form button {
+.form button,
+#narrow button,
+#premNarrow button {
   background-color: #1d05b5;
   color: #fff;
   padding: 10px 20px;
@@ -182,11 +185,15 @@ a:hover {
   cursor: pointer;
 }
 
-.form button:hover {
+.form button:hover,
+#narrow button:hover,
+#premNarrow button:hover {
   background-color: #0069d9;
 }
 
-.form #range {
+.form #range,
+#narrow .rangeInputs,
+#premNarrow .rangeInputs {
   width: 30%;
   padding: 10px;
   margin-bottom: 10px;

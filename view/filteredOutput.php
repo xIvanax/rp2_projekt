@@ -16,6 +16,39 @@
     <br>
     <button type="button" id="sort">Sortiraj</button>
   </div>
+  <br>
+  <h3 class="header">Narrow your search:</h3>
+	<div id="narrow">
+		<label for="">Select the city you want to stay in:</label>
+		<select name="city" id="city">
+			<option value="Zagreb">Zagreb</option>
+			<option value="Split">Split</option>
+			<option value="Rijeka">Rijeka</option>
+			<option value="Osijek">Osijek</option>
+		</select>
+
+		<br>
+		<label for="">Type in your lower and upper limit for the price.</label>
+		<br>
+		<input class="rangeInputs" type="text" name="lowPrice" placeholder="lower limit in €">
+		-
+		<input class="rangeInputs" type="text" name="upPrice" placeholder="upper limit in €">
+
+		<br>
+		<label for="">How close to the center do you want to be?</label>
+		<input type="text" name="distance" placeholder="distance in km" id="distanceFilter">
+
+		<br>
+		<label for="">On a scale from 1 to 10, what range of ratings of the hotel are you ok with?</label>
+		<br>
+		<input class="rangeInputs" type="text" name="lowRating" placeholder="1">
+		-
+		<input class="rangeInputs" type="text" name="upRating" placeholder="10">
+
+		<br>
+		<button type="button" id="poseban">Filter</button>
+		<a class="a" href="<?php echo __SITE_URL; ?>/index.php?rt=hotels/availableHotels"><button type="button">Remove filters</button></a>
+	</div>
 </div>
 <div id="list">
   <form method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/getAvailability'?>">
