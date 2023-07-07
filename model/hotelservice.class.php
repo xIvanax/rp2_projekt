@@ -414,7 +414,7 @@ class HotelService {
 	//funckija koja vraca sve rezervacije koje je korisnik napravio
 	function getMyReservations($username) {
 		//dohvacanje id_osobe s danim username-om
-		tr{
+		try {
 			$db = DB::getConnection();
 			$st = $db->prepare('SELECT id_usera FROM projekt_users WHERE username=:username');
 			$st->execute(array('username' => $username));
