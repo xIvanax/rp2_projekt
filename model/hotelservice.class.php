@@ -413,30 +413,28 @@ class HotelService {
 
 	//funckija koja vraca sve rezervacije koje je korisnik napravio
 	function getMyReservations($username) {
-		//dohvacam id_osobe s danim usernameom
-		try {
+		//dohvacanje id_osobe s danim username-om
+		tr{
 			$db = DB::getConnection();
 			$st = $db->prepare('SELECT id_usera FROM projekt_users WHERE username=:username');
-			$st->execute(array('username' => $username ));
+			$st->execute(array('username' => $username));
 		}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 
 		$row = $st->fetch();
 		$id_osobe = $row['id_usera'];
 
-
-		//dohvacam sve rezervacije hotelskih soba gdje je korisnik ostavio komentar/ocjenu
+		//dohvacanje svih rezervacija hotelskih soba gdje je korisnik ostavio komentar/ocjenu
 		try {
 			$db = DB::getConnection();
-			$st1 = $db->prepare('SELECT id_hotela, id_ocjene, komentar, ocjena, dolazak, odlazak FROM 
-			projekt_ocjene WHERE id_usera=:id_usera ORDER BY odlazak');
+			$st1 = $db->prepare( 'SELECT id_hotela, id_sobe, id_ocjene, komentar, ocjena, dolazak, odlazak FROM projekt_ocjene 
+			WHERE id_usera=:id_usera ORDER BY odlazak');
 			$st1->execute(['id_usera' => $id_osobe]);
-		}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
+		}catch(PDOException $e) {exit( 'PDO error ' . $e->getMessage() );}
 
-
-		//dohvacene rezervacije pohranjujem u polje $arr
+		//dohvacene rezervacije pohranjuju se u polje $arr
 		$arr = array();
 		while($row1 = $st1->fetch()) {
-			//dohvacam ime hotela
+			//dohvacanje imena hotela
 			try {
 				$db = DB::getConnection();
 				$st2 = $db->prepare('SELECT ime FROM projekt_hoteli WHERE id_hotela=:id_hotela');
@@ -446,31 +444,33 @@ class HotelService {
 			$row2 = $st2->fetch();
 
 			//dohvacamo tip sobe
-			try{
+			try {
 				$db = DB::getConnection();
-				$st = $db->prepare( 'SELECT tip FROM projekt_sobe WHERE id_sobe=:id_sobe');
-				$st->execute(array( 'id_sobe' => $row1['id_sobe'] ));
-			}catch(PDOException $e) { exit( 'PDO error ' . $e->getMessage() );}
+				$st = $db->prepare('SELECT tip FROM projekt_sobe WHERE id_sobe=:id_sobe');
+				$st->execute(array('id_sobe' => $row1['id_sobe'] ));
+			}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 	
 			$row = $st->fetch();
 			$tip = $row['tip'];
 
-			//predzadnji element u polju oznacava je li ta rezervacija vec izvrsena, tj je li korisnik boravio u hotelu u navedenom periodu ili nije
+			//predzadnji element u polju oznacava je li ta rezervacija vec izvrsena, tj je li korisnik boravio u hotelu u navedenom periodu 
+			//ili nije
 			//1 oznacava da je boravio u hotelu, dok 0 oznacava da nije
-			$arr[] = array($row1['id_hotela'], $tip, $row1['komentar'], $row1['ocjena'], $row1['dolazak'], $row1['odlazak'], $row2['ime'], 1, $row1['id_ocjene'], $row1['id_sobe']);
+			$arr[] = array($row1['id_hotela'], $tip, $row1['komentar'], $row1['ocjena'], $row1['dolazak'], $row1['odlazak'], 
+			$row2['ime'], 1, $row1['id_ocjene'], $row1['id_sobe']);
 		}
 
-
 		//dohvacanje svih rezervacija koje su jos u tijeku
-		try{
-			$db=DB::getConnection();
-			$st1=$db->prepare( 'SELECT id_sobe, datum_zauzeca, datum_oslobodenja FROM projekt_sobe_datumi WHERE id_osobe=:id_osobe ORDER BY datum_oslobodenja');
+		try {
+			$db = DB::getConnection();
+			$st1 = $db->prepare( 'SELECT id_sobe, datum_zauzeca, datum_oslobodenja FROM projekt_sobe_datumi 
+			WHERE id_osobe=:id_osobe ORDER BY datum_oslobodenja');
 			$st1->execute(['id_osobe' => $id_osobe]);
 		}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 
-		//provjeravam je li neka od rezervacija zavrsena, tj. je li datum odlaska prosao
+		//provjera je li neka od rezervacija zavrsena, tj. je li datum odlaska prosao
 		while($row1 = $st1->fetch()) {
-			//dohvacam id_hotela u kojem se nalazi soba
+			//dohvacanje id_hotela u kojem se nalazi soba
 			try {
 				$db = DB::getConnection();
 				$st2 = $db->prepare('SELECT id_hotela FROM projekt_sobe WHERE id_sobe=:id_sobe');
@@ -479,56 +479,76 @@ class HotelService {
 
 			$row2 = $st2->fetch();
 
-			//dohvacam ime hotela
+			//dohvacanje imena hotela
 			try {
 				$db = DB::getConnection();
 				$st3 = $db->prepare( 'SELECT ime FROM projekt_hoteli WHERE id_hotela=:id_hotela');
 				$st3->execute(['id_hotela' => $row2['id_hotela']]);
 			}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 
-			$row3 = $st3->fetch();
+			$row3=$st3->fetch();
 
-			//ako je onda promatranu rezervaciju stavljam u tablicu proslih rezervacija
-			if($row1['datum_oslobodenja'] < date("Y-m-d")) {
+			//ako je onda promatranu rezervaciju stavljamo u tablicu proslih rezervacija
+			if($row1['datum_oslobodenja'] <= date("Y-m-d")){
 				try {
 					$db = DB::getConnection();
-					$st2 = $db->prepare('INSERT INTO projekt_rezervacije (id_osobe, id_hotela, dolazak, odlazak) 
-					VALUES (:id_osobe, :id_hotela, :dolazak, :odlazak)');
-					$st2->execute(array('id_osobe'=>$id_osobe, 'id_hotela'=>$row2['id_hotela'], 
+					$st2 = $db->prepare('INSERT INTO projekt_rezervacije (id_osobe, id_sobe, id_hotela, dolazak, odlazak) 
+					VALUES (:id_osobe, :id_sobe, :id_hotela, :dolazak, :odlazak)');
+					$st2->execute(array('id_osobe'=>$id_osobe, 'id_sobe'=>$row1['id_sobe'], 'id_hotela'=>$row2['id_hotela'], 
 					'dolazak' => $row1['datum_zauzeca'], 'odlazak' => $row1['datum_oslobodenja']));
 				}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 
-				//moram obrisati tu rezervaciju iz tablice projekt_sobe_datumi
+				//brisemo tu rezervaciju iz tablice projekt_sobe_datumi
 				try {
 					$db = DB::getConnection();
-					$st2 = $db->prepare('DELETE FROM projekt_sobe_datumi 
-					WHERE id_osobe=:id_osobe AND id_sobe=:id_sobe AND datum_zauzeca=:datum_zauzeca AND datum_oslobodenja=:datum_oslobodenja');
-					$st2->execute(array('id_osobe'=>$id_osobe, 'id_sobe'=>$row1['id_sobe'], 
-					'datum_zauzeca' => $row1['datum_zauzeca'], 
+					$st2 = $db->prepare('DELETE FROM projekt_sobe_datumi WHERE id_osobe=:id_osobe AND id_sobe=:id_sobe 
+					AND datum_zauzeca=:datum_zauzeca AND datum_oslobodenja=:datum_oslobodenja');
+					$st2->execute(array('id_osobe'=>$id_osobe, 'id_sobe'=>$row1['id_sobe'], 'datum_zauzeca' => $row1['datum_zauzeca'], 
 					'datum_oslobodenja' => $row1['datum_oslobodenja']));
 				}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
+			}else if($row1['datum_zauzeca'] <= date("Y-m-d") && $row1['datum_oslobodenja'] >= date("Y-m-d")) {
+				//dohvacamo tip sobe
+				try {
+					$db = DB::getConnection();
+					$st = $db->prepare('SELECT tip FROM projekt_sobe WHERE id_sobe=:id_sobe');
+					$st->execute(array('id_sobe' => $row1['id_sobe'] ));
+				}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
+		
+				$row = $st->fetch();
+				$tip = $row['tip'];
 
-
-			}else if($row1['datum_zauzeca'] < date("Y-m-d") && $row1['datum_oslobodenja'] > date("Y-m-d")) {
 				//korisnik je dosao u hotel te vise ne moze ponistiti rezervaciju pa za zadnji element stavljamo 1
-				$arr[] = array($row2['id_hotela'], NULL, NULL, $row1['datum_zauzeca'], $row1['datum_oslobodenja'], $row3['ime'], 1, NULL);
+				$arr[] = array($row2['id_hotela'], $tip, NULL, NULL, $row1['datum_zauzeca'], $row1['datum_oslobodenja'], 
+				$row3['ime'], 1, NULL, $row1['id_sobe']);
 			}else if($row1['datum_zauzeca'] > date("Y-m-d")) {
-				//rezervacija je nekada u buducnosti pa ju korisnik moze ponistiti, dakle za zadnji element stavljam 0
-				$arr[] = array($row2['id_hotela'], NULL, NULL, $row1['datum_zauzeca'], $row1['datum_oslobodenja'], $row3['ime'], 0, NULL);
+				//rezervacija je nekada u buducnosti pa ju korisnik moze ponistiti, dakle za zadnji element stavljamo 0
+				//dohvacamo tip sobe
+				try {
+					$db = DB::getConnection();
+					$st = $db->prepare('SELECT tip FROM projekt_sobe WHERE id_sobe=:id_sobe');
+					$st->execute(array('id_sobe' => $row1['id_sobe'] ));
+				}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
+		
+				$row = $st->fetch();
+				$tip = $row['tip'];
+
+				$arr[] = array($row2['id_hotela'], $tip, NULL, NULL, $row1['datum_zauzeca'], $row1['datum_oslobodenja'], 
+				$row3['ime'], 0, NULL, $row1['id_sobe']);
 			}
 		}
-		//dohvacam sve rezervacije hotela za koje korisnik nije ostavio komentar/ocjenu
+		//dohvacanje svih rezervacija hotela za koje korisnik nije ostavio komentar/ocjenu
 		try {
 			$db = DB::getConnection();
-			$st1 = $db->prepare('SELECT id_hotela, dolazak, odlazak FROM projekt_rezervacije WHERE id_osobe=:id_osobe ORDER BY odlazak');
+			$st1 = $db->prepare('SELECT id_hotela, id_sobe, dolazak, odlazak FROM projekt_rezervacije WHERE id_osobe=:id_osobe ORDER BY odlazak');
 			$st1->execute(['id_osobe' => $id_osobe]);
 		}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
-		//pohranjujem dohvacene rezervacije u polje $arr
+
+		//pohrana dohvacenih rezervacija u polje $arr
 		while($row1 = $st1->fetch()) {
-			//dohvacam ime hotela
+			//dohvacanje imena hotela
 			try {
 				$db = DB::getConnection();
-				$st3 = $db->prepare( 'SELECT ime FROM projekt_hoteli WHERE id_hotela=:id_hotela');
+				$st3 = $db->prepare('SELECT ime FROM projekt_hoteli WHERE id_hotela=:id_hotela');
 				$st3->execute(['id_hotela' => $row1['id_hotela']]);
 			}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 
@@ -544,7 +564,7 @@ class HotelService {
 			$row = $st->fetch();
 			$tip = $row['tip'];
 
-			$arr[] = array($row1['id_hotela'], $tip, NULL, NULL, $row1['dolazak'], $row1['odlazak'], $row3['ime'], 1, NULL, $row1['id_sobe']);
+			$arr[]=array($row1['id_hotela'], $tip, NULL, NULL, $row1['dolazak'], $row1['odlazak'], $row3['ime'], 1, NULL, $row1['id_sobe']);
 		}
 		return $arr;
 	}
