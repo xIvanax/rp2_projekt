@@ -1,41 +1,37 @@
 <?php
 
-class HotelsController extends BaseController
-{
-  public function index()
-  {
+class HotelsController extends BaseController {
+  //index user
+  public function index() {
     $this->registry->template->msg = '';
     $this->registry->template->show('login_index');
   }
-
-  public function removeroom()
-  {
+  //brisanje sobe
+  public function removeroom() {
     $qs = new HotelService();
     $popis_soba = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
     foreach ($popis_soba as $soba) {
-      if(isset($_POST[$soba[0]])){
+      if(isset($_POST[$soba[0]])) {
         $qs->removeroom_service($soba[0]);
         break;
       }
     }
     $this->premiumindex();
   }
-
-
-  public function premiumindex()
-  {
+  //index premium premium user
+  public function premiumindex() {
     $qs = new HotelService();
     $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
     $this->registry->template->title = 'Rooms you are offering';
     $this->registry->template->show('premium_hotels_index');
   }
-
-  public function addeditroom(){
+  //dodavanje sobe
+  public function addeditroom() {
     $qs = new HotelService();
     $temp_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
     $is = 0;
     foreach ($temp_list as $temp) {
-      if ($temp[0] === $_POST["id_sobe"]){
+      if ($temp[0] === $_POST["id_sobe"]) {
         $is = 1;
         $qs->addeditroom_service($_POST["id_sobe"], $_POST["tip"], $_POST["cijena"]);
         $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
@@ -44,7 +40,7 @@ class HotelsController extends BaseController
       }
     }
     $this->registry->template->is = $is;
-    if($is === 0){
+    if($is === 0) {
       $max = $qs->getHighestRoomId();
       $max;
       $this->registry->template->max = $max;
@@ -54,51 +50,36 @@ class HotelsController extends BaseController
       $this->registry->template->show('premium_hotels_index');
     }
   }
-
-  public function loginResults()
-  {
+  //rezultat pokusaja logina
+  public function loginResults() {
     $qs = new HotelService();
 
-    if( !isset( $_POST['username'] ) || !isset( $_POST['password'] ) )
-  	{
+    if(!isset( $_POST['username'] ) || !isset( $_POST['password'] )) {
       $this->registry->template->msg = 'You have to put in your username and password.';
-
       $this->registry->template->show('login_index');
   	}
-    else if( !preg_match( '/^[a-zA-Z]{1,50}$/', $_POST['username'] ) )
-  	{
-      $this->registry->template->msg = 'The length of your username must be between 1 and 50 characters.';
-
+    else if(!preg_match( '/^[a-zA-Z]{1,50}$/', $_POST['username'] )) {
+      $this->registry->template->msg = 'Your username must consist of 1 to 50 letters.';
       $this->registry->template->show('login_index');
   	}
-    else if(isset($_POST['registerButton']))//provjeravam jesu li ispunjeni uvjeti za registraciju
-    {
-      if(!isset($_POST["email"]))
-      {
+    else if(isset($_POST['registerButton'])) {//provjeravam jesu li ispunjeni uvjeti za registraciju
+      if(!isset($_POST["email"])) {
         $this->registry->template->msg = 'You have to put in your email in order to register.';
-
         $this->registry->template->show('login_index');
       }
-      else
-      {
+      else {
         $user = $qs->getIdAndPasswordFromUsername($_POST["username"]);
         $username = $_POST["username"];
-        if($user !== null)
-        {
+        if($user !== null) {
           $this->registry->template->msg = 'A user with that username already exists.';
-
           $this->registry->template->show('login_index');
         }
-        else
-        {
-          if(!filter_var( $_POST['email'], FILTER_VALIDATE_EMAIL))
-          {
+        else {
+          if(!filter_var( $_POST['email'], FILTER_VALIDATE_EMAIL)) {
             $this->registry->template->msg = 'Incorrect email formatting.';
-
             $this->registry->template->show('login_index');
           }
-          else
-          {//sad je sve u redu pa  saljem mail user-u
+          else {//sad je sve u redu pa  saljem mail user-u
             $stringSpace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $pieces = [];
             $length = rand(1, 20);
@@ -120,34 +101,27 @@ class HotelsController extends BaseController
         		$isOK = mail($to, $subject, $message, $headers);
 
         		if( !$isOK )
-        			exit( 'Gre ka: ne mogu poslati mail. (Pokrenite na rp2 serveru.)' );
+        			exit('Greska: ne mogu poslati mail. (Pokrenite na rp2 serveru.)');
 
             $this->registry->template->show('login_thanks');
           }
         }
       }
-    } else if( isset( $_POST["username"] ) && isset($_POST['loginButton']))//provjeravam jesu li ispunjeni uvjeti za login
-		{
+    } else if(isset( $_POST["username"] ) && isset($_POST['loginButton'])) {//provjeravam jesu li ispunjeni uvjeti za login
 			$username = $_POST["username"];
       $user = $qs->getIdAndPasswordFromUsername($username);
 
-      if($user === null)//slucaj ako ne valja ili nije unesen username
-      {
+      if($user === null) {//slucaj ako ne valja ili nije unesen username
         $this->registry->template->msg = 'There is no user with that username. Have you registered yet?';
-
         $this->registry->template->show('login_index');
       }
-      else//slucaj ako korisnik jos nije zavrsio registraciju
-      {
+      else {//slucaj ako korisnik jos nije zavrsio registraciju
         $hash = $user['password_hash'];
-        if($user['has_registered'] !== "1")
-        {
+        if($user['has_registered'] !== "1") {
           $this->registry->template->msg = 'You are not registered yet. Check your email!';
-
           $this->registry->template->show('login_index');
         }
-        else if(password_verify($_POST['password'], $hash))
-        {
+        else if(password_verify($_POST['password'], $hash)) {
           $_SESSION[ 'username' ] = $username;
           $_SESSION[ 'id' ] = $user['id_usera'];
           $_SESSION["id_hotela"] = $_POST["id_hotela"];
@@ -158,48 +132,44 @@ class HotelsController extends BaseController
 
           $qs2 = new HotelService();
       		$this->registry->template->hotelList = $qs2->getAvailableHotels();
-          if($_POST["id_hotela"] === "-1"){
+          if($_POST["id_hotela"] === "-1") {
       		  $this->registry->template->show('hotels_index');
           }
-          else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"]){//upute za glupog kikija tu gledaj inace
+          else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"]) {
             $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
             $this->registry->template->title = 'Rooms you are offering';
             $this->registry->template->show('premium_hotels_index');
           }
         }
-        else
-        {
+        else {
           $this->registry->template->msg = 'Incorrect username or password - try again.';
-
           $this->registry->template->show('login_index');
         }
       }
 		}
-		else
-		{
+		else {
       $this->registry->template->title = 'Incorrect password or username!';
 			header( 'Location: ' . __SITE_URL . '/index.php?rt=hotels/login' );
 			exit;
 		}
   }
-
-  public function register()
-	{
+  //pocetna registracija (dohvacanje registration sequence)
+  public function register() {
     $qs = new HotelService();
 
 		if(!isset($_GET['niz']) || !preg_match('/^[a-zA-Z0-9]{1,20}$/', $_GET['niz'])){
       if(!isset($_GET['niz']))
-        exit("ne vidim niz");
+        exit('The registration sequence has not been set.');
       else
-        exit('Ne to ne valja s nizom.');
+        exit('Something is wrong with the registration sequence.');
     }
 
     $qs->register($_GET['niz']);
 
     $this->registry->template->show('login_registrationcomplete');
 	}
-
-	public function availableHotels(){
+  //pocetna stranica za prikaz dostupnih hotela
+	public function availableHotels() {
 		$qs = new HotelService();
 
 		$this->registry->template->title = 'Available hotels';
@@ -214,83 +184,9 @@ class HotelsController extends BaseController
     $this->registry->template->show('hotels_index');
   }
 
-  public function narrowedSearch()//prikazuje pocetnu stranicu s opcijama za suzavanje izbora hotela
-  {
-    $qs = new HotelService();
-
-    $this->registry->template->title = 'Search for hotels with your preferences';
-    $this->registry->template->username = $_SESSION['username'];
-
-    $this->registry->template->hotelList = $qs->getAvailableHotels();
-
-		$this->registry->template->show('hotels_index');
-  }
-
-  public function narrowedSearchResults()//prikazuje suzeni izbor hotela
-  {
-    $qs = new HotelService();
-
-		if(empty($_POST['city']))
-		{
-			header('Location: index.php?rt=hotels/narrowedSearch');
-			exit();
-		}
-    $city = $_POST['city']; //po defaultu je odabran Zagreb
-    //sve ostale opcije su inicijalno postavljene na min/max vrijednosti
-    echo "city = ";
-    echo $city;
-    echo "<br>";
-    $lowPrice;
-    if(strlen($_POST['lowPrice']) === 0)
-      $lowPrice = 0;
-    else
-      $lowPrice = $_POST['lowPrice'];
-    echo "lowprice = ";
-    echo $lowPrice;
-    echo "<br>";
-    $upPrice;
-    if(strlen($_POST['upPrice']) === 0)
-      $upPrice = PHP_INT_MAX;
-    else
-      $upPrice = $_POST['upPrice'];
-      echo "upprice = ";
-      echo $upPrice;
-      echo "<br>";
-    $distance;
-    if(strlen($_POST['distance']) === 0)
-      $distance = PHP_FLOAT_MAX;
-    else{
-      $distance = (double)$_POST['distance'];
-    }
-    echo "distance = ";
-    echo $distance;
-    echo "<br>";
-    $lowRating;
-    if(strlen($_POST['lowRating']) === 0)
-      $lowRating = 0;
-    else
-      $lowRating = $_POST['lowRating'];
-      echo "lowrating = ";
-      echo $lowRating;
-      echo "<br>";
-    $lowRating;
-    if(strlen($_POST['upRating']) === 0)
-      $upRating = 10;
-    else
-      $upRating = $_POST['upRating'];
-      echo "uprating = ";
-      echo $upRating;
-      echo "<br>";
-    $this->registry->template->title = 'A list of hotels with the selected preferences';
-    $this->registry->template->username = $_SESSION['username'];
-    $this->registry->template->hotelList = $qs->getNarrowedHotels($city, $lowPrice, $upPrice, $distance, $lowRating, $upRating);
-
-		$this->registry->template->show('hotels_narrowed');
-  }
-
   //prikazuje sve slobodne sobe za hotel zadanog id-a
   //omogucuje odabir datuma rezervacije, te potom odabir soba koje zeli rezervirati
-  public function getAvailability(){ //prikazuje koje vrste soba su u ponudi hotela
+  public function getAvailability() { //prikazuje koje vrste soba su u ponudi hotela
     $hs=new HotelService();
     $this->registry->template->title='Available rooms';
     $this->registry->template->msg=' ';
@@ -306,18 +202,17 @@ class HotelsController extends BaseController
     $this->registry->template->reviewList=$hs->getReviewsForHotelById($_POST['button']);
     $this->registry->template->show('hotels_availability');
   }
-
-  public function availableRooms(){ //koliko je soba svake vrste dostupno u promatranom periodu
+  //koliko je soba svake vrste dostupno u promatranom periodu
+  public function availableRooms() {
     $hs=new HotelService();
     $this->registry->template->title='Available rooms';
     $this->registry->template->msg=' ';
     $now=date("Y-m-d");
 
-    if(isset($_SESSION['dolazak']) &&  isset($_SESSION['odlazak'])){ // ako je vec prije postavljao datume onda i njih moramo uzeti u obzir
-
-      if($_POST['start']!=="" && $_POST['end']!==""){ //ako je korisnik ponovno unio oba datuma
+    if(isset($_SESSION['dolazak']) &&  isset($_SESSION['odlazak'])) {// ako je vec prije postavljao datume onda i njih moramo uzeti u obzir
+      if($_POST['start'] !== "" && $_POST['end'] !== "") { //ako je korisnik ponovno unio oba datuma
         $provjera=$hs->checkDates($_POST['start'], $_POST['end']);
-        if($provjera===-1){
+        if($provjera===-1) {
           $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder1=$now;
@@ -325,7 +220,7 @@ class HotelsController extends BaseController
           unset($_SESSION['dolazak']);
           unset($_SESSION['odlazak']);
 
-        }else if($provjera===0){
+        }else if($provjera===0) {
           $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder=$now;
@@ -333,18 +228,15 @@ class HotelsController extends BaseController
           $this->registry->template->placeholder2=$now;
           unset($_SESSION['dolazak']);
           unset($_SESSION['odlazak']);
-
-        }else if($provjera===1){
+        }else if($provjera===1) {
           $_SESSION['dolazak']=$_POST['start'];
           $_SESSION['odlazak']=$_POST['end'];
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
           $this->registry->template->placeholder1=$_SESSION['dolazak'];
           $this->registry->template->placeholder2=$_SESSION['odlazak'];
         }
-
-      }else if($_POST['start']!=="" && $_POST['end']===""){
+      }else if($_POST['start'] !== "" && $_POST['end'] === "") {
         //korisnik nije promijenio datum odlaska, vec samo datum dolaska
-
         $provjera=$hs->checkDates($_POST['start'], $_POST['end']);
         if($provjera===-1){
           $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
@@ -353,8 +245,7 @@ class HotelsController extends BaseController
           $this->registry->template->placeholder2=$now;
           unset($_SESSION['dolazak']);
           unset($_SESSION['odlazak']);
-
-        }else if($provjera===0){
+        }else if($provjera===0) {
           $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder=$now;
@@ -362,27 +253,23 @@ class HotelsController extends BaseController
           $this->registry->template->placeholder2=$now;
           unset($_SESSION['dolazak']);
           unset($_SESSION['odlazak']);
-
-        }else if($provjera===1){
+        }else if($provjera===1) {
           $_SESSION['dolazak']=$_POST['start'];
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
           $this->registry->template->placeholder1=$_SESSION['dolazak'];
           $this->registry->template->placeholder2=$_SESSION['odlazak'];
         }
-
-      }else if($_POST['start']==="" && $_POST['end']!==""){
+      }else if($_POST['start']==="" && $_POST['end']!=="") {
         //korisnik nije promijenio datum dolaska, vec samo datum odlaska
-
         $provjera=$hs->checkDates($_SESSION['start'], $_POST['end']);
-        if($provjera===-1){
+        if($provjera===-1) {
           $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder1=$now;
           $this->registry->template->placeholder2=$now;
           unset($_SESSION['dolazak']);
           unset($_SESSION['odlazak']);
-
-        }else if($provjera===0){
+        }else if($provjera===0) {
           $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder=$now;
@@ -390,32 +277,28 @@ class HotelsController extends BaseController
           $this->registry->template->placeholder2=$now;
           unset($_SESSION['dolazak']);
           unset($_SESSION['odlazak']);
-
-        }else if($provjera===1){
+        }else if($provjera===1) {
           $_SESSION['odlazak']=$_POST['end'];
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
           $this->registry->template->placeholder1=$_SESSION['dolazak'];
           $this->registry->template->placeholder2=$_SESSION['odlazak'];
         }
-
-      }else{ //ako je samo pritisnuo gumb apply
+      }else { //ako je samo pritisnuo gumb apply
         $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
         $this->registry->template->placeholder1=$_SESSION['dolazak'];
         $this->registry->template->placeholder2=$_SESSION['odlazak'];
       }
-    }else{ //korisnik po prvi puta unosi neki od datuma
-
-      if($_POST['start']!=="" && $_POST['end']!==""){ //unosi oba datuma
+    }else { //korisnik po prvi puta unosi neki od datuma
+      if($_POST['start']!=="" && $_POST['end']!=="") { //unosi oba datuma
           $provjera=$hs->checkDates($_POST['start'], $_POST['end']);
-          if($provjera===-1){
+          if($provjera===-1) {
             $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
             $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
             $this->registry->template->placeholder1=$now;
             $this->registry->template->placeholder2=$now;
             unset($_SESSION['dolazak']);
             unset($_SESSION['odlazak']);
-
-          }else if($provjera===0){
+          }else if($provjera===0) {
             $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
             $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
             $this->registry->template->placeholder=$now;
@@ -423,29 +306,24 @@ class HotelsController extends BaseController
             $this->registry->template->placeholder2=$now;
             unset($_SESSION['dolazak']);
             unset($_SESSION['odlazak']);
-
-          }else if($provjera===1){
+          }else if($provjera===1) {
             $_SESSION['dolazak']=$_POST['start'];
             $_SESSION['odlazak']=$_POST['end'];
             $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
             $this->registry->template->placeholder1=$_SESSION['dolazak'];
             $this->registry->template->placeholder2=$_SESSION['odlazak'];
           }
-
-      }else if($_POST['start']!=="" && $_POST['end']===""){
+      }else if($_POST['start']!=="" && $_POST['end']==="") {
         //korisnik nije promijenio datum odlaska, vec samo datum dolaska
-
         $provjera=$hs->checkDates($_POST['start'], $now);
-        echo $provjera;
-        if($provjera===-1){
+        if($provjera===-1) {
           $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder1=$now;
           $this->registry->template->placeholder2=$now;
           unset($_SESSION['dolazak']);
           unset($_SESSION['odlazak']);
-
-        }else if($provjera===0){
+        }else if($provjera===0) {
           $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder=$now;
@@ -453,41 +331,35 @@ class HotelsController extends BaseController
           $this->registry->template->placeholder2=$now;
           unset($_SESSION['dolazak']);
           unset($_SESSION['odlazak']);
-
-        }else if($provjera===1){
+        }else if($provjera===1) {
           $_SESSION['dolazak']=$_POST['start'];
           $_SESSION['odlazak']=$now;
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
           $this->registry->template->placeholder1=$_SESSION['dolazak'];
           $this->registry->template->placeholder2=$_SESSION['odlazak'];
         }
-
-      }else if($_POST['start']==="" && $_POST['end']!==""){
+      }else if($_POST['start']==="" && $_POST['end']!=="") {
         //korisnik nije promijenio datum odlaska, vec samo datum dolaska
-
         $provjera=$hs->checkDates($now, $_POST['end']);
-        if($provjera===-1){
+        if($provjera===-1) {
           $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder1=$now;
           $this->registry->template->placeholder2=$now;
-
-        }else if($provjera===0){
+        }else if($provjera===0) {
           $this->registry->template->msg='You can not leave before you get here! Please select dates accordingly.';
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder=$now;
           $this->registry->template->placeholder1=$now;
           $this->registry->template->placeholder2=$now;
-
-        }else if($provjera===1){
+        }else if($provjera===1) {
           $_SESSION['dolazak']=$now;
           $_SESSION['odlazak']=$_POST['end'];
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
           $this->registry->template->placeholder1=$_SESSION['dolazak'];
           $this->registry->template->placeholder2=$_SESSION['odlazak'];
         }
-
-      }else{ //ako je samo pritisnuo gumb apply
+      }else { //ako je samo pritisnuo gumb apply
         $_SESSION['dolazak']=$now;
         $_SESSION['odlazak']=$now;
         $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
@@ -498,28 +370,27 @@ class HotelsController extends BaseController
     $this->registry->template->reviewList=$hs->getReviewsForHotelById($_SESSION['hotelId']);
     $this->registry->template->show('hotels_availability');
   }
-
-  public function bookRoom(){ //rezervacija soba
+  //rezervacija soba
+  public function bookRoom() {
     $hs=new HotelService();
     $this->registry->template->title='Available rooms';
     
-    if(isset($_SESSION['dolazak']) && isset($_SESSION['odlazak'])){
+    if(isset($_SESSION['dolazak']) && isset($_SESSION['odlazak'])) {
       //ako je korisnik unio datume rezervacije
       //za svaki tip soba rezerviramo odgovarajuci broj soba
       $rooms=$hs->getAvailableRooms($_SESSION['hotelId'], $_SESSION['dolazak'],$_SESSION['odlazak']);
-      foreach($rooms as $room){
+      foreach($rooms as $room) {
         $popis=explode(' ', $room[0]);
         $name=implode('_',$popis);
         $hs->reserveRoom($room[0], $_POST[$name], $_SESSION['dolazak'], $_SESSION['odlazak'], $_SESSION['username']);
       }
-    }else{ //nije unio datume, onda je pocetak i kraj rezervacije na trenutni datum
+    }else { //nije unio datume, onda je pocetak i kraj rezervacije na trenutni datum
       $rooms=$hs->getAvailableRooms($_SESSION['hotelId'], date("Y-m-d"),date("Y-m-d"));
       foreach($rooms as $room){
         $popis=explode(' ', $room[0]);
         $name=implode('_',$popis);
         $hs->reserveRoom($room[0], $_POST[$name], date("Y-m-d"), date("Y-m-d"), $_SESSION['username']);
       }
-
     }
 
     unset($_SESSION['dolazak']);
@@ -532,8 +403,8 @@ class HotelsController extends BaseController
     $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], date("Y-m-d"), date("Y-m-d"));
     $this->registry->template->show('hotels_availability');
   }
-
-  public function userReservations(){ //prikazuju se rezervacije korisnika, i one prosle (s komentarima i one bez njih) te buduce
+  //prikazuju se rezervacije korisnika, i one prosle (s komentarima i one bez njih) te buduce
+  public function userReservations() {
     $hs=new HotelService();
     $this->registry->template->title='Reservations';
 
@@ -545,8 +416,8 @@ class HotelsController extends BaseController
     $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
     $this->registry->template->show('userReservations');
   }
-
-  public function deleteReservation(){ //brise neku buducu rezervaciju
+  //brise neku buducu rezervaciju
+  public function deleteReservation(){
     $hs=new HotelService();
     $this->registry->template->title='Reservations';
 
@@ -557,8 +428,8 @@ class HotelsController extends BaseController
     $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
     $this->registry->template->show('userReservations');
   }
-
-  public function addCommentAndRating(){ //vodi na stranicu gdje korisnik moze ostaviti komentar i ocjenu
+  //vodi na stranicu gdje korisnik moze ostaviti komentar i ocjenu
+  public function addCommentAndRating(){
     $this->registry->template->title='Add comment and rating';
     $this->registry->template->msg='';
     $popis=explode('|', $_POST['enterComment']);
@@ -569,8 +440,8 @@ class HotelsController extends BaseController
 
     $this->registry->template->show('rateAndComment');
   }
-
-  public function addCommentAndRatingResult(){ //nakon sto korisnik unese komentar i ocjenu
+  //nakon sto korisnik unese komentar i ocjenu
+  public function addCommentAndRatingResult() {
     $hs=new HotelService();
 
     $popis=explode('|', $_POST['share']);
@@ -581,11 +452,11 @@ class HotelsController extends BaseController
 
       $id_usera=$hs->getIdByUsername($_SESSION['username']);
 
-    if($_POST['rating']==="" || $_POST['comment']===""){ //moraju biti uneseni i ocjena i komentar
+    if($_POST['rating']==="" || $_POST['comment']==="") { //moraju biti uneseni i ocjena i komentar
       $this->registry->template->title='Add comment and rating';
       $this->registry->template->msg = 'Please enter both rating and comment.';
       $this->registry->template->show('rateAndComment');
-    }else{
+    }else {
       $hs->addComment($popis[1], $id_usera, $_SESSION['username'], $popis[2], $popis[3], $_POST['rating'], $_POST['comment']);
 
       $this->registry->template->title='Reservations';
@@ -594,8 +465,8 @@ class HotelsController extends BaseController
     }
 
   }
-
-  public function editCommentAndRating(){ //vodi na stranicu gdje korisnik moze urediti komentar i ocjenu
+  //vodi na stranicu gdje korisnik moze urediti komentar i ocjenu
+  public function editCommentAndRating() {
     $hs=new HotelService();
     $this->registry->template->title='Edit comment and rating';
 
@@ -611,24 +482,23 @@ class HotelsController extends BaseController
 
     $this->registry->template->show('editComment');
   }
-
-  public function editCommentAndRatingResults(){ //vodi na stranicu gdje korisnik moze urediti komentar i ocjenu
+  //rezultat uredivanja komentara i ocjene
+  public function editCommentAndRatingResults() {
     $hs=new HotelService();
     $this->registry->template->title='Edit comment and rating';
 
-    if($_POST['rating']==="" || $_POST['comment']===""){ //moraju biti uneseni i ocjena i komentar
+    if($_POST['rating']==="" || $_POST['comment']==="") { //moraju biti uneseni i ocjena i komentar
       $this->registry->template->msg = 'Please enter both rating and comment.';
       $this->registry->template->show('editComment');
-    }else{
+    }else {
       $hs->editComment($_POST['share'], $_POST['comment'], $_POST['rating']);
       $this->registry->template->title='Reservations';
       $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
       $this->registry->template->show('userReservations');
     }
-
   }
-
-  public function deleteComment(){ //vodi na stranicu gdje korisnik moze urediti komentar i ocjenu
+  //omogucuje brisanje komentara korisniku
+  public function deleteComment() {
     $hs=new HotelService();
     $this->registry->template->title='Reservations';
 
@@ -637,8 +507,6 @@ class HotelsController extends BaseController
 
     $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
     $this->registry->template->show('userReservations');
-
   }
-
 }
 ?>

@@ -154,8 +154,14 @@ a:hover {
 
 .form label, 
 #narrow label, 
-#premNarrow label {
+#premNarrow label,
+.calLab,
+#ime {
   font-weight: bold;
+}
+
+.calLab {
+  margin-top: 10px;
 }
 
 .form input[type="text"],
@@ -174,9 +180,19 @@ a:hover {
   border-radius: 4px;
 }
 
-.form button,
-#narrow button,
-#premNarrow button {
+.hotel select {
+  width: 50%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#brojSoba {
+  text-align: center
+}
+
+button {
   background-color: #1d05b5;
   color: #fff;
   padding: 10px 20px;
@@ -185,9 +201,7 @@ a:hover {
   cursor: pointer;
 }
 
-.form button:hover,
-#narrow button:hover,
-#premNarrow button:hover {
+button:hover {
   background-color: #0069d9;
 }
 
@@ -294,13 +308,37 @@ a:hover {
 }
 #apply{
   float: left;
-  margin-left: 50px;
+  margin-top: 10px;
 }
 #datePicker1 .close,
 #datePicker2 .close {
   text-align: right;
   margin-bottom: 10px;
   cursor: pointer;
+}
+#x {
+  display: inline-block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #ccc;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  background-color: #1d05b5;
+  border-radius: 4px;
+}
+
+#x:hover {
+  background-color: #0069d9;
+}
+
+#x:active {
+  background-color: #0069d9;
 }
 
 #calendarContainer1,

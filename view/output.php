@@ -1,4 +1,3 @@
-Sort by: City, Name, Distance from the city centre, Price
 <div id="list">
 <form method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/getAvailability'?>">
 <?php

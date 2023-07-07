@@ -51,7 +51,7 @@
 	</div>
 </div>
 <div id="list">
-  <form method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/getAvailability'?>">
+  <form id="forma" method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/getAvailability'?>">
   <?php
   	foreach($hotelList as $hotel){
   		echo '<table class="listingSort">' .
@@ -72,7 +72,7 @@
   			'</tr>'.
   			'<tr>' .
   			'<td class="hotel">' .
-  			'<button type="submit" name="button" value="' . $hotel[0]->id_hotela . '">' .
+  			'<button type="submit" class="availabilityButton" name="button" value="' . $hotel[0]->id_hotela . '">' .
               'See availability</button>' .
   			'</td>' .
               '</tr>' .
