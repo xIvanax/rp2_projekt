@@ -1,16 +1,15 @@
-# rp2_projekt
-Web aplikacija za nalaženje hotelskog smještaja
+# Web aplikacija za nalaženje hotelskog smještaja
 
 ## Zadatak
 Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcija da na temelju grada, cijene, udaljenosti od centra, dobivenih ocjena nađe hotel koji mu najviše odgovara. Također može po bilo kojem od kriterija sortirati hotele. Korisnici mogu davati ocjene hotelima te ostavljati komentare, tj. recenzirati hotele, koji će kasnije biti dostupni ostalim korisnicima. Uz obične korisnike koji rezerviraju smještaj, postoje i korisnici tipa hotel. Oni mogu definirati broj soba odgovarajućeg tipa te njihove cijene, eventualno dodavati slike. Treba onemogućiti daljnju rezervaciju soba ako one postanu nedostupne za odabrane datume. 
 
 ## Postupak izrade i predaje zadatka
-1. Aplikaciju je preporučeno razvijati u skladu s __Model-View-Controller__ arhitekturalnim patternom. U protivnom treba dati odgovarajuće obrazloženje.
+1. ~~Aplikaciju je preporučeno razvijati u skladu s __Model-View-Controller__ arhitekturalnim patternom. U protivnom treba dati odgovarajuće obrazloženje.~~
 2. Rješenje zadatka, koje uključuje (dobro komentiran) kod i kratku prezentaciju treba poslati mailom prof. Bujanoviću. Alternativno, po završetku razvoja, možete uz prezentaciju profesoru poslati link na Git repozitorij ili ga dodati kao člana sa readonly pravom ako je projekt privatan. Termin usmene obrane se dogovara s profesorom; trebate se javiti dovoljno rano (barem tjedan dana unaprijed).
-3. Mogući termini usmene obrane će biti objavljeni ovdje.
+3. ~~Mogući termini usmene obrane će biti objavljeni ovdje.~~
 4. Izvorni kod (source) ili link na Git repozitorij, prezentaciju s opisom aplikacije, te link na aplikaciju na rp2 serveru je potrebno poslati profesoru mailom barem dva dana prije usmene obrane. Na obrani trebaju biti prisutni svi članovi projekta, te svatko treba objasniti svoju ulogu u projektu.
-5. Rješenje bi trebalo biti postavljeno na rp2.studenti.math.hr (osim u iznimnim situacijama i u dogovoru s profesorom). Možete koristiti i vanjske JavaScript/HTML/CSS biblioteke, poput jQuery, Bootstrap i sličnih. Ne smijete koristiti gotova ili skoro gotova rješenja zadatka kojeg rješavate -- takva ili bilo koja druga vrsta plagiranja nije prihvatljiva!
-6. Projekt treba sadržavati aspekte __i serverskog (PHP) i klijentskog (JavaScript) programiranja__. Iznimke su moguće jedino u dogovoru s profesorom.
+5. Rješenje bi trebalo biti postavljeno na rp2.studenti.math.hr (osim u iznimnim situacijama i u dogovoru s profesorom). 
+6.~~Projekt treba sadržavati aspekte __i serverskog (PHP) i klijentskog (JavaScript) programiranja__. Iznimke su moguće jedino u dogovoru s profesorom.~~
 
 ## Baza podataka _~Ivana_
 Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.
@@ -24,11 +23,18 @@ Imamo odvojene tablice za:
  -  u projekt_sobe_datumi dodala sam id_usera
  -  napravila neke promijene u tablici projekt_ocjene _~Dorotea_
 
-__Vjerojatno bi bilo najbolje popuniti ih iz php-a, a ne u phpmyadmin jer ak kasnije skuzimo da nes ne valja s tablicom lakse cemo popravit.__
-
 Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sql naredbe), [booking.com](https://www.booking.com/) (informacije za hotele, imaju i komentare korisnika s ocjenama, ideje za tipove soba, cijene itd. - ugl. korisno da ne moramo izmisljat nego mozemo samo copy pasteat hrpu tog)
 
-## Updates
+## New updates
+- omoguceno filtriranje u sucelju za obicne usere pomocu javascripta i uskladen css _~Ivana_
+- 
+## To do list
+- dodati slike hotela i soba tam di treba pomoću javacripta
+- iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
+- ciscenje koda
+- provjeriti jel na premium users sve isto ko na obicnim ili smo nesto zaboravili iskopirati
+
+## Old updates/what's been done
 - baza podataka je skroz gotova (osmisljeni podaci i napravljen sql u phpmyadmin) i moze se koristiti _~Ivana_
 - omoguceno uloggiravanje i registracija i prikaz pocetne stranice _~Ivana_
 - omoguceno filtriranje hotela prema zahtjevima korisnika _~Ivana_
@@ -49,7 +55,3 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - Dodan ispis najnize cijene sobe za svaki hotel an naslovnoj stranici u svrhu sorta po cijeni. _~Kiki_
 - Popravila sam jos neke greske od doroteinog pusha i popravila greske koje je uzrokovo kikijev zadnji push. Pliz provjeravajte jel sve funkcionira i nakon sto nes izmijenite i pushate. _~Ivana_
 - omogucen sort u sucelju za premium usere i uskladen css tog sučelja s ostatkom stranice _~Ivana_
-## To do list
-- dodati slike hotela i soba tam di treba pomoću javacripta
-- iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
-- prepraviti primjenu filtera po gradu, ratingu, udaljenosti, cijeni itd. na naslovnoj stranici t.d. rezultat filtriranja ne bude prikazan na skroz novoj stranici nego da se pomocu javascripta prikaze na istoj stranici
