@@ -20,7 +20,7 @@
 
 		<br>
 		<?php
-			echo '<button type="submit" name="share" value="'. $imeHotela . "|" . $idHotela .  "|" . $dolazak . "|" . $odlazak . '">'. 'Add comment and rating</button>';
+			echo '<button type="submit" name="share" value="'. $imeHotela . "|" . $idSobe . "|" . $idHotela .  "|" . $dolazak . "|" . $odlazak . '">'. 'Add comment and rating</button>';
 		?>
 	</form>
 

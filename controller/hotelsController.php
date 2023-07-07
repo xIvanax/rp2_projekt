@@ -410,7 +410,7 @@ class HotelsController extends BaseController {
     $this->registry->template->title='Reservations';
 
     //ako korisnik unese datume prilikom rezervacije i ne napravi rezervaciju, vec ode na listu svojih rezervacija potrebno je 
-    //prethodno unesene datume ignorirati
+    //prethodno unesene datume "ignorirati"
     unset($_SESSION['dolazak']);
     unset($_SESSION['odlazak']);
 
@@ -435,9 +435,10 @@ class HotelsController extends BaseController {
     $this->registry->template->msg='';
     $popis=explode('|', $_POST['enterComment']);
     $this->registry->template->idHotela=$popis[0];
-    $this->registry->template->imeHotela=$popis[1];
-    $this->registry->template->dolazak=$popis[2];
-    $this->registry->template->odlazak=$popis[3];
+    $this->registry->template->idSobe=$popis[1];
+    $this->registry->template->imeHotela=$popis[2];
+    $this->registry->template->dolazak=$popis[3];
+    $this->registry->template->odlazak=$popis[4];
 
     $this->registry->template->show('rateAndComment');
   }
@@ -446,19 +447,20 @@ class HotelsController extends BaseController {
     $hs=new HotelService();
 
     $popis=explode('|', $_POST['share']);
-      $this->registry->template->imeHotela=$popis[0];
-      $this->registry->template->idHotela=$popis[1];
-      $this->registry->template->dolazak=$popis[2];
-      $this->registry->template->odlazak=$popis[3];
+    $this->registry->template->idHotela=$popis[0];
+    $this->registry->template->idSobe=$popis[1];
+    $this->registry->template->imeHotela=$popis[2];
+    $this->registry->template->dolazak=$popis[3];
+    $this->registry->template->odlazak=$popis[4];
 
-      $id_usera=$hs->getIdByUsername($_SESSION['username']);
+    $id_usera=$hs->getIdByUsername($_SESSION['username']);
 
     if($_POST['rating']==="" || $_POST['comment']==="") { //moraju biti uneseni i ocjena i komentar
       $this->registry->template->title='Add comment and rating';
       $this->registry->template->msg = 'Please enter both rating and comment.';
       $this->registry->template->show('rateAndComment');
-    }else {
-      $hs->addComment($popis[1], $id_usera, $_SESSION['username'], $popis[2], $popis[3], $_POST['rating'], $_POST['comment']);
+    }else{
+      $hs->addComment($popis[2], $popis[1], $id_usera, $_SESSION['username'], $popis[3], $popis[4], $_POST['rating'], $_POST['comment']);
 
       $this->registry->template->title='Reservations';
       $this->registry->template->commentsList=$hs->getMyReservations($_SESSION['username']);
