@@ -41,16 +41,16 @@ $('#pSort').on('click', function(){
 function sortType(k) {
 	//ako k==3 silazno, inace uzlazno
       //sad znam koji sort moram napraviti, ali da bi sortirala prvo moram dohvatiti listu
-      var table = $("#premiumSort td");
+      var table = $("#premiumSort td");//tu su ćelije tablice sa sobama
       var oldList = $('#premiumSort tr');
       var len = $('#premiumSort tr');
       var n = len.length; //broj redaka
-      var j = 0;
+
       function Room(id, tip, price, fname) {
-        this.tip =  tip.substring(10);
-        this.price = Number(price.substring(13));
-        this.id = id.substring(9);
-        this.fname = id.substring(9);
+        this.tip = tip;
+        this.price = Number(price);
+        this.id = id;
+        this.fname = id;
       }
 
       function usporeditip2(a, b){
@@ -69,9 +69,10 @@ function sortType(k) {
         constructor: Room, // treba jer {} kreira NOVI objekt
       };
       let arrRooms = new Array();
-      var j = 0;
-      for(var i = 0; i < n; i++){
+
+      for(var i = 0; i < n - 1; i++){
         arrRooms[i] = new Room($("#premiumSort td").eq(4*i).html(), $("#premiumSort td").eq(4*i + 1).html(), $("#premiumSort td").eq(4*i + 2).html(), $("#premiumSort td").eq(4*i).html());
+        console.log("po tipu: " + $("#premiumSort td").eq(4*i + 1).html());
       }
 
       if(k === 3){
@@ -81,15 +82,22 @@ function sortType(k) {
       }
 
       oldList.remove();
-      for(var i = 0; i < n; i++){
+      $('#premiumSort').append(
+        '<tr>' +
+          '<th>id sobe</th>' +
+          '<th>tip sobe</th>' +
+          '<th>cijena sobe (€)</th>' +
+        '</tr>');
+
+      for(var i = 0; i < n - 1; i++){
         $('#premiumSort').append(
               '<tr>' +
-                '<td class="room">id sobe: ' + arrRooms[i].id + '</td>' +
-                '<td class="room">tip sobe: ' + arrRooms[i].tip + '</td>' +
-                '<td class="room">cijena sobe: ' + arrRooms[i].price + '</td>' +
+                '<td class="room">' + arrRooms[i].id + '</td>' +
+                '<td class="room">' + arrRooms[i].tip + '</td>' +
+                '<td class="room">' + arrRooms[i].price + '</td>' +
                 '<td class="room">' +
                   '<form class="" action="index.php?rt=hotels/removeroom" method="post">' +
-                    '<input type="submit" name="' + arrRooms[i].fname + '" value="X">' +
+                    '<input id="x" type="submit" name="' + arrRooms[i].fname + '" value="X">' +
                   '</form>' +
                 '</td>' +
               '</tr>');
@@ -104,12 +112,12 @@ function sortType(k) {
         var oldList = $('#premiumSort tr');
         var len = $('#premiumSort tr');
         var n = len.length; //broj redaka
-        var j = 0;
+
         function Room(id, tip, price, fname) {
-          this.tip = tip.substring(10);
-          this.price = Number(price.substring(13));
-          this.id = id.substring(9);
-          this.fname = id.substring(9);
+          this.tip = tip;
+          this.price = Number(price);
+          this.id = id;
+          this.fname = id;
         }
 
         function usporediCijenu1(a, b){
@@ -124,11 +132,12 @@ function sortType(k) {
           constructor: Room, // treba jer {} kreira NOVI objekt
         };
         let arrRooms = new Array();
-        let arrPrice = new Array();
-        var j = 0;
-        for(var i = 0; i < n; i++){
+console.log("n = " + n);
+        for(var i = 0; i < n - 1; i++){
           arrRooms[i] = new Room($("#premiumSort td").eq(4*i).html(), $("#premiumSort td").eq(4*i + 1).html(), $("#premiumSort td").eq(4*i + 2).html(), $("#premiumSort td").eq(4*i).html());
-
+          console.log("po cijeni, ali tip je : *" + $("#premiumSort td").eq(4*i + 1).html() + "*");
+          console.log("id: *" + $("#premiumSort td").eq(4*i+1).html() + "*");
+          console.log("price: *" + $("#premiumSort td").eq(4*i+2).html() + "*");
         }
 
         if(k === 1){
@@ -138,12 +147,19 @@ function sortType(k) {
         }
 
         oldList.remove();
-        for(var i = 0; i < n; i++){
+        $('#premiumSort').append(
+          '<tr>' +
+            '<th>id sobe</th>' +
+            '<th>tip sobe</th>' +
+            '<th>cijena sobe (€)</th>' +
+          '</tr>');
+
+        for(var i = 0; i < n - 1; i++){
           $('#premiumSort').append(
                 '<tr>' +
                   '<td class="room">' + arrRooms[i].id + '</td>' +
                   '<td class="room">' + arrRooms[i].tip + '</td>' +
-                  '<td class="room">' + arrRooms[i].price + '€</td>' +
+                  '<td class="room">' + arrRooms[i].price + '</td>' +
                   '<td class="room">' +
                     '<form class="" action="index.php?rt=hotels/removeroom" method="post">' +
                       '<input id="x" type="submit" name="' + arrRooms[i].fname + '" value="X">' +

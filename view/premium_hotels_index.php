@@ -27,9 +27,11 @@
   <div id="premiumList">
   <?php
   echo '<table id="premiumSort">';
+  echo '<tr>';
   echo '<th>id sobe</th>';
   echo '<th>tip sobe</th>';
-  echo '<th>cijena sobe</th>';
+  echo '<th>cijena sobe (€)</th>';
+  echo '</tr>';
 
   foreach ($sobe_list as $soba) {
     echo '<tr>';
@@ -43,7 +45,7 @@
     echo '</td>';
 
     echo '<td class="room">';
-    echo $soba[2] .'€';
+    echo $soba[2];
     echo '</td>';
 
     echo '<td class="room">';
