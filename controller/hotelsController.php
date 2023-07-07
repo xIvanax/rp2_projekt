@@ -50,7 +50,7 @@ class HotelsController extends BaseController {
       $this->registry->template->show('premium_hotels_index');
     }
   }
-  //rezultat pokusaja logina
+  //rezultat pokusaja logina/registracije
   public function loginResults() {
     $qs = new HotelService();
 
