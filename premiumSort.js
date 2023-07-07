@@ -128,6 +128,7 @@ function sortType(k) {
         var j = 0;
         for(var i = 0; i < n; i++){
           arrRooms[i] = new Room($("#premiumSort td").eq(4*i).html(), $("#premiumSort td").eq(4*i + 1).html(), $("#premiumSort td").eq(4*i + 2).html(), $("#premiumSort td").eq(4*i).html());
+
         }
 
         if(k === 1){
@@ -140,12 +141,12 @@ function sortType(k) {
         for(var i = 0; i < n; i++){
           $('#premiumSort').append(
                 '<tr>' +
-                  '<td class="room">id sobe: ' + arrRooms[i].id + '</td>' +
-                  '<td class="room">tip sobe: ' + arrRooms[i].tip + '</td>' +
-                  '<td class="room">cijena sobe: ' + arrRooms[i].price + '</td>' +
+                  '<td class="room">' + arrRooms[i].id + '</td>' +
+                  '<td class="room">' + arrRooms[i].tip + '</td>' +
+                  '<td class="room">' + arrRooms[i].price + '€</td>' +
                   '<td class="room">' +
                     '<form class="" action="index.php?rt=hotels/removeroom" method="post">' +
-                      '<input type="submit" name="' + arrRooms[i].fname + '" value="X">' +
+                      '<input id="x" type="submit" name="' + arrRooms[i].fname + '" value="X">' +
                     '</form>' +
                   '</td>' +
                 '</tr>');

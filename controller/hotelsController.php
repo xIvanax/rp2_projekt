@@ -213,7 +213,8 @@ class HotelsController extends BaseController {
       if($_POST['start'] !== "" && $_POST['end'] !== "") { //ako je korisnik ponovno unio oba datuma
         $provjera=$hs->checkDates($_POST['start'], $_POST['end']);
         if($provjera===-1) {
-          $this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
+          //$this->registry->template->msg='Please select dates from today (' . $now . ') forward!';
+          ?><script>alert("Please select dates from today (' . $now . ') forward!")</script><?php
           $this->registry->template->roomsList=$hs->getAvailableRooms($_SESSION['hotelId'], $now, $now);
           $this->registry->template->placeholder1=$now;
           $this->registry->template->placeholder2=$now;

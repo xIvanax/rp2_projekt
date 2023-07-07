@@ -1,11 +1,11 @@
 <?php require_once __SITE_PATH . '/view/_header.php'; ?>
 <br>
 	<h2><?php echo $msg; ?></h2>
+	<br>
 	<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/availableRooms'?>">
 		<div class="date-pickers">
 			<div class="wrapper">
 				<div class="box1">
-					<br>
 					<label name="date" class="calLab">Check-in date</label>
 					<input name="start" type="text" id="dateInput1" placeholder="<?php echo $placeholder1 ?>" readonly>
 					<div id="datePicker1" class="datePicker">
@@ -14,7 +14,6 @@
 					</div>
 				</div>
 				<div class="box2">
-					<br>
 					<label name="date" class="calLab">Check-out date</label>
 					<input name="end" type="text" id="dateInput2" placeholder="<?php echo $placeholder2 ?>" readonly>
 					<div id="datePicker2" class="datePicker">
