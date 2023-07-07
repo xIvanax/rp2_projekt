@@ -2,7 +2,7 @@
 	foreach($reviewList as $ocjena){
 		echo '<table class="listing">' .
 			'<tr>' .
-			'<td class="komentar">' . $ocjena[0]. '</td>' .
+			'<td class="komentar" id="ime">@' . $ocjena[0]. '</td>' .
 			'</tr>' .
 			'<tr>' .
 			'<td class="komentar">' . $ocjena[1] . '</td>' .

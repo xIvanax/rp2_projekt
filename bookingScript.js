@@ -1,18 +1,15 @@
 $(document).ready(function() {
   $('#dateInput1').click(function() {
-console.log("why");
     $('#datePicker1').show();
     renderCalendar1();
   });
 
   $('#dateInput2').click(function() {
-console.log("why2");
     $('#datePicker2').show();
     renderCalendar2();
   });
 
   $('#datePicker1 .close').click(function() {
-    console.log("Close first");
     $('#datePicker1').hide();
   });
 
@@ -271,12 +268,9 @@ console.log("why2");
   });
 
   function renderCalendar1() {
-console.log("hello");
     var currentDate = new Date();
     var currentYear = currentDate.getFullYear();
-    console.log("Godina1: "+currentYear);
     var currentMonth = currentDate.getMonth();
-    console.log("Mjesec: "+currentMonth);
     var monthNames = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -289,17 +283,10 @@ console.log("hello");
     var calendarHTML = '';
     calendarHTML += '<div class="calendar-header1">';
     calendarHTML += '<span class="prev-month1">&lt;</span>';
-    console.log("Za span mjesec: "+monthNames[currentMonth]+" godina:"+currentYear);
-    console.log("ostalo:");
-    console.log(selectedDate);
-    console.log(selectedYear);
-    console.log(selectedMonth);
     if(isNaN(selectedYear) || isNaN(selectedMonth)){
-      console.log("wrong");
       calendarHTML += '<span class="month-year">' + monthNames[currentMonth] + ' ' + currentYear + '</span>';
     }
     else{
-      console.log("rigth");
       calendarHTML += '<span class="month-year">' + monthNames[selectedMonth] + ' ' + selectedYear + '</span>';
     }
     calendarHTML += '<span class="next-month">&gt;</span>';
@@ -345,12 +332,9 @@ console.log("hello");
   }
 
   function renderCalendar2() {
-console.log("hello2");
     var currentDate = new Date();
     var currentYear = currentDate.getFullYear();
-    console.log("Godina2: "+currentYear);
     var currentMonth = currentDate.getMonth();
-    console.log("Mjesec: "+currentMonth);
     var monthNames = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -363,17 +347,10 @@ console.log("hello2");
     var calendarHTML = '';
     calendarHTML += '<div class="calendar-header2">';
     calendarHTML += '<span class="prev-month2">&lt;</span>';
-    console.log("Za span mjesec: "+monthNames[currentMonth]+" godina:"+currentYear);
-    console.log("ostalo:");
-    console.log(selectedDate);
-    console.log(selectedYear);
-    console.log(selectedMonth);
     if(isNaN(selectedYear) || isNaN(selectedMonth)){
-      console.log("wrong");
       calendarHTML += '<span class="month-year">' + monthNames[currentMonth] + ' ' + currentYear + '</span>';
     }
     else{
-      console.log("rigth");
       calendarHTML += '<span class="month-year">' + monthNames[selectedMonth] + ' ' + selectedYear + '</span>';
     }
     calendarHTML += '<span class="next-month">&gt;</span>';

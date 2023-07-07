@@ -16,7 +16,7 @@
 			<br>
 			<input type="text" name="email" value="">
 			<br>
-			If you are a seller, type in the hotel code provided by your employer.
+			<label for="">If you are a seller, type in the hotel code provided by your employer.</label>
 			<input type="text" name="id_hotela" value="-1">
 			<br>
 			<button type="submit" name="registerButton">Register</button>

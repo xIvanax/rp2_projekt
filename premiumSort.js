@@ -1,11 +1,9 @@
 $(document).ready(function() {
   var choice = $('.pdecorated-label');
-  console.log(choice.length);
 
   for (var i = 0; i < choice.length; i++) {
     (function(index) { // Create a closure to capture the current value of `i`
       $('.pdecorated-label').eq(index).on('click', function() {
-        console.log(choice.eq(index).css('background-color'));
 
         if (choice.eq(index).css('background-color') === "rgb(221, 221, 221)"
         || choice.eq(index).css('background-color') === "rgb(242, 242, 242)") {
@@ -26,7 +24,6 @@ $('#pSort').on('click', function(){
 	var choice = $('.pdecorated-label');
 	for (var i = 0; i < choice.length; i++){
 		if(choice.eq(i).css('background-color') === "rgb(176, 172, 172)"){
-			console.log("hi, id = " + choice.eq(i).attr("id"));
       if(choice.eq(i).attr("id") === "dl1"){//silazni sort po cijeni
 				sortPPrice(1);
 			}else if(choice.eq(i).attr("id") === "dl2"){
@@ -74,7 +71,6 @@ function sortType(k) {
       let arrRooms = new Array();
       var j = 0;
       for(var i = 0; i < n; i++){
-        console.log("ime = " + $("#premiumSort td").eq(4*i + 1).html());
         arrRooms[i] = new Room($("#premiumSort td").eq(4*i).html(), $("#premiumSort td").eq(4*i + 1).html(), $("#premiumSort td").eq(4*i + 2).html(), $("#premiumSort td").eq(4*i).html());
       }
 
@@ -102,7 +98,6 @@ function sortType(k) {
   }
 
   function sortPPrice(k) {
-    console.log("sor špo cijeni");
   	//ako k==1 silazno, inace uzlazno
         //sad znam koji sort moram napraviti, ali da bi sortirala prvo moram dohvatiti listu
         var table = $("#premiumSort td");//tu su ćelije tablice sa sobama
@@ -133,15 +128,6 @@ function sortType(k) {
         var j = 0;
         for(var i = 0; i < n; i++){
           arrRooms[i] = new Room($("#premiumSort td").eq(4*i).html(), $("#premiumSort td").eq(4*i + 1).html(), $("#premiumSort td").eq(4*i + 2).html(), $("#premiumSort td").eq(4*i).html());
-          console.log("i = " + 4*i);
-          console.log("tip = " + arrRooms[i].tip);
-          console.log("i = " + (4*i+1));
-          console.log("id = " + arrRooms[i].id);
-          console.log("i = " + (4*i+2));
-          console.log("price = " + arrRooms[i].price);
-          console.log("i = " + (4*i));
-          console.log("fname = " + arrRooms[i].fname);
-
         }
 
         if(k === 1){

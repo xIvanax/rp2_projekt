@@ -1,11 +1,9 @@
 $(document).ready(function() {
   var choice = $('.decorated-label');
-  console.log(choice.length);
 
   for (var i = 0; i < choice.length; i++) {
     (function(index) { // Create a closure to capture the current value of `i`
       $('.decorated-label').eq(index).on('click', function() {
-        console.log(choice.eq(index).css('background-color'));
 
         if (choice.eq(index).css('background-color') === "rgb(221, 221, 221)"
         || choice.eq(index).css('background-color') === "rgb(242, 242, 242)") {
@@ -24,7 +22,6 @@ $(document).ready(function() {
   }
 
 $('#sort').on('click', function(){
-  console.log("zeli sort");
 	var choice = $('.decorated-label');
 	for (var i = 0; i < choice.length; i++){
 		if(choice.eq(i).css('background-color') === "rgb(176, 172, 172)"){
@@ -75,10 +72,10 @@ function sortRating(k) {
       };
       let arrHotels = new Array();
       let arrRating = new Array();
-      var j = 0;
       for(var i = 0; i < oldList.length; i++){//broj hotela
-        console.log("ime = " + $(".listingSort td").eq(6*i + 1).html());
-        arrHotels[i] = new Hotel($(".listingSort td").eq(6*i).html(), $(".listingSort td").eq(6*i + 1).html(), $(".listingSort td").eq(6*i + 2).html(), $(".listingSort td").eq(6*i + 3).html(), $(".listingSort td").eq(6*i + 4).html(), $(".listingSort button").eq(j++).attr('id'));
+        arrHotels[i] = new Hotel($(".listingSort td").eq(6*i).html(), $(".listingSort td").eq(6*i + 1).html(), 
+        $(".listingSort td").eq(6*i + 2).html(), $(".listingSort td").eq(6*i + 3).html(), $(".listingSort td").eq(6*i + 4).html(), 
+        $(".availabilityButton").eq(i).val());
         arrRating[i] = $(".listingSort td").eq(6*i + 3).html();//rating
       }
 
@@ -90,8 +87,7 @@ function sortRating(k) {
       var n = arrHotels.length;
       oldList.remove();
       for(var i = 0; i < n; i++){
-        console.log("I want to add a table");
-        $('#list').append(
+        $('#forma').append(
           '<table class="listingSort">' +
             '<tr>' +
               '<td class="hotel">' + arrHotels[i].grad + '</td>' +
@@ -110,7 +106,7 @@ function sortRating(k) {
             '</tr>' +
             '<tr>' +
               '<td class="hotel">' +
-                '<button type="submit" name="button" value="' + arrHotels[i].id + '">' +
+                '<button type="submit" name="button" class="availabilityButton" value="' + arrHotels[i].id + '">' +
                   'See availability</button>' +
               '</td>' +
             '</tr>' +
@@ -136,7 +132,6 @@ function sortDistance(k) {
         udaljenost1 = a.udaljenost.substring(31);
         udaljenost1 = udaljenost1.substring(0, udaljenost1.length - 2);
         udaljenost1 = Number(udaljenost1);
-        console.log("price1 = "+ udaljenost1);
         udaljenost2 = b.udaljenost.substring(31);
         udaljenost2 = udaljenost2.substring(0, udaljenost2.length - 2);
         udaljenost2 = Number(udaljenost2);
@@ -147,7 +142,6 @@ function sortDistance(k) {
         udaljenost1 = a.udaljenost.substring(31);
         udaljenost1 = udaljenost1.substring(0, udaljenost1.length - 2);
         udaljenost1 = Number(udaljenost1);
-        console.log("price1 = "+ udaljenost1);
         udaljenost2 = b.udaljenost.substring(31);
         udaljenost2 = udaljenost2.substring(0, udaljenost2.length - 2);
         udaljenost2 = Number(udaljenost2);
@@ -158,10 +152,10 @@ function sortDistance(k) {
         constructor: Hotel, // treba jer {} kreira NOVI objekt
       };
       let arrHotels = new Array();
-      let arrDistance = new Array();
-      var j = 0;
       for(var i = 0; i < oldList.length; i++){//broj hotela
-        arrHotels[i] = new Hotel($(".listingSort td").eq(6*i).html(), $(".listingSort td").eq(6*i + 1).html(), $(".listingSort td").eq(6*i + 2).html(), $(".listingSort td").eq(6*i + 3).html(), $(".listingSort td").eq(6*i + 4).html(), $(".listingSort button").eq(j++).attr('id'));
+        arrHotels[i] = new Hotel($(".listingSort td").eq(6*i).html(), $(".listingSort td").eq(6*i + 1).html(), 
+        $(".listingSort td").eq(6*i + 2).html(), $(".listingSort td").eq(6*i + 3).html(), $(".listingSort td").eq(6*i + 4).html(), 
+        $(".availabilityButton").eq(i).val());
       }
 
       if(k === 6){
@@ -173,7 +167,7 @@ function sortDistance(k) {
       var n = arrHotels.length;
       oldList.remove();
       for(var i = 0; i < n; i++){
-        $('#list').append(
+        $('#forma').append(
           '<table class="listingSort">' +
             '<tr>' +
               '<td class="hotel">' + arrHotels[i].grad + '</td>' +
@@ -192,7 +186,7 @@ function sortDistance(k) {
             '</tr>' +
             '<tr>' +
               '<td class="hotel">' +
-                '<button type="submit" name="button" value="' + arrHotels[i].id + '">' +
+                '<button type="submit" name="button" class="availabilityButton" value="' + arrHotels[i].id + '">' +
                   'See availability</button>' +
               '</td>' +
             '</tr>' +
@@ -239,10 +233,11 @@ function sortDistance(k) {
           constructor: Hotel, // treba jer {} kreira NOVI objekt
         };
         let arrHotels = new Array();
-        let arrPrice = new Array();
-        var j = 0;
         for(var i = 0; i < oldList.length; i++){//broj hotela
-          arrHotels[i] = new Hotel($(".listingSort td").eq(6*i).html(), $(".listingSort td").eq(6*i + 1).html(), $(".listingSort td").eq(6*i + 2).html(), $(".listingSort td").eq(6*i + 3).html(), $(".listingSort td").eq(6*i + 4).html(), $(".listingSort button").eq(j++).attr('id'));
+          arrHotels[i] = new Hotel($(".listingSort td").eq(6*i).html(), $(".listingSort td").eq(6*i + 1).html(), 
+          $(".listingSort td").eq(6*i + 2).html(), $(".listingSort td").eq(6*i + 3).html(), $(".listingSort td").eq(6*i + 4).html(), 
+          $(".availabilityButton").eq(i).val());
+          console.log("id = " + arrHotels[i].id);
         }
 
         if(k === 1){
@@ -254,7 +249,7 @@ function sortDistance(k) {
         var n = arrHotels.length;
         oldList.remove();
         for(var i = 0; i < n; i++){
-          $('#list').append(
+          $('#forma').append(
             '<table class="listingSort">' +
               '<tr>' +
                 '<td class="hotel">' + arrHotels[i].grad + '</td>' +
@@ -273,7 +268,7 @@ function sortDistance(k) {
               '</tr>' +
               '<tr>' +
                 '<td class="hotel">' +
-                  '<button type="submit" name="button" value="' + arrHotels[i].id + '">' +
+                  '<button type="submit" name="button" class="availabilityButton" value="' + arrHotels[i].id + '">' +
                     'See availability</button>' +
                 '</td>' +
               '</tr>' +
