@@ -17,7 +17,7 @@ Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcij
 
 ## To do list
 - dodati slike hotela i soba tam di treba pomoću javacripta
-- iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
+- ~~iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno~~ _~Ivana_
 - ciscenje koda
 - provjeriti jel na premium users sve isto ko na obicnim ili smo nesto zaboravili iskopirati
 
