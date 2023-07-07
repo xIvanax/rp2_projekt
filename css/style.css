@@ -168,12 +168,19 @@ a:hover {
 .form input[type="email"],
 .form select,
 #narrow input[type="text"],
-#narrow input[type="email"],
 #narrow select,
 #premNarrow input[type="text"],
-#premNarrow input[type="email"],
 #premNarrow select {
   width: 94%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.box1 input[type="text"],
+.box2 input[type="text"] {
+  width: 50%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
