@@ -11,23 +11,10 @@ Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcij
 5. Rješenje bi trebalo biti postavljeno na rp2.studenti.math.hr (osim u iznimnim situacijama i u dogovoru s profesorom). 
 6.~~Projekt treba sadržavati aspekte __i serverskog (PHP) i klijentskog (JavaScript) programiranja__. Iznimke su moguće jedino u dogovoru s profesorom.~~
 
-## Baza podataka _~Ivana_
-Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.
-Imamo odvojene tablice za:
-  - __hotele__ (ime, grad, udaljenost od centra i id)
-  - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, username gosta, komentar gosta, ocjena)
-  - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe)
-  - __sobe_datumi__ (id_sobe, datum zauzeca, datum oslobodenja; nema primary key jer jedna soba moze biti zauzeta u vise perioda)
- -  __user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, username, email, je li se registrirao do kraja, hashirani password, registracijski kod, id_hotela koji je -1 ako je obični user, odnosno id hotela za koje ima privilegije ako je privilegiran - sada je možda i beskorisna tablica projekt_posebni_useri) -> mislim da ovdje ipak ne trebaju datumi i da ih je dovoljno pohraniti u sobe_datumi, al nisam sigurna (ovdje nisam stavila da je id user-a primary key ako zelimo omoguciti da jedan user moze rezervirati vise razlicith datuma - ovo ce otezati dodejljivanje novog id-a za novog user-a tj. trebat ce se koristiti Set kao struktura podataka pri odredivanju novog nepostojeceg id-a; također, datum moze biti i null jer user ne mora nista imati rezervirano
- -  napravila sam novu tablicu projekt_rezervacije(id_osobe, id_hotela, dolazak, odlazak)
- -  u projekt_sobe_datumi dodala sam id_usera
- -  napravila neke promijene u tablici projekt_ocjene _~Dorotea_
-
-Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sql naredbe), [booking.com](https://www.booking.com/) (informacije za hotele, imaju i komentare korisnika s ocjenama, ideje za tipove soba, cijene itd. - ugl. korisno da ne moramo izmisljat nego mozemo samo copy pasteat hrpu tog)
-
 ## New updates
 - omoguceno filtriranje u sucelju za obicne usere pomocu javascripta i uskladen css _~Ivana_
-- 
+- prosiren css na sve dijelove stranice za obicne user-e, popravljeni neki buggovi za javascript i pociscen kod za kontroler i view
+
 ## To do list
 - dodati slike hotela i soba tam di treba pomoću javacripta
 - iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno
@@ -55,3 +42,17 @@ Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sq
 - Dodan ispis najnize cijene sobe za svaki hotel an naslovnoj stranici u svrhu sorta po cijeni. _~Kiki_
 - Popravila sam jos neke greske od doroteinog pusha i popravila greske koje je uzrokovo kikijev zadnji push. Pliz provjeravajte jel sve funkcionira i nakon sto nes izmijenite i pushate. _~Ivana_
 - omogucen sort u sucelju za premium usere i uskladen css tog sučelja s ostatkom stranice _~Ivana_
+
+## Baza podataka _~Ivana_
+Napravila sam bazu podataka na phpadmin-u, sva imena pocinju s _projekt_.
+Imamo odvojene tablice za:
+  - __hotele__ (ime, grad, udaljenost od centra i id)
+  - __ocjene__ koje su gosti ostavili za hotel (id hotela, id ocjene, username gosta, komentar gosta, ocjena)
+  - __sobe__ (cijena u eurima, id hotela u kojem je soba, id sobe, tip sobe)
+  - __sobe_datumi__ (id_sobe, datum zauzeca, datum oslobodenja; nema primary key jer jedna soba moze biti zauzeta u vise perioda)
+ -  __user-e__ (željeni datum dolaska u hotel, željeni datum odlaska iz hotela, id user-a, username, email, je li se registrirao do kraja, hashirani password, registracijski kod, id_hotela koji je -1 ako je obični user, odnosno id hotela za koje ima privilegije ako je privilegiran - sada je možda i beskorisna tablica projekt_posebni_useri) -> mislim da ovdje ipak ne trebaju datumi i da ih je dovoljno pohraniti u sobe_datumi, al nisam sigurna (ovdje nisam stavila da je id user-a primary key ako zelimo omoguciti da jedan user moze rezervirati vise razlicith datuma - ovo ce otezati dodejljivanje novog id-a za novog user-a tj. trebat ce se koristiti Set kao struktura podataka pri odredivanju novog nepostojeceg id-a; također, datum moze biti i null jer user ne mora nista imati rezervirano
+ -  napravila sam novu tablicu projekt_rezervacije(id_osobe, id_hotela, dolazak, odlazak)
+ -  u projekt_sobe_datumi dodala sam id_usera
+ -  napravila neke promijene u tablici projekt_ocjene _~Dorotea_
+
+Resources: https://tableconvert.com/excel-to-sql (pretvaranje excel tablice u sql naredbe), [booking.com](https://www.booking.com/) (informacije za hotele, imaju i komentare korisnika s ocjenama, ideje za tipove soba, cijene itd. - ugl. korisno da ne moramo izmisljat nego mozemo samo copy pasteat hrpu tog)
