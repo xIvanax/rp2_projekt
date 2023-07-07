@@ -4,16 +4,19 @@ require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/user.class.php';
 require_once __DIR__ . '/hotel.class.php';
 
-class HotelService {
-	function addeditroom_service($id, $tip, $cijena) {
-		try {
+class HotelService{
+	// promijena cijene i tipa sobe
+	function addeditroom_service($id, $tip, $cijena){
+		try //ako vec postoji soba sa zadanim id-om, brisemo ju iz baze
+		{
 			$db = DB::getConnection();
 			$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
 			$st->execute(array( 'id' => $id ));
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
-		try {
+		try // u bazu dodajmo sobu za zadanim karakteristikama
+		{
 			$db = DB::getConnection();
 			$st2 = $db->prepare( 'INSERT INTO projekt_sobe(id_sobe, id_hotela, tip, cijena) VALUES ' .
 				'(:id_sobe, :id_hotela, :tip, :cijena)' );
@@ -23,13 +26,19 @@ class HotelService {
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
 
-	function removeroom_service($id) {
-		try {
+	// omogucuje brisanje odabrane sobe
+	function removeroom_service($id){
+		try{
 			$db = DB::getConnection();
-			//brisanje sobe iz baze koja sadrzi popis svih soba
+			// brisanje sobe iz baze koja sadrzi popis svih soba
 			$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
 			$st->execute(array( 'id' => $id ));
-			//brisanje sobe iz baze buducih rezervacija, gdje je rezervirana promatrana soba
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		try{
+			$db = DB::getConnection();
+			// brisanje sobe iz baze buducih rezervacija, gdje je rezervirana promatrana soba
 			$st = $db->prepare( 'DELETE FROM projekt_sobe_datumi WHERE id_sobe=:id' );
 			$st->execute(array( 'id' => $id ));
 		}
@@ -92,11 +101,13 @@ class HotelService {
 			$st = $db->prepare( 'SELECT id_sobe, tip, cijena FROM projekt_sobe WHERE id_hotela=:id_hotela');
 			$st->execute(array( 'id_hotela' => $id_hotela ));
 		}catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
 		$sobe_list = array();
 		while($row = $st->fetch()) {
 			$soba=array($row["id_sobe"], $row["tip"], $row["cijena"]);
 			$sobe_list[] = $soba;
 		}
+
 		return $sobe_list;
 	}
 	//ubacivanje neregistriranog korisnika u bazu
@@ -154,6 +165,11 @@ class HotelService {
 //prikazuje sve hotele koji su dostupni u aplikaciji
 	function getAvailableHotels() {
 		try {
+	//prikazuje sve hotele koji su dostupni u aplikaciji
+	function getAvailableHotels()
+	{
+		try
+		{
 			$db = DB::getConnection();
 			$st = $db->prepare( 'SELECT grad, id_hotela, ime, udaljenost_od_centra FROM projekt_hoteli' );
 			$st->execute();
@@ -191,93 +207,10 @@ class HotelService {
 		}
 		return $arr;
 	}
-	//prikazuje hotele u skladu s filterima koje je odabrao korisnik
-	function getNarrowedHotels($city, $lowPrice, $upPrice, $distance, $lowRating, $upRating) {
-		//prvo dohvatim taj grad i odmah filtriram i udaljenost
-		try {
-			$db = DB::getConnection();
-			$st = $db->prepare( "SELECT id_hotela, ime, udaljenost_od_centra FROM projekt_hoteli WHERE grad = '" . $city . 
-			"' AND udaljenost_od_centra < " . (double)$distance);
-			$st->execute();
-		}
-		catch(PDOException $e) {exit( 'PDO error ' . $e->getMessage() );}
 
-		$arr = array();
-		$filteredHotels = array();
-		while($row = $st->fetch()) {
-			//moram izracunati prosjecni rating svakog od tih hotela (bolje imati zasebnu funkciju koja racuna prosjecni rating)
-			try {
-				$db = DB::getConnection();
-				$st1 = $db->prepare( "SELECT ocjena FROM projekt_ocjene WHERE id_hotela = '" . $row['id_hotela'] . "'");
-				$st1->execute();
-			}
-			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
-			$ocjene = 0;
-			$num = 0;
-			while($row1 = $st1->fetch()) {
-				$ocjene += $row1['ocjena'];
-				$num += 1;
-			}
-			$rating = $ocjene / $num;
-
-			if($lowRating < $rating && $rating < $upRating)
-				$arr[] = array(new Hotel( $city, $row['id_hotela'], $row['ime'], $row['udaljenost_od_centra'] ), round($rating, 2));
-		}
-		//sad u arr imam niz koji na prvom mjestu ima hotel, a na drugom ocjenu i to filtrirano po gradu, udaljenosti i ratingu
-		//preostaje filtrirati po cijenama - moram za svaki hotel provjeriti ima li sobu koja je u navedenom price rangeu
-		foreach($arr as $hotelAndRating) {
-			try {
-				$db = DB::getConnection();
-				$st = $db->prepare( "SELECT cijena FROM projekt_sobe WHERE id_hotela LIKE '" . $hotelAndRating[0]->id_hotela . "'");
-				$st->execute();
-			}
-			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
-
-			while($row = $st->fetch()) {
-				if($row['cijena'] < $upPrice && $row['cijena'] > $lowPrice) {
-					$filteredHotels[] = $hotelAndRating;
-					break;
-				}
-			}
-		}
-		return $filteredHotels;
-	}
-
-	function getRoomTypeFromHotelId($id_hotela) {
-		try {
-			$db = DB::getConnection();
-			$st = $db->prepare( 'SELECT id_sobe, tip, cijena FROM projekt_sobe WHERE id_hotela=:id_hotela ORDER BY cijena ');
-			$st->execute(array( 'id_hotela' => $id_hotela ));
-		}catch(PDOException $e) {exit( 'PDO error ' . $e->getMessage() );}
-
-		$sobe_list = array();
-		while($row = $st->fetch()) {
-			if(sizeof($sobe_list) === 0)
-				$sobe_list[] = array($row["tip"], $row["cijena"], 1);
-			else {
-				$provjera = -1;
-				$brojac = -1;
-				foreach($sobe_list as $soba) {
-					$brojac++;
-					if($row["tip"] === $soba[0]) {
-						$provjera = $brojac;
-					}
-				}
-
-				if($provjera === -1)
-					$sobe_list[] = array($row["tip"], $row["cijena"], 1);
-				else {
-					$broj = $sobe_list[$provjera][2]+1;
-					$sobe_list[$provjera][2] = $broj;
-				}
-			}
-		}
-		return $sobe_list;
-	}
-
-	//vraca sve komentare na smjestaj za hotel odreden s $id_hotela
-	function getReviewsForHotelById($id_hotela) {
-		try {
+	//vraca sve komentare i ocjene na smjestaj za hotel odreden s $id_hotela
+	function getReviewsForHotelById($id_hotela){
+		try{
 			$db = DB::getConnection();
 			$st = $db->prepare( 'SELECT username, komentar, ocjena FROM projekt_ocjene WHERE id_hotela=:id_hotela');
 			$st->execute(array( 'id_hotela' => $id_hotela ));
@@ -290,11 +223,11 @@ class HotelService {
 		return $arr;
 	}
 
-	//funkcija koja provjerava valjanost unesenih
-	//vraća 1 ako su oba izabrana datuma od trenutnog datuma pa nadalje
-	function checkDates($dolazak, $odlazak) {
-		$now = date("Y-m-d");
-		if($dolazak < $now || $odlazak < $now) {
+	//funkcija koja provjerava valjanost unesenih datuma
+	//vraca 1 ako su oba izabrana datuma nakon trenutnog
+	function checkDates($dolazak, $odlazak){
+		$now=date("Y-m-d");
+		if($dolazak<$now || $odlazak<$now){
 			return -1;
 		}else if($odlazak < $dolazak) {
 			return 0;
@@ -303,8 +236,8 @@ class HotelService {
 		}
 	}
 
-	//za hotel, odreden s $id_hotela, odreduje koliko ima dostupnih soba svakog tipa periodu izmedu datuma $dolazak i $odlazak
-	function getAvailableRooms($id_hotela, $dolazak, $odlazak) {
+	//za hotel, odreden s $id_hotela, odreduje koliko ima dostupnih soba svakog tipa u periodu izmedu datuma $dolazak i $odlazak
+	function getAvailableRooms($id_hotela, $dolazak, $odlazak){
 		//dohvacam sve sobe koje su u ponudi hotela
 		try {
 			$db = DB::getConnection();
@@ -312,7 +245,8 @@ class HotelService {
 			$st->execute(array( 'id_hotela' => $id_hotela ));
 		}catch(PDOException $e) {exit( 'PDO error ' . $e->getMessage() );}
 
-		$arr = array();
+		$arr=array();
+
 		//za svaku sobu provjeravam je li slobodna u danom periodu
 		while($row = $st->fetch()) {
 			try {
@@ -569,8 +503,8 @@ class HotelService {
 		return $arr;
 	}
 
-	//funkcija koja brise rezervaciju
-	function deleteReservation($id_hotela, $id_usera, $dolazak, $odlazak) {
+	//funkcija koja brise odabranu rezervaciju
+	function deleteReservation($id_hotela, $id_usera, $dolazak, $odlazak){
 		//trazim sve sobe koje je promatrani korisnik rezervirao u promatranom razdoblju
 		try {
 			$db = DB::getConnection();
@@ -616,8 +550,10 @@ class HotelService {
 		else
 			return $row['id_usera'];
 	}
-	//funkcija koja komentar i ocjenu korisnika za hotel
-	function addComment($id_hotela, $id_usera, $username, $dolazak, $odlazak, $ocjena, $komentar) {
+
+	//funkcija koja dodaje komentar i ocjenu korisnika za hotel
+	function addComment($id_hotela, $id_sobe, $id_usera, $username, $dolazak, $odlazak, $ocjena, $komentar){
+
 		//dohvacam najveci id_ocjene koji se nalazi u tablici projekt ocjene
 		try {
 			$db = DB::getConnection();
@@ -650,10 +586,11 @@ class HotelService {
 		}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 	}
 
-	function getComment($id_ocjene) {
-		try {
-			$db = DB::getConnection();
-			$st = $db->prepare('SELECT * FROM projekt_ocjene WHERE id_ocjene=:id_ocjene');
+	// dohvaca komentar i ocjenu sa zadanim id-om ocjene
+	function getComment($id_ocjene){
+		try{
+			$db=DB::getConnection();
+			$st=$db->prepare('SELECT * FROM projekt_ocjene WHERE id_ocjene=:id_ocjene');
 			$st->execute(array('id_ocjene'=>$id_ocjene));
 		}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 
@@ -661,8 +598,9 @@ class HotelService {
 		return $row;
 	}
 
-	public function getHotelNameById($id_hotela) {
-		try {
+	// dohvaca ime hotela preko njegovog id-a
+	public function getHotelNameById($id_hotela){
+		try{
 			$db = DB::getConnection();
 			$st = $db->prepare('SELECT ime FROM projekt_hoteli WHERE id_hotela=:id_hotela');
 			$st->execute(array( 'id_hotela'=>$id_hotela));
@@ -676,7 +614,9 @@ class HotelService {
 			return $row['ime'];
 	}
 
-	function editComment($id_ocjene, $komentar, $ocjena) {
+	// omogucuje uredivanje prije unesenih komentara i ocjena
+	function editComment($id_ocjene, $komentar, $ocjena){
+
 		//dohvacam sve podatke za dani id_ocjene
 		try {
 			$db = DB::getConnection();
@@ -705,7 +645,8 @@ class HotelService {
 		}catch(PDOException $e) {exit('PDO error ' . $e->getMessage());}
 	}
 
-	function deleteComment($id_ocjene, $id_osobe) {
+	// omogucuje brisanje napisanih komentara i ocjena za promatranog user-a
+	function deleteComment($id_ocjene, $id_osobe){
 		//dohvacam sve podatke za dani id_ocjene
 		try {
 			$db = DB::getConnection();
