@@ -19,7 +19,7 @@ body {
   float: right
 }
 
-#filters, #premSort {
+#filters {
   width: 30%;
   float:left
 }
@@ -127,11 +127,11 @@ table {
 }
 
 .hotel, .room {
+  text-align: center;
   font-weight: bold;
 }
 
 .content {
-  colspan: 2;
   margin-top: 5px;
 }
 
@@ -146,7 +146,7 @@ a:hover {
 
 /*Form styles*/
 
-.form, #narrow, #premNarrow {
+.form, #narrow, #premNarrow, #premSort {
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 20px;

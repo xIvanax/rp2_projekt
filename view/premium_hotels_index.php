@@ -1,7 +1,7 @@
 <?php require_once __SITE_PATH . '/view/premium_header.php'; ?>
-
+<div id="filters">
+  <h3 class="header">Sort your search:</h3>
   <div id="premSort">
-    <h3 class="header">Sort your search:</h3>
     <div class="form">
       <label for="">Price:</label>
       <label class="pdecorated-label" id="dl1">highest to lowest</label>
@@ -14,29 +14,42 @@
       <button type="button" id="pSort">Sortiraj</button>
     </div>
   </div>
+  <h3 class="header">Add/Edit room:</h3>
+  <div id="premNarrow">
+  	<form class="form" action="<?php echo __SITE_URL; ?>/index.php?rt=hotels/addeditroom" method="post">
+  		<label for="">Room id: </label><input type="text" name="id_sobe"> <br>
+      <label for="">Room type: </label><input type="text" name="tip"> <br>
+  		<label for="">Room price: </label><input type="text" name="cijena"> <br>
+  		<button type="submit" name="">Add/Edit room</button>
+  	</form>
+  </div>
+</div>
   <div id="premiumList">
   <?php
   echo '<table id="premiumSort">';
+  echo '<th>id sobe</th>';
+  echo '<th>tip sobe</th>';
+  echo '<th>cijena sobe</th>';
 
   foreach ($sobe_list as $soba) {
     echo '<tr>';
 
     echo '<td class="room">';
-    echo  'id sobe: ' . $soba[0];
+    echo $soba[0];
     echo '</td>';
 
     echo '<td class="room">';
-    echo  'tip sobe: ' . $soba[1];
+    echo $soba[1];
     echo '</td>';
 
     echo '<td class="room">';
-    echo  'cijena sobe: ' . $soba[2];
+    echo $soba[2] .'€';
     echo '</td>';
 
     echo '<td class="room">';
 
     echo '<form class="" action="index.php?rt=hotels/removeroom" method="post">';
-    echo '<input type="submit" name="' . $soba[0] . '" value="X">';
+    echo '<input id="x" type="submit" name="' . $soba[0] . '" value="X">';
     echo '</form>';
 
     echo '</td>';
@@ -53,14 +66,5 @@
     echo "<br>";
   }
  ?>
-  <div id="premNarrow">
-    <h3 class="header">Add/Edit room:</h3>
-  	<form class="form" action="<?php echo __SITE_URL; ?>/index.php?rt=hotels/addeditroom" method="post">
-  		<label for="">Room id: </label><input type="text" name="id_sobe"> <br>
-      <label for="">Room type: </label><input type="text" name="tip"> <br>
-  		<label for="">Room price: </label><input type="text" name="cijena"> <br>
-  		<button type="submit" name="">Add/Edit room</button>
-  	</form>
-  </div>
 
 <?php require_once __SITE_PATH . '/view/_footer.php'; ?>
