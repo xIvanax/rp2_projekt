@@ -13,7 +13,7 @@ class HotelService{
 			$st = $db->prepare( 'DELETE FROM projekt_sobe WHERE id_sobe=:id' );
 			$st->execute(array( 'id' => $id ));
 		}
-		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		catch( PDOException $e ) { exit( '1PDO error ' . $e->getMessage() ); }
 
 		try // u bazu dodajmo sobu za zadanim karakteristikama
 		{
@@ -21,11 +21,11 @@ class HotelService{
 			$st2 = $db->prepare( 'INSERT INTO projekt_sobe(id_sobe, id_hotela, tip, cijena) VALUES ' .
 				'(:id_sobe, :id_hotela, :tip, :cijena)' );
 			$st2->execute(array( 'id_sobe' => $id,
-													 'id_hotela' => $_SESSION["id_hotela"],
-												 	 'tip' => $tip,
-												 	 'cijena' => $cijena));
+			'id_hotela' => $_SESSION["id_hotela"],
+			'tip' => $tip,
+			'cijena' => $cijena));
 		}
-		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		catch( PDOException $e ) { exit( 'id= '.$id.' PDO error ' . $e->getMessage() ); }
 	}
 
 	// omogucuje brisanje odabrane sobe
@@ -83,6 +83,31 @@ class HotelService{
 	}
 
 	// za dodjelu novog id-a 
+	function getAvailableRoomId($upisani_id){
+		$db = DB::getConnection();
+		$st = $db->prepare( 'SELECT id_sobe FROM projekt_sobe');
+		$st->execute();
+
+		$i = 1;
+		$arr = array();
+		while($row = $st->fetch()){
+			$arr[] = $row['id_sobe'];
+		}
+		if(!in_array($upisani_id, $arr)) {
+			return $upisani_id;
+		}
+		while(1)
+		{
+			if(!in_array($i, $arr))
+			{
+				return $i;
+			}
+			$i++;
+		}
+		return $i;
+	}
+
+	// za dodjelu novog id-a 
 	function getHighestRoomId(){
 		$db = DB::getConnection();
 		$st = $db->prepare( 'SELECT id_sobe FROM projekt_sobe');
@@ -93,6 +118,7 @@ class HotelService{
 		while($row = $st->fetch()){
 			$arr[] = $row['id_sobe'];
 		}
+		
 		while(1)
 		{
 			if(!in_array($i, $arr))

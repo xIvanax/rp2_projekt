@@ -17,10 +17,18 @@
   <h3 class="header">Add/Edit room:</h3>
   <div id="premNarrow">
   	<form class="form" action="<?php echo __SITE_URL; ?>/index.php?rt=hotels/addeditroom" method="post">
-  		<label for="">Room id: </label><input type="text" name="id_sobe"> <br>
-      <label for="">Room type: </label><input type="text" name="tip"> <br>
-  		<label for="">Room price: </label><input type="text" name="cijena"> <br>
-  		<button type="submit" name="">Add/Edit room</button>
+    <div class="popup">
+      <label for="id_sobe">Room id:</label>
+      <div class="popuptext">If you enter an id of an existing room in your hotel you will edit the information about that room.
+        If you don't enter an id, or if you enter an id that is already in our database you will be automatically assigned an available id.
+        If you enter an id and we do not have it in our database the room will be assigned that id.
+      </div>
+    </div>
+    <input type="text" name="id_sobe"> <br>
+    <label for="">Room type: </label><input type="text" name="tip"> <br>
+    <label for="">Room price: </label><input type="text" name="cijena"> <br>
+    <button type="submit" name="">Add/Edit room</button>
+    <h2><?php echo $msg; ?></h2>
   	</form>
   </div>
 </div>
@@ -61,12 +69,22 @@
   echo '</table>';
   ?>
 </div>
-<?php
-  echo '<br><br><br>';
-  if (isset($is) && $is === 0){
-    echo "Room ID taken, given id: " . $max;
-    echo "<br>";
-  }
- ?>
 
+<script>
+    //js za popup
+    window.addEventListener('DOMContentLoaded', () => {
+        const popup = document.querySelector('.popup');
+        const popuptext = document.querySelector('.popuptext');
+
+        popup.addEventListener('mouseover', () => {
+            popuptext.style.visibility = 'visible';
+            popuptext.style.opacity = 1;
+        });
+
+        popup.addEventListener('mouseout', () => {
+            popuptext.style.visibility = 'hidden';
+            popuptext.style.opacity = 0;
+        });
+    });
+</script>
 <?php require_once __SITE_PATH . '/view/_footer.php'; ?>
