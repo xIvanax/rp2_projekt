@@ -1,6 +1,5 @@
 <?php require_once __SITE_PATH . '/view/_header.php'; ?>
 <br>
-	<h2><?php echo $msg; ?></h2>
 	<br>
 	<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/availableRooms'?>">
 		<div class="date-pickers">
@@ -26,6 +25,7 @@
 		</div>
 	</div>
 	</form>
+	<h2><?php echo $msg; ?></h2>
 	<br>
 	<form method="post" action="<?php echo __SITE_URL . '/index.php?rt=hotels/bookRoom'?>">
 		<?php require_once __SITE_PATH . '/view/rooms_index.php'; ?>

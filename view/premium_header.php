@@ -18,7 +18,7 @@
 	<script src="bookingScript.js"></script>
 	<script src="premiumSort.js"></script>
 <body>
-	<?php debug(); ?>
+	<?php //debug(); ?>
 	<div class="navbar">
 		<h1 class="mainHeader">IDC Booking</h1>
 		<ul>

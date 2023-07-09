@@ -11,7 +11,7 @@
       <label class="pdecorated-label" id="dl3">A-Z</label>
       <label class="pdecorated-label" id="dl4">Z-A</label>
       <br>
-      <button type="button" id="pSort">Sortiraj</button>
+      <button type="button" id="pSort">Sort</button>
     </div>
   </div>
   <h3 class="header">Add/Edit room:</h3>
