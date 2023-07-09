@@ -1,3 +1,12 @@
+<?php function debug()
+    {
+        echo '<pre>';
+
+        echo '$_POST = '; print_r( $_POST );
+        echo '$_SESSION = '; print_r( $_SESSION );
+
+        echo '</pre>';
+    } ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,10 +18,10 @@
 	<script src="bookingScript.js"></script>
 	<script src="premiumSort.js"></script>
 <body>
+	<?php debug(); ?>
 	<div class="navbar">
 		<h1 class="mainHeader">IDC Booking</h1>
 		<ul>
-			<li><a class="a" href="<?php echo __SITE_URL; ?>/index.php?rt=hotels/availableHotels"><i class="fas fa-house"></i> Available hotels</a></li>
 			<li><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels/premiumindex"><i class="fas fa-book"></i>Your offers</a></li>
 			<li id="logout"><a href="<?php echo __SITE_URL; ?>/index.php?rt=hotels"><i class="fas fa-lock"></i>Logout</a></li>
 			<li><i class="fas fa-user"> </i><?php

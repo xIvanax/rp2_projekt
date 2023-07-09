@@ -18,9 +18,10 @@ class HotelsController extends BaseController {
     }
     $this->premiumindex();
   }
-  //index premium premium user
+  //index premium user
   public function premiumindex() {
     $qs = new HotelService();
+    $this->registry->template->msg = '';
     $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
     $this->registry->template->title = 'Rooms you are offering';
     $this->registry->template->show('premium_hotels_index');
@@ -31,21 +32,60 @@ class HotelsController extends BaseController {
     $temp_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
     $is = 0;
     foreach ($temp_list as $temp) {
-      if ($temp[0] === $_POST["id_sobe"]) {
-        $is = 1;
-        $qs->addeditroom_service($_POST["id_sobe"], $_POST["tip"], $_POST["cijena"]);
-        $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
-        $this->registry->template->title = 'Rooms you are offering';
-        $this->registry->template->show('premium_hotels_index');
+      //ako je korisnik unio id sobe i taj id sobe vec postoji u listi onda edita
+      if(isset($_POST["id_sobe"]) && $_POST["id_sobe"] !== ""){
+        if ($temp[0] === $_POST["id_sobe"]) {
+          $is = 1;
+          if(!isset($_POST["tip"]) || $_POST["tip"] === "") {
+            $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+            $this->registry->template->msg = 'You have to specify the type.';
+          }else if(!isset($_POST["cijena"]) || $_POST["cijena"] === "") {
+            $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+            $this->registry->template->msg = 'You have to specify the price.';
+          }else {
+            $qs->addeditroom_service($_POST["id_sobe"], $_POST["tip"], $_POST["cijena"]);
+            $this->registry->template->msg = '';
+            $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+          }
+          $this->registry->template->title = 'Rooms you are offering';
+          $this->registry->template->show('premium_hotels_index');
+        }
       }
     }
-    $this->registry->template->is = $is;
-    if($is === 0) {
-      $max = $qs->getHighestRoomId();
-      $max;
+    if(isset($_POST["id_sobe"]) && $is !== 1 && $_POST["id_sobe"] !== "") {
+      $this->registry->template->is = $is;
+      $max = $qs->getAvailableRoomId($_POST["id_sobe"]);
       $this->registry->template->max = $max;
-      $qs->addeditroom_service($max, $_POST["tip"], $_POST["cijena"]);
-      $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+      if(!isset($_POST["tip"]) || $_POST["tip"] === "") {
+        $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+        $this->registry->template->msg = 'You have to specify the type.';
+      }else if(!isset($_POST["cijena"]) || $_POST["cijena"] === "") {
+        $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+        $this->registry->template->msg = 'You have to specify the price.';
+      }else {
+        $qs->addeditroom_service($max, $_POST["tip"], $_POST["cijena"]);
+        if($max !== $_POST["id_sobe"])
+          $this->registry->template->msg = 'The id you typed in is not available, you were assigned the id ' . $max . '.';
+        else
+          $this->registry->template->msg = '';
+        $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+      }
+      $this->registry->template->title = 'Rooms you are offering';
+      $this->registry->template->show('premium_hotels_index');
+    }else if(!isset($_POST["id_sobe"]) || $_POST["id_sobe"] === "") {
+      $max = $qs->getHighestRoomId();
+      $this->registry->template->max = $max;
+      if(!isset($_POST["tip"]) || $_POST["tip"] === "") {
+        $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+        $this->registry->template->msg = 'You have to specify the type.';
+      }else if(!isset($_POST["cijena"]) || $_POST["cijena"] === "") {
+        $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+        $this->registry->template->msg = 'You have to specify the price.';
+      }else {
+        $qs->addeditroom_service($max, $_POST["tip"], $_POST["cijena"]);
+        $this->registry->template->msg = 'You were assigned the id ' . $max . '.';
+        $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
+      }
       $this->registry->template->title = 'Rooms you are offering';
       $this->registry->template->show('premium_hotels_index');
     }
@@ -54,7 +94,7 @@ class HotelsController extends BaseController {
   public function loginResults() {
     $qs = new HotelService();
 
-    if(!isset( $_POST['username'] ) || !isset( $_POST['password'] )) {
+    if(!isset($_POST['username']) || !isset($_POST['password'])) {
       $this->registry->template->msg = 'You have to put in your username and password.';
       $this->registry->template->show('login_index');
   	}
@@ -136,6 +176,7 @@ class HotelsController extends BaseController {
       		  $this->registry->template->show('hotels_index');
           }
           else if ($qs->getHotelIdFromUsername($_POST["username"]) == $_POST["id_hotela"]) {
+            $this->registry->template->msg = '';
             $this->registry->template->sobe_list = $qs->getRoomsFromIdHotela($_SESSION["id_hotela"]);
             $this->registry->template->title = 'Rooms you are offering';
             $this->registry->template->show('premium_hotels_index');
