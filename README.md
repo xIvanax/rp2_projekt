@@ -13,15 +13,10 @@ Aplikacija sadrži nekoliko hotela u nekoliko gradova te se korisniku nudi opcij
 
 ## New updates
 - omoguceno filtriranje u sucelju za obicne usere pomocu javascripta i uskladen css _~Ivana_
-- prosiren css na sve dijelove stranice za obicne user-e, popravljeni neki buggovi za javascript i pociscen kod za kontroler i view
+- prosiren css na sve dijelove stranice za obicne user-e, popravljeni neki buggovi za javascript i pociscen kod za kontroler i view _~Ivana_
+- dodana kontrola rubnih slučajeva u dijelu s dodavanjem/editanjem soba kod premium user-a _~Ivana_
 
-## To do list
-- dodati slike hotela i soba tam di treba pomoću javacripta
-- ~~iskopirati logiku i css za sort i na ostala mjesta gdje je potrebno~~ _~Ivana_
-- ciscenje koda
-- provjeriti jel na premium users sve isto ko na obicnim ili smo nesto zaboravili iskopirati
-
-## Old updates/what's been done
+## Old updates
 - baza podataka je skroz gotova (osmisljeni podaci i napravljen sql u phpmyadmin) i moze se koristiti _~Ivana_
 - omoguceno uloggiravanje i registracija i prikaz pocetne stranice _~Ivana_
 - omoguceno filtriranje hotela prema zahtjevima korisnika _~Ivana_
